@@ -8,14 +8,12 @@
     >
         <v-card color="grey lighten-4" min-width="350px" flat>
             <v-toolbar :color="selectedEvent.color" dark>
-                <v-btn icon>
-                    <v-icon>mdi-pencil</v-icon>
+                <v-btn icon @click.stop="deleteEventIsOpen = true">
+                    <v-icon>mdi-delete</v-icon>
                 </v-btn>
                 <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn icon>
-                    <v-icon>mdi-heart</v-icon>
-                </v-btn>
+
                 <v-btn icon>
                     <v-icon>mdi-dots-vertical</v-icon>
                 </v-btn>
@@ -29,11 +27,25 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
+        <ConfirmDialog
+            :open="deleteEventIsOpen"
+            @close="deleteEventIsOpen = false"
+            @accepted="evaluateEventDeletion"
+        >
+            <template v-slot:title>
+                Do you really want to delete this event?
+            </template>
+        </ConfirmDialog>
     </v-menu>
 </template>
 
 <script>
+import ConfirmDialog from '@/components/ConfirmDialog'
+
 export default {
+    components: {
+        ConfirmDialog,
+    },
     props: {
         selectedElement: {
             type: Object,
@@ -53,6 +65,7 @@ export default {
         return {
             selectedOpenData: this.selectedOpen,
             flip: false,
+            deleteEventIsOpen: false,
         }
     },
 
@@ -73,6 +86,10 @@ export default {
         onOpenChanged(state) {
             console.log('state change: ', state)
             this.$emit('selected-open-changed', state)
+        },
+
+        evaluateEventDeletion(deleteSelectedEvent) {
+            console.log('selected event will be deleted: ', deleteSelectedEvent)
         },
     },
 }
