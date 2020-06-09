@@ -4,27 +4,10 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import VueTextareaAutosize from 'vue-textarea-autosize'
-// eslint-disable-next-line no-unused-vars
-import firebase from 'firebase/app'
-import 'firebase/firestore'
 
 Vue.use(VueTextareaAutosize)
 
 Vue.config.productionTip = false
-
-const firebaseConfig = {
-    apiKey: 'AIzaSyA4yYD2RAUu1T9DuWP_LMnqptKGkYcFTfE',
-    authDomain: 'calendar-test-3ff4d.firebaseapp.com',
-    databaseURL: 'https://calendar-test-3ff4d.firebaseio.com',
-    projectId: 'calendar-test-3ff4d',
-    storageBucket: 'calendar-test-3ff4d.appspot.com',
-    messagingSenderId: '617959689199',
-    appId: '1:617959689199:web:b094a90677a548f80b041a',
-}
-
-firebase.initializeApp(firebaseConfig)
-
-export const db = firebase.firestore()
 
 const ignoreWarnMessage =
     'The .native modifier for v-on is only valid on components but it was used on <div>.'
@@ -44,3 +27,16 @@ new Vue({
     vuetify,
     render: h => h(App),
 }).$mount('#app')
+
+Promise.all([
+    store.dispatch('fetchClients'),
+    store.dispatch('fetchClientDates'),
+])
+    .then(() => {
+        store.commit('RESOLVE_CLIENT_REFERENCES', store.getters)
+        console.log('clients : ', store.state.clients)
+        console.log('clientDates : ', store.state.clientDates)
+    })
+    .catch(e => {
+        console.log("Couldn't fetch clients or client dates: ", e)
+    })
