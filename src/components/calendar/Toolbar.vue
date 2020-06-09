@@ -32,34 +32,39 @@
             <v-spacer></v-spacer>
             <v-toolbar-title>{{ title }}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-menu bottom right>
-                <template v-slot:activator="{ on }">
-                    <v-btn outlined color="grey darken-2" v-on="on">
-                        <span>{{ typeToLabel[type] }}</span>
-                        <v-icon right>mdi-menu-down</v-icon>
-                    </v-btn>
-                </template>
-                <v-list>
-                    <v-list-item @click="emitTypeChange('day')">
-                        <v-list-item-title>Day</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item @click="emitTypeChange('4day')">
-                        <v-list-item-title>4 days</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item @click="emitTypeChange('week')">
-                        <v-list-item-title>Week</v-list-item-title>
-                    </v-list-item>
-                    <v-list-item @click="emitTypeChange('month')">
-                        <v-list-item-title>Month</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
+            <v-btn
+                fab
+                text
+                small
+                color="grey darken-2"
+                @click="showMobilMenu = true"
+                class="hidden-sm-and-up"
+            >
+                <v-icon small>mdi-dots-vertical</v-icon>
+            </v-btn>
+            <ToolbarMobilMenu
+                v-model="showMobilMenu"
+                :type="type"
+                @type-change="emitTypeChange"
+                @set-today="emitSetToday"
+            />
+
+            <div class="d-none d-sm-flex">
+                <ModeMenu :type="type" @type-change="emitTypeChange" />
+            </div>
         </v-toolbar>
     </div>
 </template>
 
 <script>
+import ToolbarMobilMenu from '@/components/calendar/ToolbarMobilMenu'
+import ModeMenu from '@/components/calendar/ModeMenu'
+
 export default {
+    components: {
+        ToolbarMobilMenu,
+        ModeMenu,
+    },
     props: {
         type: {
             type: String,
@@ -107,12 +112,7 @@ export default {
 
     data() {
         return {
-            typeToLabel: {
-                day: 'Day',
-                '4day': '4 Days',
-                week: 'Week',
-                month: 'Month',
-            },
+            showMobilMenu: false,
         }
     },
 
