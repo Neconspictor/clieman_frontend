@@ -11,6 +11,7 @@
                         @next="next"
                         @prev="prev"
                         @type-change="type = $event"
+                        @set-today="setToday"
                     />
                 </v-sheet>
                 <v-sheet height="600">
@@ -74,7 +75,6 @@ export default {
         start: null,
         end: null,
         color: '#1976D2',
-        currentlyEditing: null,
         selectedEvent: {},
         selectedElement: null,
         selectedOpen: false,
@@ -126,6 +126,14 @@ export default {
 
         onOpenStateChange(value) {
             this.selectedOpen = value
+        },
+
+        handleSwipe(direction) {
+            if (direction === 'left') {
+                this.prev()
+            } else if (direction === 'right') {
+                this.next()
+            }
         },
     },
 }

@@ -3,16 +3,30 @@
         <v-toolbar flat color="white">
             <v-btn
                 outlined
-                class="mr-4"
+                class="mr-4 d-none d-sm-flex"
                 color="grey darken-2"
                 @click="emitSetToday"
             >
                 Today
             </v-btn>
-            <v-btn fab text small color="grey darken-2" @click="emitPrev">
+            <v-btn
+                fab
+                text
+                small
+                color="grey darken-2"
+                @click="emitPrev"
+                class="d-none d-sm-flex"
+            >
                 <v-icon small>mdi-chevron-left</v-icon>
             </v-btn>
-            <v-btn fab text small color="grey darken-2" @click="emitNext">
+            <v-btn
+                fab
+                text
+                small
+                color="grey darken-2"
+                @click="emitNext"
+                class="d-none d-sm-flex"
+            >
                 <v-icon small>mdi-chevron-right</v-icon>
             </v-btn>
             <v-spacer></v-spacer>

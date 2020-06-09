@@ -19,7 +19,19 @@
                 </v-btn>
             </v-toolbar>
             <v-card-text>
-                <span v-html="selectedEvent.details"></span>
+                <!--<span v-html="selectedEvent.details"></span>-->
+                <form v-if="!currentlyEditing">
+                    {{ selectedEvent.details }}
+                </form>
+                <form v-else>
+                    <textarea-autosize
+                        v-model="selectedEvent.details"
+                        type="text"
+                        style="width: 100%"
+                        :min-height="100"
+                        placeholder="add note"
+                    ></textarea-autosize>
+                </form>
             </v-card-text>
             <v-card-actions>
                 <v-btn text color="secondary" @click="onOpenChanged(false)">
@@ -28,8 +40,8 @@
             </v-card-actions>
         </v-card>
         <ConfirmDialog
-            :open="deleteEventIsOpen"
-            @close="deleteEventIsOpen = false"
+            :open="deleteEventDialogIsOpen"
+            @close="deleteEventDialogIsOpen = false"
             @accepted="evaluateEventDeletion"
         >
             <template v-slot:title>
@@ -65,7 +77,8 @@ export default {
         return {
             selectedOpenData: this.selectedOpen,
             flip: false,
-            deleteEventIsOpen: false,
+            deleteEventDialogIsOpen: false,
+            currentlyEditing: false,
         }
     },
 
