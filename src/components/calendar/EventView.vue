@@ -14,7 +14,7 @@
                 <v-toolbar-title v-html="event.name"></v-toolbar-title>
                 <v-spacer></v-spacer>
 
-                <v-btn icon>
+                <v-btn icon @click="startEditingView">
                     <v-icon>mdi-pencil</v-icon>
                 </v-btn>
             </v-toolbar>
@@ -52,6 +52,9 @@
 
 <script>
 import ConfirmDialog from '@/components/ConfirmDialog'
+import rfdc from 'rfdc'
+
+const clone = rfdc()
 
 export default {
     components: {
@@ -95,6 +98,13 @@ export default {
     methods: {
         evaluateEventDeletion(deleteSelectedEvent) {
             console.log('selected event will be deleted: ', deleteSelectedEvent)
+        },
+
+        startEditingView() {
+            console.log('start editing...')
+            // eslint-disable-next-line no-unused-vars
+            const clonedEvent = clone(this.event) //TODO: clients don't need to be deep cloned
+            console.log(clonedEvent)
         },
     },
 }

@@ -62,7 +62,7 @@ export default new Vuex.Store({
             return state.clients
         },
 
-        async fetchClientDates({ commit, state }) {
+        async fetchEvents({ commit, state }) {
             const snapshot = await firebaseDB.collection('clientDates').get()
 
             const events = []
