@@ -15,7 +15,7 @@
                 <v-spacer></v-spacer>
 
                 <v-btn icon>
-                    <v-icon>mdi-dots-vertical</v-icon>
+                    <v-icon>mdi-pencil</v-icon>
                 </v-btn>
             </v-toolbar>
             <v-card-text>

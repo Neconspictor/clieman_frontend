@@ -1,23 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from './firebase.js'
+import 'firebase/firestore'
+
+/*import moment from 'moment-timezone'
+
+function formatDate(d) {
+    return d.tz(moment.tz.guess()).format('YYYY-MM-DD HH:mm:ss')
+}*/
 
 Vue.use(Vuex)
 const firebaseDB = firebase.init()
-
-function formatDate(d) {
-    return (
-        d.getUTCFullYear() +
-        '-' +
-        (d.getUTCMonth() + 1) +
-        '-' +
-        d.getUTCDate() +
-        ' ' +
-        d.getUTCHours() +
-        ':' +
-        d.getUTCMinutes()
-    )
-}
 
 export default new Vuex.Store({
     state: {
@@ -59,7 +52,7 @@ export default new Vuex.Store({
             snapshot.forEach(doc => {
                 let data = doc.data()
                 let appData = data
-                appData.birthday = new Date(appData.birthday.seconds * 1000)
+                appData.birthday = appData.birthday.toDate()
                 appData.id = doc.id
                 clients.push(appData)
             })
@@ -78,10 +71,8 @@ export default new Vuex.Store({
                 let appData = data
                 appData.id = doc.id
 
-                appData.start = formatDate(
-                    new Date(appData.start.seconds * 1000)
-                )
-                appData.end = formatDate(new Date(appData.end.seconds * 1000))
+                appData.start = appData.start.toDate()
+                appData.end = appData.end.toDate()
 
                 clientDates.push(appData)
             })

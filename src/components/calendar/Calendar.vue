@@ -19,7 +19,7 @@
                         ref="calendar"
                         v-model="focus"
                         color="primary"
-                        :events="events"
+                        :events="clientDates"
                         :event-color="getEventColor"
                         :now="today"
                         :type="type"
@@ -45,6 +45,8 @@
 import EventView from '@/components/calendar/EventView'
 import Toolbar from '@/components/calendar/Toolbar'
 import { mapGetters } from 'vuex'
+import DateUtil from '@/util/date.js'
+import rfdc from 'rfdc'
 
 export default {
     components: {
@@ -52,7 +54,19 @@ export default {
         Toolbar,
     },
 
-    computed: mapGetters(['getClientByID']),
+    computed: {
+        ...mapGetters(['getClientByID']),
+
+        clientDates() {
+            const eventsCP = rfdc()(this.events)
+            return eventsCP.map(event => {
+                event.start = DateUtil.formatDefault(event.start)
+                event.end = DateUtil.formatDefault(event.end)
+
+                return event
+            })
+        },
+    },
 
     props: {
         events: {
@@ -65,8 +79,8 @@ export default {
         },
     },
     data: () => ({
-        today: new Date().toISOString().substr(0, 10),
-        focus: new Date().toISOString().substr(0, 10),
+        today: DateUtil.formatDefault(new Date()),
+        focus: DateUtil.formatDefault(new Date()),
 
         type: 'month',
 
@@ -135,6 +149,14 @@ export default {
                 this.next()
             }
         },
+    },
+
+    created() {
+        //var offset = new Date().getTimezoneOffset()
+        //console.log(offset)
+        //console.log(Intl.DateTimeFormat().resolvedOptions())
+        //console.log(moment.locale('de-DE'))
+        //console.log(moment().format('lll'))
     },
 }
 </script>
