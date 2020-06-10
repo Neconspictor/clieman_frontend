@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from './firebase.js'
 import 'firebase/firestore'
+import DateUtil from '@/util/date.js'
 
 /*import moment from 'moment-timezone'
 
@@ -16,7 +17,7 @@ export default new Vuex.Store({
     state: {
         clients: [],
         idToClient: new Map(),
-        clientDates: [],
+        events: [],
     },
     mutations: {
         SET_CLIENTS(state, clients) {
@@ -29,15 +30,15 @@ export default new Vuex.Store({
             }
         },
 
-        SET_CLIENT_DATES(state, clientDates) {
-            state.clientDates = clientDates
+        SET_EVENTS(state, events) {
+            state.events = events
         },
 
         RESOLVE_CLIENT_REFERENCES(state, getters) {
-            for (const date of state.clientDates) {
-                for (let i = 0; i < date.clients.length; ++i) {
-                    date.clients[i] = getters.getClientByID(
-                        date.clients[i].trim()
+            for (const event of state.events) {
+                for (let i = 0; i < event.clients.length; ++i) {
+                    event.clients[i] = getters.getClientByID(
+                        event.clients[i].trim()
                     )
                 }
             }
@@ -51,10 +52,10 @@ export default new Vuex.Store({
 
             snapshot.forEach(doc => {
                 let data = doc.data()
-                let appData = data
-                appData.birthday = appData.birthday.toDate()
-                appData.id = doc.id
-                clients.push(appData)
+                let client = data
+                client.birthday = client.birthday.toDate()
+                client.id = doc.id
+                clients.push(client)
             })
 
             commit('SET_CLIENTS', clients)
@@ -64,21 +65,23 @@ export default new Vuex.Store({
         async fetchClientDates({ commit, state }) {
             const snapshot = await firebaseDB.collection('clientDates').get()
 
-            const clientDates = []
+            const events = []
 
             snapshot.forEach(doc => {
                 let data = doc.data()
-                let appData = data
-                appData.id = doc.id
+                let event = data
+                event.id = doc.id
 
-                appData.start = appData.start.toDate()
-                appData.end = appData.end.toDate()
+                event.startDate = event.start.toDate()
+                event.start = DateUtil.formatDefault(event.startDate)
+                event.endDate = event.end.toDate()
+                event.end = DateUtil.formatDefault(event.endDate)
 
-                clientDates.push(appData)
+                events.push(event)
             })
 
-            commit('SET_CLIENT_DATES', clientDates)
-            return state.clientDates
+            commit('SET_EVENTS', events)
+            return state.events
         },
     },
 

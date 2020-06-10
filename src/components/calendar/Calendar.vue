@@ -1,5 +1,10 @@
 <template>
-    <v-container>
+    <v-container
+        v-touch="{
+            left: () => handleSwipe('left'),
+            right: () => handleSwipe('right'),
+        }"
+    >
         <v-row class="fill-height">
             <v-col>
                 <v-sheet height="64">
@@ -19,7 +24,7 @@
                         ref="calendar"
                         v-model="focus"
                         color="primary"
-                        :events="clientDates"
+                        :events="events"
                         :event-color="getEventColor"
                         :now="today"
                         :type="type"
@@ -44,9 +49,9 @@
 <script>
 import EventView from '@/components/calendar/EventView'
 import Toolbar from '@/components/calendar/Toolbar'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 import DateUtil from '@/util/date.js'
-import rfdc from 'rfdc'
+//import rfdc from 'rfdc'
 
 export default {
     components: {
@@ -56,28 +61,9 @@ export default {
 
     computed: {
         ...mapGetters(['getClientByID']),
-
-        clientDates() {
-            const eventsCP = rfdc()(this.events)
-            return eventsCP.map(event => {
-                event.start = DateUtil.formatDefault(event.start)
-                event.end = DateUtil.formatDefault(event.end)
-
-                return event
-            })
-        },
+        ...mapState(['clients', 'events']),
     },
 
-    props: {
-        events: {
-            type: Array,
-            required: true,
-        },
-        clients: {
-            type: Array,
-            required: true,
-        },
-    },
     data: () => ({
         today: DateUtil.formatDefault(new Date()),
         focus: DateUtil.formatDefault(new Date()),
@@ -149,14 +135,6 @@ export default {
                 this.next()
             }
         },
-    },
-
-    created() {
-        //var offset = new Date().getTimezoneOffset()
-        //console.log(offset)
-        //console.log(Intl.DateTimeFormat().resolvedOptions())
-        //console.log(moment.locale('de-DE'))
-        //console.log(moment().format('lll'))
     },
 }
 </script>
