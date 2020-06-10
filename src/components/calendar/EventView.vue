@@ -1,8 +1,8 @@
 <template>
     <v-menu
-        v-model="selectedOpenData"
+        v-model="isOpen"
         :close-on-content-click="false"
-        :activator="selectedElement"
+        :activator="selectedDOMElement"
         :open-on-click="false"
         offset-x
     >
@@ -34,7 +34,7 @@
                 </form>
             </v-card-text>
             <v-card-actions>
-                <v-btn text color="secondary" @click="onOpenChanged(false)">
+                <v-btn text color="secondary" @click="isOpen = false">
                     Close
                 </v-btn>
             </v-card-actions>
@@ -58,7 +58,7 @@ export default {
         ConfirmDialog,
     },
     props: {
-        selectedElement: {
+        selectedDOMElement: {
             type: Object,
             required: true,
         },
@@ -66,7 +66,7 @@ export default {
             type: Object,
             required: true,
         },
-        selectedOpen: {
+        value: {
             type: Boolean,
             required: true,
         },
@@ -74,32 +74,25 @@ export default {
 
     data() {
         return {
-            selectedOpenData: this.selectedOpen,
             flip: false,
             deleteEventDialogIsOpen: false,
             currentlyEditing: false,
         }
     },
 
-    watch: {
-        selectedOpen: function(val) {
-            this.selectedOpenData = val
-        },
+    computed: {
+        isOpen: {
+            get: function() {
+                return this.value
+            },
 
-        selectedOpenData: function(val) {
-            if (this.selectedOpen != val) {
-                this.onOpenChanged(val)
-            }
+            set: function(newValue) {
+                this.$emit('input', newValue)
+            },
         },
     },
 
     methods: {
-        // eslint-disable-next-line no-unused-vars
-        onOpenChanged(state) {
-            console.log('state change: ', state)
-            this.$emit('selected-open-changed', state)
-        },
-
         evaluateEventDeletion(deleteSelectedEvent) {
             console.log('selected event will be deleted: ', deleteSelectedEvent)
         },

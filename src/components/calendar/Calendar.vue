@@ -35,10 +35,9 @@
                     >
                     </v-calendar>
                     <EventView
-                        :selectedElement="selectedElement"
+                        :selectedDOMElement="selectedDOMElement"
                         :selectedEvent="selectedEvent"
-                        v-bind:selectedOpen="selectedOpen"
-                        @selected-open-changed="onOpenStateChange"
+                        v-model="selectedOpen"
                     />
                 </v-sheet>
             </v-col>
@@ -76,7 +75,7 @@ export default {
         end: null,
         color: '#1976D2',
         selectedEvent: {},
-        selectedElement: null,
+        selectedDOMElement: null,
         selectedOpen: false,
         dialog: false,
     }),
@@ -103,7 +102,7 @@ export default {
         showEvent({ nativeEvent, event }) {
             const open = () => {
                 this.selectedEvent = event
-                this.selectedElement = nativeEvent.target
+                this.selectedDOMElement = nativeEvent.target
                 setTimeout(() => {
                     this.selectedOpen = true
                 }, 10)
@@ -122,10 +121,6 @@ export default {
         updateRange({ start, end }) {
             this.start = start
             this.end = end
-        },
-
-        onOpenStateChange(value) {
-            this.selectedOpen = value
         },
 
         handleSwipe(direction) {
