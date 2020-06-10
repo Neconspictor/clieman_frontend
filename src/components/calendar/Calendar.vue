@@ -35,8 +35,8 @@
                     >
                     </v-calendar>
                     <EventView
-                        :selectedDOMElement="selectedDOMElement"
-                        :selectedEvent="selectedEvent"
+                        :DOMElement="DOMElement"
+                        :event="selectedEvent"
                         v-model="selectedOpen"
                     />
                 </v-sheet>
@@ -75,7 +75,7 @@ export default {
         end: null,
         color: '#1976D2',
         selectedEvent: {},
-        selectedDOMElement: null,
+        DOMElement: null,
         selectedOpen: false,
         dialog: false,
     }),
@@ -102,7 +102,7 @@ export default {
         showEvent({ nativeEvent, event }) {
             const open = () => {
                 this.selectedEvent = event
-                this.selectedDOMElement = nativeEvent.target
+                this.DOMElement = nativeEvent.target
                 setTimeout(() => {
                     this.selectedOpen = true
                 }, 10)

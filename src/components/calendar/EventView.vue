@@ -2,16 +2,16 @@
     <v-menu
         v-model="isOpen"
         :close-on-content-click="false"
-        :activator="selectedDOMElement"
+        :activator="DOMElement"
         :open-on-click="false"
         offset-x
     >
         <v-card color="grey lighten-4" min-width="350px" flat>
-            <v-toolbar :color="selectedEvent.color" dark>
+            <v-toolbar :color="event.color" dark>
                 <v-btn icon @click.stop="deleteEventDialogIsOpen = true">
                     <v-icon>mdi-delete</v-icon>
                 </v-btn>
-                <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                <v-toolbar-title v-html="event.name"></v-toolbar-title>
                 <v-spacer></v-spacer>
 
                 <v-btn icon>
@@ -19,13 +19,13 @@
                 </v-btn>
             </v-toolbar>
             <v-card-text>
-                <!--<span v-html="selectedEvent.details"></span>-->
+                <!--<span v-html="event.details"></span>-->
                 <form v-if="!currentlyEditing">
-                    {{ selectedEvent.details }}
+                    {{ event.details }}
                 </form>
                 <form v-else>
                     <textarea-autosize
-                        v-model="selectedEvent.details"
+                        v-model="event.details"
                         type="text"
                         style="width: 100%"
                         :min-height="100"
@@ -58,11 +58,11 @@ export default {
         ConfirmDialog,
     },
     props: {
-        selectedDOMElement: {
+        DOMElement: {
             type: Object,
             required: true,
         },
-        selectedEvent: {
+        event: {
             type: Object,
             required: true,
         },
