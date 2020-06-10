@@ -8,7 +8,7 @@
     >
         <v-card color="grey lighten-4" min-width="350px" flat>
             <v-toolbar :color="selectedEvent.color" dark>
-                <v-btn icon @click.stop="deleteEventIsOpen = true">
+                <v-btn icon @click.stop="deleteEventDialogIsOpen = true">
                     <v-icon>mdi-delete</v-icon>
                 </v-btn>
                 <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
@@ -40,8 +40,7 @@
             </v-card-actions>
         </v-card>
         <ConfirmDialog
-            :open="deleteEventDialogIsOpen"
-            @close="deleteEventDialogIsOpen = false"
+            v-model="deleteEventDialogIsOpen"
             @accepted="evaluateEventDeletion"
         >
             <template v-slot:title>

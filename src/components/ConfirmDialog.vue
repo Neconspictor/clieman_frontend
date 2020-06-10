@@ -8,7 +8,7 @@
         </v-btn>
 -->
 
-    <v-dialog v-model="openData" max-width="290">
+    <v-dialog v-model="open" max-width="290">
         <v-card>
             <v-card-title class="headline">
                 <slot name="title"></slot>
@@ -42,35 +42,27 @@
 <script>
 export default {
     props: {
-        open: {
+        value: {
             type: Boolean,
             required: true,
         },
     },
 
-    data() {
-        return {
-            openData: this.open,
-        }
-    },
-
-    watch: {
-        open: function(val) {
-            this.openData = val
-        },
-        openData: function(val) {
-            if (this.open != val && val === false) this.emitCloseEvent()
+    computed: {
+        open: {
+            get: function() {
+                return this.value
+            },
+            set: function(newValue) {
+                this.$emit('input', newValue)
+            },
         },
     },
 
     methods: {
         emitAcceptEvent(clickedOnAccept) {
-            this.openData = false
+            this.open = false
             this.$emit('accepted', clickedOnAccept)
-        },
-
-        emitCloseEvent() {
-            this.$emit('close')
         },
     },
 }
