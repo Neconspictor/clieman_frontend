@@ -108,6 +108,10 @@ export default {
                       d % 10
                   ]
         },
+
+        isMobilMenuActive() {
+            return this.showMobilMenu
+        },
     },
 
     data() {

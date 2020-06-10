@@ -30,8 +30,6 @@ new Vue({
 Promise.all([store.dispatch('fetchClients'), store.dispatch('fetchEvents')])
     .then(() => {
         store.commit('RESOLVE_CLIENT_REFERENCES', store.getters)
-        console.log('clients : ', store.state.clients)
-        console.log('events : ', store.state.events)
     })
     .catch(e => {
         console.log("Couldn't fetch clients or client dates: ", e)

@@ -9,6 +9,7 @@
             <v-col>
                 <v-sheet height="64">
                     <Toolbar
+                        ref="toolbar"
                         :type="type"
                         :start="start"
                         :end="end"
@@ -19,7 +20,7 @@
                         @set-today="setToday"
                     />
                 </v-sheet>
-                <v-sheet height="600">
+                <v-sheet height="600" v-show="this.checkCardVisibility()">
                     <v-calendar
                         ref="calendar"
                         v-model="focus"
@@ -129,6 +130,14 @@ export default {
             } else if (direction === 'right') {
                 this.next()
             }
+        },
+
+        checkCardVisibility() {
+            if (this.$refs.toolbar) {
+                return !this.$refs.toolbar.isMobilMenuActive()
+            }
+
+            return true
         },
     },
 }
