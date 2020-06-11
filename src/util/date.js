@@ -1,8 +1,6 @@
 import moment from 'moment-timezone'
 
 export default class DateUtil {
-    constructor() {}
-
     static formatDate(date, timeZone, format) {
         return moment(date)
             .tz(timeZone)

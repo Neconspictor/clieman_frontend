@@ -39,6 +39,7 @@
                         :DOMElement="DOMElement"
                         :event="selectedEvent"
                         v-model="selectedOpen"
+                        @event-update="updateSelectedEvent"
                     />
                 </v-sheet>
             </v-col>
@@ -101,6 +102,7 @@ export default {
             this.$refs.calendar.next()
         },
         showEvent({ nativeEvent, event }) {
+            console.log(event)
             const open = () => {
                 this.selectedEvent = event
                 this.DOMElement = nativeEvent.target
@@ -138,6 +140,12 @@ export default {
             }
 
             return true
+        },
+
+        updateSelectedEvent(newEvent) {
+            this.$store.dispatch('updateEvent', newEvent).then(() => {
+                this.selectedEvent = newEvent
+            })
         },
     },
 }

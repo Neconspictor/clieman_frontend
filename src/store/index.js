@@ -17,6 +17,7 @@ export default new Vuex.Store({
     state: {
         clients: [],
         idToClient: new Map(),
+        idToEvent: new Map(),
         events: [],
     },
     mutations: {
@@ -32,6 +33,36 @@ export default new Vuex.Store({
 
         SET_EVENTS(state, events) {
             state.events = events
+
+            // update id mappings
+            state.idToEvent = new Map()
+            for (const event of state.events) {
+                state.idToEvent.set(event.id, event)
+            }
+        },
+
+        UPDATE_EVENT(state, event) {
+            // find matching event by its id
+            const findResult = state.events
+                .map((x, index) => [index, x])
+                .filter(x => x[1].id === event.id)
+
+            //assure that we have found exactly one
+            if (findResult.length === 0) {
+                throw "Didn't found event with id " + event.id
+            } else if (findResult.length > 1) {
+                throw 'State exception: Multiple events have the same id'
+            }
+
+            let index = findResult[0][0]
+
+            // Ensure that Vue recognizes the changes
+            // splice methods can be used for this
+            state.events.splice(index, 1, event)
+            //Vue.set(state.events, index, event)
+            //state.events[index] = event
+            // We reassign the events array so that Vue realizes that something has changed
+            //state.events = Object.assign([], state.events)
         },
 
         RESOLVE_CLIENT_REFERENCES(state, getters) {
@@ -83,11 +114,19 @@ export default new Vuex.Store({
             commit('SET_EVENTS', events)
             return state.events
         },
+
+        updateEvent({ commit }, event) {
+            commit('UPDATE_EVENT', event)
+        },
     },
 
     getters: {
         getClientByID: state => id => {
             return state.idToClient.get(id)
+        },
+
+        getEventByID: state => id => {
+            return state.idToEvent.get(id)
         },
     },
     modules: {},
