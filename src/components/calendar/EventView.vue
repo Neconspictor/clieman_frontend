@@ -73,6 +73,8 @@
                         placeholder="add note"
                     ></textarea-autosize>
                 </form>
+                <v-divider></v-divider>
+                <DatePicker />
             </v-card-text>
             <v-card-actions>
                 <v-btn text color="error" @click="cancel">
@@ -97,6 +99,7 @@
 
 <script>
 import ConfirmDialog from '@/components/ConfirmDialog'
+import DatePicker from '@/components/calendar/DatePicker'
 import rfdc from 'rfdc'
 
 const clone = rfdc()
@@ -104,6 +107,7 @@ const clone = rfdc()
 export default {
     components: {
         ConfirmDialog,
+        DatePicker,
     },
     props: {
         DOMElement: {
