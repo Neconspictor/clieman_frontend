@@ -51,6 +51,35 @@
                 @click:minute="$refs.menu2.save(time)"
             ></v-time-picker>
         </v-menu>
+
+        <div>
+            <v-text-field
+                v-model="color"
+                v-mask="mask"
+                hide-details
+                class="ma-0 pa-0"
+                solo
+            >
+                <template v-slot:append>
+                    <v-menu
+                        v-model="menuColorPicker"
+                        top
+                        nudge-bottom="105"
+                        nudge-left="16"
+                        :close-on-content-click="false"
+                    >
+                        <template v-slot:activator="{ on }">
+                            <div :style="swatchStyle" v-on="on" />
+                        </template>
+                        <v-card>
+                            <v-card-text class="pa-0">
+                                <v-color-picker v-model="color" flat />
+                            </v-card-text>
+                        </v-card>
+                    </v-menu>
+                </template>
+            </v-text-field>
+        </div>
     </div>
 </template>
 
@@ -61,8 +90,11 @@ export default {
             menu: false,
             date: '',
             menu2: false,
+            menuColorPicker: false,
+            mask: '!#XXXXXXXX',
             date2: '',
             time: '',
+            color: '#ff00ff',
         }
     },
 
@@ -72,6 +104,20 @@ export default {
             this.time = v + ':00'
             this.menu = false
             this.$refs.menu2.save(this.time)
+        },
+    },
+
+    computed: {
+        swatchStyle() {
+            const { color, menu } = this
+            return {
+                backgroundColor: color,
+                cursor: 'pointer',
+                height: '30px',
+                width: '30px',
+                borderRadius: menu ? '50%' : '4px',
+                transition: 'border-radius 200ms ease-in-out',
+            }
         },
     },
 }

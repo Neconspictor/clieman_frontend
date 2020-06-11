@@ -2,6 +2,7 @@
     <v-menu
         v-model="isOpen"
         :close-on-content-click="false"
+        :close-on-click="false"
         :activator="DOMElement"
         :open-on-click="false"
         offset-x
