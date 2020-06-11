@@ -55,7 +55,8 @@
                     <v-icon>mdi-delete</v-icon>
                 </v-btn>
 
-                <div v-html="event.name"></div>
+                <!-- <div v-html="event.name"></div>-->
+                <input type="text" v-model="clonedEvent.name" />
 
                 <v-spacer></v-spacer>
                 <v-btn icon disabled>
