@@ -4,12 +4,6 @@ import firebase from './firebase.js'
 import 'firebase/firestore'
 import DateUtil from '@/util/date.js'
 
-/*import moment from 'moment-timezone'
-
-function formatDate(d) {
-    return d.tz(moment.tz.guess()).format('YYYY-MM-DD HH:mm:ss')
-}*/
-
 Vue.use(Vuex)
 const firebaseDB = firebase.init()
 

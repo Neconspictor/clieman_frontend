@@ -22,4 +22,11 @@ export default class DateUtil {
     static getYearToSecondsFormat() {
         return 'YYYY-MM-DD HH:mm:ss'
     }
+
+    static getYearToDayFormat() {
+        return 'YYYY-MM-DD'
+    }
+    static getHourToMinutesFormat() {
+        return 'HH:mm'
+    }
 }

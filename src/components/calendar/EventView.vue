@@ -2,7 +2,7 @@
     <v-menu
         v-model="isOpen"
         :close-on-content-click="false"
-        :close-on-click="false"
+        :close-on-click="!currentlyEditing"
         :activator="DOMElement"
         :open-on-click="false"
         offset-x
@@ -43,49 +43,7 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
-
-        <!-- editing view -->
-        <v-card v-else color="grey lighten-4" flat style="width:400px;">
-            <v-toolbar
-                :color="clonedEvent.color"
-                dark
-                flat
-                style="overflow-x:auto; white-space: nowrap;"
-            >
-                <v-btn icon disabled>
-                    <v-icon>mdi-delete</v-icon>
-                </v-btn>
-
-                <!-- <div v-html="event.name"></div>-->
-                <input type="text" v-model="clonedEvent.name" />
-
-                <v-spacer></v-spacer>
-                <v-btn icon disabled>
-                    <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-            </v-toolbar>
-            <v-card-text>
-                <form>
-                    <textarea-autosize
-                        v-model="clonedEvent.details"
-                        type="text"
-                        style="width:100%;"
-                        :min-height="0"
-                        placeholder="add note"
-                    ></textarea-autosize>
-                </form>
-                <v-divider></v-divider>
-                <DatePicker />
-            </v-card-text>
-            <v-card-actions>
-                <v-btn text color="error" @click="cancel">
-                    Cancel
-                </v-btn>
-                <v-btn text color="success" @click="save">
-                    Save
-                </v-btn>
-            </v-card-actions>
-        </v-card>
+        <EventEditor v-else :event="event" @canceled="cancel" @saved="save" />
 
         <ConfirmDialog
             v-model="deleteEventDialogIsOpen"
@@ -100,15 +58,12 @@
 
 <script>
 import ConfirmDialog from '@/components/ConfirmDialog'
-import DatePicker from '@/components/calendar/DatePicker'
-import rfdc from 'rfdc'
-
-const clone = rfdc()
+import EventEditor from '@/components/calendar/EventEditor'
 
 export default {
     components: {
         ConfirmDialog,
-        DatePicker,
+        EventEditor,
     },
     props: {
         DOMElement: {
@@ -130,7 +85,6 @@ export default {
             flip: false,
             deleteEventDialogIsOpen: false,
             currentlyEditing: false,
-            clonedEvent: null,
         }
     },
 
@@ -157,16 +111,17 @@ export default {
         startEditingView() {
             console.log('start editing...')
             // eslint-disable-next-line no-unused-vars
-            this.clonedEvent = clone(this.event) //TODO: clients don't need to be deep cloned
+            //this.$refs.EventEditor.setWorkingEvent(clone(this.event))
             this.currentlyEditing = true
         },
 
         cancel() {
             this.currentlyEditing = false
         },
-        save() {
+
+        save(changedEvent) {
             this.currentlyEditing = false
-            this.$emit('event-update', this.clonedEvent)
+            this.$emit('event-update', changedEvent)
         },
     },
 }
