@@ -121,7 +121,27 @@
                         </v-text-field>
                     </div>
                 </div>
+                <h3 class="mt-4 mb-4">Clients:</h3>
+                <v-chip
+                    v-for="(client, i) in clonedEvent.clients"
+                    :key="i"
+                    label
+                    close
+                    class="mr-4"
+                    @click:close="clonedEvent.clients.splice(i, 1)"
+                    >{{ client.forename + ' ' + client.name }}</v-chip
+                >
             </v-card-text>
+            <v-card>
+                <v-autocomplete
+                    v-model="clientToAdd"
+                    :items="clientTransformed"
+                    @change="addClient"
+                    item-text="Description"
+                    placeholder="Start typing to search"
+                    return-object
+                ></v-autocomplete>
+            </v-card>
             <v-card-actions>
                 <v-btn text color="error" @click="cancel">
                     Cancel
@@ -138,6 +158,7 @@
 import rfdc from 'rfdc'
 import DateUtil from '@/util/date.js'
 import moment from 'moment-timezone'
+import { mapState } from 'vuex'
 
 export default {
     components: {},
@@ -156,10 +177,25 @@ export default {
             menuColorPicker: false,
             mask: '!#XXXXXXXX',
             clonedEvent: rfdc()(this.event),
+            clientToAdd: null,
         }
     },
 
     computed: {
+        ...mapState(['clients']),
+        clientTransformed() {
+            return this.clients.map((client, i) => {
+                const Description =
+                    client.forename +
+                    ' ' +
+                    client.name +
+                    ' (id: ' +
+                    client.id +
+                    ')'
+                return Object.assign({}, { Description, index: i })
+            })
+        },
+
         dateWithoutTime: {
             get: function() {
                 return DateUtil.formatDate(
@@ -226,6 +262,31 @@ export default {
 
         save() {
             this.$emit('saved', this.clonedEvent)
+        },
+
+        createDesc(client) {
+            return (
+                client.forename + ' ' + client.name + ' (id: ' + client.id + ')'
+            )
+        },
+
+        addClient() {
+            console.log('test', this.clientToAdd)
+            if (this.clientToAdd) {
+                const client = this.clients[this.clientToAdd.index]
+
+                const filtered = this.clonedEvent.clients.filter(c => {
+                    return c.id === client.id
+                })
+
+                if (filtered.length === 0) {
+                    this.clonedEvent.clients.push(client)
+                }
+
+                this.$nextTick(() => {
+                    this.clientToAdd = null
+                })
+            }
         },
     },
 }

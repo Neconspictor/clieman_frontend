@@ -37,6 +37,23 @@
                     {{ event.details }}
                 </form>
             </v-card-text>
+            <v-card-text>
+                <h3 class="">Clients:</h3>
+                <v-chip
+                    v-for="(client, i) in event.clients"
+                    :key="i"
+                    label
+                    class="mr-4"
+                    >{{
+                        client.forename +
+                            ' ' +
+                            client.name +
+                            ' (id: ' +
+                            client.id +
+                            ')'
+                    }}</v-chip
+                >
+            </v-card-text>
             <v-card-actions>
                 <v-btn text color="secondary" @click="isOpen = false">
                     Close
