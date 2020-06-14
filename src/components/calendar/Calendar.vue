@@ -34,6 +34,7 @@
                         @click:more="viewDay"
                         @click:date="viewDay"
                         @change="updateRange"
+                        :locale="$vuetify.lang.current"
                     >
                     </v-calendar>
                     <EventView
