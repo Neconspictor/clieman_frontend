@@ -77,6 +77,18 @@ export default new Vuex.Store({
                 state.idToEvent.delete(id)
             }
         },
+
+        ADD_EVENT(state, event) {
+            //ensure that we don't add an event twice
+            if (state.idToEvent.get(event.id)) {
+                throw 'State exception: An event with id ' +
+                    event.id +
+                    ' already exists'
+            }
+
+            state.events.push(event)
+            state.idToEvent.set(event.id, event)
+        },
     },
     actions: {
         async fetchClients({ commit, state }) {
@@ -124,6 +136,10 @@ export default new Vuex.Store({
 
         deleteEvent({ commit }, event) {
             commit('DELETE_EVENT', event.id)
+        },
+
+        addEvent({ commit }, event) {
+            commit('ADD_EVENT', event)
         },
     },
 

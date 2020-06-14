@@ -19,16 +19,26 @@
                 </v-toolbar>
             </div>
 
-            <v-card-text>
-                <div class="mt-4 mb-4">
-                    <span class="mr-4">
-                        <v-label>View mode:</v-label>
-                    </span>
-                    <ModeMenu :type="type" @type-change="emitTypeChange" />
-                </div>
-
-                <v-btn @click.stop="emitSetTodayEvent">Jump to today</v-btn>
-            </v-card-text>
+            <v-list>
+                <v-list-item>
+                    <v-label>View mode: </v-label>
+                    <ModeMenu
+                        class="ml-4"
+                        :type="type"
+                        @type-change="emitTypeChange"
+                    />
+                </v-list-item>
+                <v-list-item>
+                    <v-btn @click.stop="emitSetTodayEvent" outlined
+                        >Jump to today</v-btn
+                    >
+                </v-list-item>
+                <v-list-item>
+                    <v-btn @click.stop="emitCreateEvent" outlined
+                        >Create a new event</v-btn
+                    >
+                </v-list-item>
+            </v-list>
 
             <div style="flex: 1 1 auto;"></div>
         </v-card>
@@ -80,6 +90,11 @@ export default {
 
         emitSetTodayEvent() {
             this.$emit('set-today')
+            this.dialog = false
+        },
+
+        emitCreateEvent() {
+            this.$emit('create-event')
             this.dialog = false
         },
     },

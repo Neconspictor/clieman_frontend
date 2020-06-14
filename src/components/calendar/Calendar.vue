@@ -18,6 +18,7 @@
                         @prev="prev"
                         @type-change="type = $event"
                         @set-today="setToday"
+                        @create-event="startCreateEventDialog"
                     />
                 </v-sheet>
                 <v-sheet height="600" v-show="this.checkCardVisibility()">
@@ -81,6 +82,7 @@ export default {
         DOMElement: null,
         selectedOpen: false,
         dialog: false,
+        eventCreateDialogIsOpen: false,
     }),
 
     methods: {
@@ -152,6 +154,10 @@ export default {
             this.selectedOpen = false
             this.selectedEvent = {}
             this.$store.dispatch('deleteEvent', event).then(() => {})
+        },
+
+        startCreateEventDialog() {
+            this.eventCreateDialogIsOpen = true
         },
     },
 }

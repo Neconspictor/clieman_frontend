@@ -9,6 +9,16 @@
             >
                 Today
             </v-btn>
+
+            <v-btn
+                outlined
+                class="mr-4 d-none d-sm-flex"
+                color="grey darken-2"
+                @click="emitCreateEvent"
+            >
+                Create
+            </v-btn>
+
             <v-btn
                 fab
                 text
@@ -47,6 +57,7 @@
                 :type="type"
                 @type-change="emitTypeChange"
                 @set-today="emitSetToday"
+                @create-event="emitCreateEvent"
             />
 
             <div class="d-none d-sm-flex">
@@ -99,6 +110,10 @@ export default {
 
         emitSetToday() {
             this.$emit('set-today')
+        },
+
+        emitCreateEvent() {
+            this.$emit('create-event')
         },
 
         nth(d) {
