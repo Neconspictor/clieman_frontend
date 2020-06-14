@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 <template>
     <div>
         <v-toolbar flat color="white">
@@ -70,6 +71,7 @@
 <script>
 import ToolbarMobilMenu from '@/components/calendar/ToolbarMobilMenu'
 import ModeMenu from '@/components/calendar/ModeMenu'
+import moment from 'moment-timezone'
 
 export default {
     components: {
@@ -127,6 +129,24 @@ export default {
         isMobilMenuActive() {
             return this.showMobilMenu
         },
+
+        monthFormatter(date) {
+            return moment(date)
+                .locale(this.$vuetify.lang.current)
+                .format('MMMM')
+        },
+
+        ISOtoLongDate(
+            isoString,
+            locale = 'en-US',
+            options = { month: 'numeric', day: 'numeric', year: 'numeric' }
+        ) {
+            const date = new Date(isoString)
+            const longDate = new Intl.DateTimeFormat(locale, options).format(
+                date
+            )
+            return longDate
+        },
     },
 
     data() {
@@ -141,33 +161,45 @@ export default {
                 return ''
             }
 
-            const startMonth = this.monthFormatter(this.start)
-            const endMonth = this.monthFormatter(this.end)
-            const suffixMonth = startMonth === endMonth ? '' : endMonth
-
-            const startYear = this.start.year
-            const endYear = this.end.year
-            const suffixYear = startYear === endYear ? '' : endYear
-
-            const startDay = this.start.day + this.nth(this.start.day)
-            const endDay = this.end.day + this.nth(this.end.day)
+            const startYear = moment(this.start.date).year()
+            const endYear = moment(this.end.date).year()
 
             switch (this.type) {
                 case 'month':
-                    return `${startMonth} ${startYear}`
+                    return this.ISOtoLongDate(
+                        new Date(this.start.date).toISOString(),
+                        this.$vuetify.lang.current,
+                        { month: 'numeric', year: 'numeric' }
+                    )
                 case 'week':
                 case '4day':
-                    return `${startMonth} ${startDay} ${startYear} - ${suffixMonth} ${endDay} ${suffixYear}`
+                    ///return `${startDay} ${startMonth} ${startYear} - ${endDay} ${endMonth} ${endYear}`
+                    return (
+                        this.ISOtoLongDate(
+                            new Date(this.start.date).toISOString(),
+                            this.$vuetify.lang.current,
+                            {
+                                day: 'numeric',
+                                month: 'numeric',
+                                year:
+                                    startYear === endYear
+                                        ? undefined
+                                        : 'numeric',
+                            }
+                        ) +
+                        ' - ' +
+                        this.ISOtoLongDate(
+                            new Date(this.end.date).toISOString(),
+                            this.$vuetify.lang.current
+                        )
+                    )
                 case 'day':
-                    return `${startMonth} ${startDay} ${startYear}`
+                    return this.ISOtoLongDate(
+                        new Date(this.start.date).toISOString(),
+                        this.$vuetify.lang.current
+                    )
             }
             return ''
-        },
-        monthFormatter() {
-            return this.calendarRef.getFormatter({
-                timeZone: 'UTC',
-                month: 'long',
-            })
         },
     },
 }

@@ -1,8 +1,46 @@
 <template>
     <v-app>
-        <v-content>
+        <v-app-bar app color="primary" dark>
+            <v-toolbar-title>Dateman</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn
+                v-for="link in links"
+                :key="`${link.label} - header-link`"
+                color="white"
+                text
+                rounded
+                class="my-2"
+                :to="link.route"
+            >
+                {{ link.label }}
+            </v-btn>
+        </v-app-bar>
+        <v-main>
             <router-view />
-        </v-content>
+        </v-main>
+
+        <v-footer color="primary lighten-1" padless>
+            <v-row justify="center" no-gutters>
+                <v-btn
+                    v-for="link in links"
+                    :key="`${link.label} - footer-link`"
+                    color="white"
+                    text
+                    rounded
+                    class="my-2"
+                    :to="link.route"
+                >
+                    {{ link.label }}
+                </v-btn>
+                <v-col
+                    class="primary lighten-2 py-4 text-center white--text"
+                    cols="12"
+                >
+                    {{ new Date().getFullYear() }} —
+                    <strong>Dateman</strong>
+                </v-col>
+            </v-row>
+        </v-footer>
     </v-app>
 </template>
 
@@ -11,7 +49,16 @@ export default {
     name: 'App',
 
     data: () => ({
-        //
+        links: [
+            {
+                label: 'Calendar',
+                route: { name: 'calendar' },
+            },
+            {
+                label: 'Clients',
+                route: { name: 'clients' },
+            },
+        ],
     }),
 }
 </script>

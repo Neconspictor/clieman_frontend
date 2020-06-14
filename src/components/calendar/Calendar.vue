@@ -159,6 +159,7 @@ export default {
         },
 
         updateRange({ start, end }) {
+            console.log('start', start)
             this.start = start
             this.end = end
         },

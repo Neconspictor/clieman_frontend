@@ -3,4 +3,13 @@ import Vuetify from 'vuetify/lib'
 
 Vue.use(Vuetify)
 
-export default new Vuetify({})
+// Translation provided by Vuetify (typescript)
+import de from 'vuetify/src/locale/de.ts'
+import en from 'vuetify/src/locale/en.ts'
+
+export default new Vuetify({
+    lang: {
+        locales: { de, en },
+        current: 'en',
+    },
+})
