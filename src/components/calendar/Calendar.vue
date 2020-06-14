@@ -43,6 +43,23 @@
                         @event-update="updateSelectedEvent"
                         @delete-event="deleteSelectedEvent"
                     />
+
+                    <v-dialog
+                        v-model="eventCreateDialogIsOpen"
+                        @click:outside="eventCreateDialogIsOpen = false"
+                        width="unset"
+                    >
+                        <EventEditor
+                            v-if="eventCreateDialogIsOpen"
+                            :event="defaultEvent"
+                            @cancel="eventCreateDialogIsOpen = false"
+                            @accept="createEvent"
+                        >
+                            <template v-slot:accept>
+                                Create
+                            </template>
+                        </EventEditor>
+                    </v-dialog>
                 </v-sheet>
             </v-col>
         </v-row>
@@ -54,17 +71,35 @@ import EventView from '@/components/calendar/EventView'
 import Toolbar from '@/components/calendar/Toolbar'
 import { mapGetters, mapState } from 'vuex'
 import DateUtil from '@/util/date.js'
+import idUtil from '@/util/id.js'
+import EventEditor from '@/components/calendar/EventEditor'
+import moment from 'moment-timezone'
 //import rfdc from 'rfdc'
 
 export default {
     components: {
         EventView,
         Toolbar,
+        EventEditor,
     },
 
     computed: {
         ...mapGetters(['getClientByID']),
         ...mapState(['clients', 'events']),
+        defaultEvent() {
+            const startDate = this.createDefaultStartDate()
+            const endDate = this.createDefaultEndDate()
+            return {
+                startDate: startDate,
+                start: DateUtil.formatDefault(startDate),
+                endDate: endDate,
+                end: DateUtil.formatDefault(endDate),
+                color: '#5E00A5',
+                details: '',
+                name: '',
+                clients: [],
+            }
+        },
     },
 
     data: () => ({
@@ -158,6 +193,26 @@ export default {
 
         startCreateEventDialog() {
             this.eventCreateDialogIsOpen = true
+        },
+
+        createDefaultStartDate() {
+            return moment(new Date())
+                .minutes(0)
+                .hours(14)
+                .toDate()
+        },
+
+        createDefaultEndDate() {
+            return moment(this.createDefaultStartDate())
+                .add(1, 'hours')
+                .toDate()
+        },
+
+        createEvent(eventData) {
+            console.log(eventData)
+            const id = idUtil.defaultCreateUniqueID(this.events)
+            this.$store.dispatch('addEvent', { ...eventData, id: id })
+            this.eventCreateDialogIsOpen = false
         },
     },
 }

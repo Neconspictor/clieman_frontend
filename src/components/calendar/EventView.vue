@@ -77,7 +77,11 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
-        <EventEditor v-else :event="event" @canceled="cancel" @saved="save" />
+        <EventEditor v-else :event="event" @cancel="cancel" @accept="save">
+            <template v-slot:accept>
+                Save
+            </template>
+        </EventEditor>
 
         <ConfirmDialog
             v-model="deleteEventDialogIsOpen"

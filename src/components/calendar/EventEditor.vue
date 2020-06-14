@@ -1,6 +1,6 @@
 <template>
+    <!-- editing view -->
     <div>
-        <!-- editing view -->
         <v-card color="grey lighten-4" flat style="width:400px;">
             <v-toolbar
                 :color="clonedEvent.color"
@@ -13,7 +13,11 @@
                 </v-btn>
 
                 <!-- <div v-html="event.name"></div>-->
-                <input type="text" v-model="clonedEvent.name" />
+                <input
+                    type="text"
+                    v-model="clonedEvent.name"
+                    placeholder="Add title"
+                />
 
                 <v-spacer></v-spacer>
                 <v-btn icon disabled>
@@ -27,7 +31,7 @@
                         type="text"
                         style="width:100%;"
                         :min-height="0"
-                        placeholder="add note"
+                        placeholder="Add note"
                     ></textarea-autosize>
                 </form>
                 <v-divider></v-divider>
@@ -181,8 +185,8 @@
                 <v-btn text color="error" @click="cancel">
                     Cancel
                 </v-btn>
-                <v-btn text color="success" @click="save">
-                    Save
+                <v-btn text color="success" @click="accept">
+                    <slot name="accept">Accept</slot>
                 </v-btn>
             </v-card-actions>
         </v-card>
@@ -331,11 +335,11 @@ export default {
         },
 
         cancel() {
-            this.$emit('canceled')
+            this.$emit('cancel')
         },
 
-        save() {
-            this.$emit('saved', this.clonedEvent)
+        accept() {
+            this.$emit('accept', this.clonedEvent)
         },
 
         createDesc(client) {
