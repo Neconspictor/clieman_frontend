@@ -155,7 +155,7 @@ export default {
 
     methods: {
         evaluateEventDeletion(deleteSelectedEvent) {
-            console.log('selected event will be deleted: ', deleteSelectedEvent)
+            if (deleteSelectedEvent) this.$emit('delete-event', this.event)
         },
 
         startEditingView() {

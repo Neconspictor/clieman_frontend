@@ -68,6 +68,15 @@ export default new Vuex.Store({
                 }
             }
         },
+
+        DELETE_EVENT(state, id) {
+            const index = state.events.findIndex(e => e.id === id)
+            if (index != -1) {
+                // splice ensures that Vue recognizes the changes
+                state.events.splice(index, 1)
+                state.idToEvent.delete(id)
+            }
+        },
     },
     actions: {
         async fetchClients({ commit, state }) {
@@ -111,6 +120,10 @@ export default new Vuex.Store({
 
         updateEvent({ commit }, event) {
             commit('UPDATE_EVENT', event)
+        },
+
+        deleteEvent({ commit }, event) {
+            commit('DELETE_EVENT', event.id)
         },
     },
 

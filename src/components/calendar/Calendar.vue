@@ -40,6 +40,7 @@
                         :event="selectedEvent"
                         v-model="selectedOpen"
                         @event-update="updateSelectedEvent"
+                        @delete-event="deleteSelectedEvent"
                     />
                 </v-sheet>
             </v-col>
@@ -145,6 +146,12 @@ export default {
             this.$store.dispatch('updateEvent', newEvent).then(() => {
                 this.selectedEvent = newEvent
             })
+        },
+
+        deleteSelectedEvent(event) {
+            this.selectedOpen = false
+            this.selectedEvent = {}
+            this.$store.dispatch('deleteEvent', event).then(() => {})
         },
     },
 }
