@@ -37,6 +37,23 @@
                     {{ event.details }}
                 </form>
             </v-card-text>
+
+            <v-card-text>
+                <v-text-field
+                    v-model="startTime"
+                    label="Start time"
+                    prepend-icon="access_time"
+                    readonly
+                ></v-text-field>
+
+                <v-text-field
+                    v-model="duration"
+                    label="Duration"
+                    prepend-icon="timelapse"
+                    readonly
+                ></v-text-field>
+            </v-card-text>
+
             <v-card-text>
                 <h3 class="">Clients:</h3>
                 <v-chip
@@ -76,6 +93,8 @@
 <script>
 import ConfirmDialog from '@/components/ConfirmDialog'
 import EventEditor from '@/components/calendar/EventEditor'
+//import DateUtil from '@/util/date.js'
+import moment from 'moment-timezone'
 
 export default {
     components: {
@@ -118,6 +137,20 @@ export default {
                 }
             },
         },
+
+        startTime() {
+            return moment(this.event.startDate).format('HH:mm')
+        },
+
+        duration() {
+            const diff = moment(this.event.endDate).diff(
+                moment(this.event.startDate)
+            )
+
+            const duration = moment.duration(diff)
+
+            return moment.utc(duration.asMilliseconds()).format('HH:mm')
+        },
     },
 
     methods: {
@@ -126,9 +159,6 @@ export default {
         },
 
         startEditingView() {
-            console.log('start editing...')
-            // eslint-disable-next-line no-unused-vars
-            //this.$refs.EventEditor.setWorkingEvent(clone(this.event))
             this.currentlyEditing = true
         },
 

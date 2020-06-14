@@ -31,97 +31,130 @@
                     ></textarea-autosize>
                 </form>
                 <v-divider></v-divider>
-                <div>
-                    <v-menu
-                        v-model="menuDatePicker"
-                        :close-on-content-click="false"
-                        :nudge-right="40"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="290px"
-                    >
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
-                                v-model="dateWithoutTime"
-                                label="Select date"
-                                prepend-icon="event"
-                                readonly
-                                v-bind="attrs"
-                                v-on="on"
-                            ></v-text-field>
-                        </template>
-                        <v-date-picker
-                            v-model="dateWithoutTime"
-                            @input="menuDatePicker = false"
-                        ></v-date-picker>
-                    </v-menu>
-
-                    <v-menu
-                        ref="menuTimePicker"
-                        v-model="menuTimePicker"
-                        :close-on-content-click="false"
-                        :nudge-right="40"
-                        :return-value.sync="dateOnlyTime"
-                        transition="scale-transition"
-                        offset-y
-                        max-width="290px"
-                        min-width="290px"
-                    >
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
-                                v-model="dateOnlyTime"
-                                label="Select hour"
-                                prepend-icon="access_time"
-                                readonly
-                                v-bind="attrs"
-                                v-on="on"
-                            ></v-text-field>
-                        </template>
-                        <v-time-picker
-                            v-if="menuTimePicker"
-                            v-model="dateOnlyTime"
-                            format="24hr"
-                            full-width
-                            @click:hour="closeTimePicker"
-                            @click:minute="
-                                $refs.menuTimePicker.save(dateOnlyTime)
-                            "
-                        ></v-time-picker>
-                    </v-menu>
-
-                    <div>
+            </v-card-text>
+            <v-card-text>
+                <v-menu
+                    v-model="menuDatePicker"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="290px"
+                >
+                    <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                            v-model="clonedEvent.color"
-                            v-mask="mask"
-                            hide-details
-                            class="ma-0 pa-0"
-                            solo
+                            v-model="dateWithoutTime"
+                            label="Date"
+                            prepend-icon="event"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                    </template>
+                    <v-date-picker
+                        v-model="dateWithoutTime"
+                        @input="menuDatePicker = false"
+                    ></v-date-picker>
+                </v-menu>
+
+                <v-menu
+                    ref="menuTimePicker"
+                    v-model="menuTimePicker"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    :return-value.sync="dateOnlyTime"
+                    transition="scale-transition"
+                    offset-y
+                    max-width="290px"
+                    min-width="290px"
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            v-model="dateOnlyTime"
+                            label="Start time"
+                            prepend-icon="access_time"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                    </template>
+                    <v-time-picker
+                        v-if="menuTimePicker"
+                        v-model="dateOnlyTime"
+                        format="24hr"
+                        full-width
+                        @click:hour="closeTimePicker"
+                        @click:minute="$refs.menuTimePicker.save(dateOnlyTime)"
+                    ></v-time-picker>
+                </v-menu>
+
+                <v-menu
+                    ref="menuDurationPicker"
+                    v-model="menuDurationPicker"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    :return-value.sync="dateDuration"
+                    transition="scale-transition"
+                    offset-y
+                    max-width="290px"
+                    min-width="290px"
+                >
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                            v-model="dateDuration"
+                            label="Duration"
+                            prepend-icon="timelapse"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                        ></v-text-field>
+                    </template>
+                    <v-time-picker
+                        v-if="menuDurationPicker"
+                        v-model="dateDuration"
+                        format="24hr"
+                        full-width
+                        @click:hour="closeDurationPicker"
+                        @click:minute="
+                            $refs.menuDurationPicker.save(dateDuration)
+                        "
+                        :allowed-hours="allowedDurations"
+                    ></v-time-picker>
+                </v-menu>
+
+                <v-text-field
+                    v-model="clonedEvent.color"
+                    v-mask="mask"
+                    hide-details
+                    class="ma-0 pa-0"
+                    solo
+                >
+                    <template v-slot:append>
+                        <v-menu
+                            v-model="menuColorPicker"
+                            top
+                            nudge-bottom="105"
+                            nudge-left="16"
+                            :close-on-content-click="false"
                         >
-                            <template v-slot:append>
-                                <v-menu
-                                    v-model="menuColorPicker"
-                                    top
-                                    nudge-bottom="105"
-                                    nudge-left="16"
-                                    :close-on-content-click="false"
-                                >
-                                    <template v-slot:activator="{ on }">
-                                        <div :style="swatchStyle" v-on="on" />
-                                    </template>
-                                    <v-card>
-                                        <v-card-text class="pa-0">
-                                            <v-color-picker
-                                                v-model="clonedEvent.color"
-                                                flat
-                                            />
-                                        </v-card-text>
-                                    </v-card>
-                                </v-menu>
+                            <template v-slot:activator="{ on }">
+                                <div :style="swatchStyle" v-on="on" />
                             </template>
-                        </v-text-field>
-                    </div>
-                </div>
-                <h3 class="mt-4 mb-4">Clients:</h3>
+                            <v-card>
+                                <v-card-text class="pa-0">
+                                    <v-color-picker
+                                        v-model="clonedEvent.color"
+                                        flat
+                                    />
+                                </v-card-text>
+                            </v-card>
+                        </v-menu>
+                    </template>
+                </v-text-field>
+            </v-card-text>
+
+            <v-card-text>
+                <h3 class="">Clients:</h3>
                 <v-chip
                     v-for="(client, i) in clonedEvent.clients"
                     :key="i"
@@ -132,7 +165,8 @@
                     >{{ client.forename + ' ' + client.name }}</v-chip
                 >
             </v-card-text>
-            <v-card>
+
+            <v-card-text>
                 <v-autocomplete
                     v-model="clientToAdd"
                     :items="clientTransformed"
@@ -141,7 +175,8 @@
                     placeholder="Start typing to search"
                     return-object
                 ></v-autocomplete>
-            </v-card>
+            </v-card-text>
+
             <v-card-actions>
                 <v-btn text color="error" @click="cancel">
                     Cancel
@@ -174,6 +209,7 @@ export default {
         return {
             menuDatePicker: false,
             menuTimePicker: false,
+            menuDurationPicker: false,
             menuColorPicker: false,
             mask: '!#XXXXXXXX',
             clonedEvent: rfdc()(this.event),
@@ -206,6 +242,9 @@ export default {
             },
 
             set: function(newValue) {
+                // before updating we backup duration since we don't want to change it
+                const duration = this.dateDuration
+
                 const date = moment(newValue)
                 const startDate = moment(this.clonedEvent.startDate)
                 startDate.year(date.year())
@@ -213,6 +252,9 @@ export default {
                 startDate.date(date.date())
                 this.clonedEvent.startDate = startDate.toDate()
                 this.clonedEvent.start = DateUtil.formatDefault(startDate)
+
+                //restore duration
+                this.dateDuration = duration
             },
         },
 
@@ -226,12 +268,39 @@ export default {
             },
 
             set: function(newValue) {
+                // before updating the starting time we backup duration since we have to restore it later
+                const duration = this.dateDuration
                 const date = moment(newValue, 'HH:mm')
-                const startDate = moment(this.clonedEvent.startDate)
+                const startDate = moment(new Date(this.clonedEvent.startDate))
                 startDate.hours(date.hours())
                 startDate.minutes(date.minutes())
                 this.clonedEvent.startDate = startDate.toDate()
                 this.clonedEvent.start = DateUtil.formatDefault(startDate)
+
+                //restore duration
+                this.dateDuration = duration
+            },
+        },
+
+        dateDuration: {
+            get: function() {
+                const endDate = moment(new Date(this.clonedEvent.endDate))
+                const diff = moment.duration(
+                    endDate.diff(moment(new Date(this.clonedEvent.startDate)))
+                )
+
+                const result = moment.utc(diff.asMilliseconds()).format('HH:mm')
+                return result
+            },
+
+            set: function(newValue) {
+                const hours = parseInt(newValue.toString().split(':')[0])
+                const endDate = moment(new Date(this.clonedEvent.startDate))
+                endDate.hours(endDate.hours() + hours)
+                this.clonedEvent.endDate = endDate.toDate()
+                this.clonedEvent.end = DateUtil.formatDefault(
+                    new Date(this.clonedEvent.endDate)
+                )
             },
         },
 
@@ -251,9 +320,14 @@ export default {
     methods: {
         closeTimePicker: function(v) {
             v = v < 10 ? '0' + v : v
-            this.time = v + ':00'
+            const time = v + ':00'
             this.menuTimePicker = false
-            this.$refs.menuTimePicker.save(this.time)
+            this.$refs.menuTimePicker.save(time)
+        },
+
+        closeDurationPicker(value) {
+            this.menuDurationPicker = false
+            this.$refs.menuDurationPicker.save(value)
         },
 
         cancel() {
@@ -271,7 +345,6 @@ export default {
         },
 
         addClient() {
-            console.log('test', this.clientToAdd)
             if (this.clientToAdd) {
                 const client = this.clients[this.clientToAdd.index]
 
@@ -287,6 +360,10 @@ export default {
                     this.clientToAdd = null
                 })
             }
+        },
+
+        allowedDurations(v) {
+            return [1, 2, 3, 4].includes(v)
         },
     },
 }

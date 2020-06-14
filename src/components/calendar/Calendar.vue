@@ -102,7 +102,6 @@ export default {
             this.$refs.calendar.next()
         },
         showEvent({ nativeEvent, event }) {
-            console.log(event)
             const open = () => {
                 this.selectedEvent = event
                 this.DOMElement = nativeEvent.target
