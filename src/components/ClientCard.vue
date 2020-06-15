@@ -23,81 +23,63 @@
             <template v-slot:default>
                 <tbody>
                     <tr>
-                        <td>
-                            {{ $i18n.t('clientData.name') }}
-                        </td>
+                        <td>{{ $i18n.t('clientData.name') }}:</td>
                         <td>
                             {{ client.name }}
                         </td>
                     </tr>
 
                     <tr>
-                        <td>
-                            {{ $i18n.t('clientData.forename') }}
-                        </td>
+                        <td>{{ $i18n.t('clientData.forename') }}:</td>
                         <td>
                             {{ client.forename }}
                         </td>
                     </tr>
 
                     <tr>
-                        <td>
-                            {{ $i18n.t('clientData.title') }}
-                        </td>
+                        <td>{{ $i18n.t('clientData.title') }}:</td>
                         <td>
                             {{ client.title ? client.title : '-' }}
                         </td>
                     </tr>
 
                     <tr>
+                        <td>{{ $i18n.t('clientData.sex') }}:</td>
                         <td>
-                            {{ $i18n.t('clientData.sex') }}
-                        </td>
-                        <td>
-                            {{ client.sex }}
+                            {{ $i18n.t(client.sex) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <td>
-                            {{ $i18n.t('clientData.email') }}
-                        </td>
+                        <td>{{ $i18n.t('clientData.email') }}:</td>
                         <td>
                             {{ client.email ? client.email : '-' }}
                         </td>
                     </tr>
 
                     <tr>
-                        <td>
-                            {{ $i18n.t('clientData.mobile') }}
-                        </td>
+                        <td>{{ $i18n.t('clientData.mobile') }}:</td>
                         <td>
                             {{ client.mobile ? client.mobile : '-' }}
                         </td>
                     </tr>
 
                     <tr>
-                        <td>
-                            {{ $i18n.t('clientData.address') }}
-                        </td>
+                        <td>{{ $i18n.t('clientData.address') }}:</td>
                         <td>
                             {{ client.address }}
                         </td>
                     </tr>
 
                     <tr>
-                        <td>
-                            {{ $i18n.t('clientData.birthday') }}
-                        </td>
+                        <td>{{ $i18n.t('clientData.birthday') }}:</td>
                         <td>
                             {{ formatBirthday(client.birthday) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <td>
-                            {{ $i18n.t('clientData.id') }}
-                        </td>
+                        <td>{{ $i18n.t('clientData.id') }}:</td>
                         <td>
                             {{ client.id }}
                         </td>

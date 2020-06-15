@@ -56,6 +56,10 @@ const messages = {
             birthday: 'Birthday',
             id: 'ID',
         },
+
+        male: 'Male',
+        female: 'Female',
+        diverse: 'Diverse',
     },
 
     de: {
@@ -111,6 +115,10 @@ const messages = {
             birthday: 'Geburtstag',
             id: 'ID',
         },
+
+        male: 'Männlich',
+        female: 'Weiblich',
+        diverse: 'Divers',
     },
 }
 
