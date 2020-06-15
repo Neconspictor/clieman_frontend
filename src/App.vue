@@ -15,7 +15,7 @@
                 {{ link.label }}
             </v-btn>
         </v-app-bar>
-        <v-main>
+        <v-main class="scrollable">
             <router-view />
         </v-main>
 
@@ -64,3 +64,9 @@ export default {
     },
 }
 </script>
+
+<style scoped="true">
+.scrollable {
+    overflow: auto;
+}
+</style>

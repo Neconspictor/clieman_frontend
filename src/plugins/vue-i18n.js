@@ -41,6 +41,21 @@ const messages = {
 
         yes: 'Yes',
         no: 'No',
+
+        expanded: 'Expanded',
+        closed: 'Closed',
+
+        clientData: {
+            name: 'Name',
+            forename: 'Forename',
+            email: 'E-mail',
+            title: 'Title',
+            sex: 'Sex',
+            address: 'Address',
+            mobile: 'Mobile',
+            birthday: 'Birthday',
+            id: 'ID',
+        },
     },
 
     de: {
@@ -81,6 +96,21 @@ const messages = {
 
         yes: 'Ja',
         no: 'Nein',
+
+        expanded: 'Offen',
+        closed: 'Zu',
+
+        clientData: {
+            name: 'Name',
+            forename: 'Vorname',
+            email: 'E-mail',
+            title: 'Titel',
+            sex: 'Geschlecht',
+            address: 'Addresse',
+            mobile: 'Telefon',
+            birthday: 'Geburtstag',
+            id: 'ID',
+        },
     },
 }
 
