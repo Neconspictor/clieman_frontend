@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Clients</h1>
+        <h1>{{ this.$i18n.t('clients') }}</h1>
     </div>
 </template>
 

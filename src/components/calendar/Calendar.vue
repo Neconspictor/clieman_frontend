@@ -57,7 +57,7 @@
                             @accept="createEvent"
                         >
                             <template v-slot:accept>
-                                Create
+                                {{ $i18n.t('create') }}
                             </template>
                         </EventEditor>
                     </v-dialog>

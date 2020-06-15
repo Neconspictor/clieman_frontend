@@ -41,21 +41,21 @@
             <v-card-text>
                 <v-text-field
                     v-model="startTime"
-                    label="Start time"
+                    :label="$i18n.t('startTime')"
                     prepend-icon="access_time"
                     readonly
                 ></v-text-field>
 
                 <v-text-field
                     v-model="duration"
-                    label="Duration"
+                    :label="$i18n.t('duration')"
                     prepend-icon="timelapse"
                     readonly
                 ></v-text-field>
             </v-card-text>
 
             <v-card-text>
-                <h3 class="">Clients:</h3>
+                <h3 class="">{{ $i18n.t('clients') }}:</h3>
                 <v-chip
                     v-for="(client, i) in event.clients"
                     :key="i"
@@ -73,13 +73,13 @@
             </v-card-text>
             <v-card-actions>
                 <v-btn text color="secondary" @click="isOpen = false">
-                    Close
+                    {{ $i18n.t('close') }}
                 </v-btn>
             </v-card-actions>
         </v-card>
         <EventEditor v-else :event="event" @cancel="cancel" @accept="save">
             <template v-slot:accept>
-                Save
+                {{ $i18n.t('save') }}
             </template>
         </EventEditor>
 
@@ -88,7 +88,7 @@
             @accepted="evaluateEventDeletion"
         >
             <template v-slot:title>
-                Do you really want to delete this event?
+                {{ $i18n.t('messages.assertEventDeletion') }}
             </template>
         </ConfirmDialog>
     </v-menu>

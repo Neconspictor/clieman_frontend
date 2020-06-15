@@ -4,7 +4,10 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import VueTextareaAutosize from 'vue-textarea-autosize'
+import i18n from './plugins/vue-i18n.js'
+
 import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
+
 Vue.use(VueTextareaAutosize)
 
 Vue.config.productionTip = false
@@ -21,12 +24,15 @@ Vue.config.warnHandler = function(msg, vm, trace) {
     }
 }
 
-new Vue({
+var vm = new Vue({
     router,
     store,
     vuetify,
+    i18n,
     render: h => h(App),
 }).$mount('#app')
+
+vm.$i18n.locale = vm.$vuetify.lang.current
 
 Promise.all([store.dispatch('fetchClients'), store.dispatch('fetchEvents')])
     .then(() => {

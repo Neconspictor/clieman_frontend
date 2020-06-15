@@ -48,17 +48,19 @@
 export default {
     name: 'App',
 
-    data: () => ({
-        links: [
-            {
-                label: 'Calendar',
-                route: { name: 'calendar' },
-            },
-            {
-                label: 'Clients',
-                route: { name: 'clients' },
-            },
-        ],
-    }),
+    computed: {
+        links() {
+            return [
+                {
+                    label: this.$i18n.t('calendar'),
+                    route: { name: 'calendar' },
+                },
+                {
+                    label: this.$i18n.t('clients'),
+                    route: { name: 'clients' },
+                },
+            ]
+        },
+    },
 }
 </script>

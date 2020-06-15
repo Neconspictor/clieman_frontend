@@ -16,7 +16,7 @@
                 <input
                     type="text"
                     v-model="clonedEvent.name"
-                    placeholder="Add title"
+                    :placeholder="this.$i18n.t('placeholders.addTitle')"
                 />
 
                 <v-spacer></v-spacer>
@@ -31,7 +31,7 @@
                         type="text"
                         style="width:100%;"
                         :min-height="0"
-                        placeholder="Add note"
+                        :placeholder="this.$i18n.t('placeholders.addDesc')"
                     ></textarea-autosize>
                 </form>
                 <v-divider></v-divider>
@@ -48,7 +48,7 @@
                     <template v-slot:activator="{ on, attrs }">
                         <v-text-field
                             v-model="dateWithoutTime"
-                            label="Date"
+                            :label="$i18n.t('date')"
                             prepend-icon="event"
                             readonly
                             v-bind="attrs"
@@ -75,7 +75,7 @@
                     <template v-slot:activator="{ on, attrs }">
                         <v-text-field
                             v-model="dateOnlyTime"
-                            label="Start time"
+                            :label="$i18n.t('startTime')"
                             prepend-icon="access_time"
                             readonly
                             v-bind="attrs"
@@ -106,7 +106,7 @@
                     <template v-slot:activator="{ on, attrs }">
                         <v-text-field
                             v-model="dateDuration"
-                            label="Duration"
+                            :label="$i18n.t('duration')"
                             prepend-icon="timelapse"
                             readonly
                             v-bind="attrs"
@@ -158,7 +158,7 @@
             </v-card-text>
 
             <v-card-text>
-                <h3 class="">Clients:</h3>
+                <h3 class="">{{ $i18n.t('clients') }}:</h3>
                 <v-chip
                     v-for="(client, i) in clonedEvent.clients"
                     :key="i"
@@ -176,17 +176,17 @@
                     :items="clientTransformed"
                     @change="addClient"
                     item-text="Description"
-                    placeholder="Start typing to search"
+                    :placeholder="$i18n.t('placeholders.search')"
                     return-object
                 ></v-autocomplete>
             </v-card-text>
 
             <v-card-actions>
                 <v-btn text color="error" @click="cancel">
-                    Cancel
+                    {{ $i18n.t('cancel') }}
                 </v-btn>
                 <v-btn text color="success" @click="accept">
-                    <slot name="accept">Accept</slot>
+                    <slot name="accept">{{ $i18n.t('accept') }}</slot>
                 </v-btn>
             </v-card-actions>
         </v-card>

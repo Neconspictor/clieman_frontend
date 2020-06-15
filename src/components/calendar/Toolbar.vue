@@ -8,7 +8,7 @@
                 color="grey darken-2"
                 @click="emitSetToday"
             >
-                Today
+                {{ $t('today') }}
             </v-btn>
 
             <v-btn
@@ -17,7 +17,7 @@
                 color="grey darken-2"
                 @click="emitCreateEvent"
             >
-                Create
+                {{ $t('create') }}
             </v-btn>
 
             <v-btn
@@ -72,6 +72,7 @@
 import ToolbarMobilMenu from '@/components/calendar/ToolbarMobilMenu'
 import ModeMenu from '@/components/calendar/ModeMenu'
 import moment from 'moment-timezone'
+import 'vue-i18n'
 
 export default {
     components: {
@@ -116,14 +117,6 @@ export default {
 
         emitCreateEvent() {
             this.$emit('create-event')
-        },
-
-        nth(d) {
-            return d > 3 && d < 21
-                ? 'th'
-                : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][
-                      d % 10
-                  ]
         },
 
         isMobilMenuActive() {

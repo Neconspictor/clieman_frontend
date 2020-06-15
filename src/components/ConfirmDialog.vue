@@ -8,7 +8,7 @@
         </v-btn>
 -->
 
-    <v-dialog v-model="open" max-width="290">
+    <v-dialog v-model="open" max-width="300">
         <v-card>
             <v-card-title class="headline">
                 <slot name="title"></slot>
@@ -24,7 +24,7 @@
                     text
                     @click="emitAcceptEvent(true)"
                 >
-                    <slot name="yes">Yes</slot>
+                    <slot name="yes">{{ this.$i18n.t('yes') }}</slot>
                 </v-btn>
 
                 <v-btn
@@ -32,7 +32,7 @@
                     text
                     @click="emitAcceptEvent(false)"
                 >
-                    <slot name="no">No</slot>
+                    <slot name="no">{{ this.$i18n.t('no') }}</slot>
                 </v-btn>
             </v-card-actions>
         </v-card>

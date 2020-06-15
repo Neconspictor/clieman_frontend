@@ -9,11 +9,11 @@
         <v-card tile>
             <div>
                 <v-toolbar flat dark color="primary">
-                    <v-toolbar-title>Toolbar</v-toolbar-title>
+                    <v-toolbar-title>{{ $t('toolbar') }}</v-toolbar-title>
                     <v-spacer></v-spacer>
                     <v-toolbar-items>
                         <v-btn dark text @click="dialog = false">
-                            Close
+                            {{ $t('close') }}
                         </v-btn>
                     </v-toolbar-items>
                 </v-toolbar>
@@ -21,7 +21,7 @@
 
             <v-list>
                 <v-list-item>
-                    <v-label>View mode: </v-label>
+                    <v-label>{{ $t('viewMode') }}: </v-label>
                     <ModeMenu
                         class="ml-4"
                         :type="type"
@@ -29,14 +29,14 @@
                     />
                 </v-list-item>
                 <v-list-item>
-                    <v-btn @click.stop="emitSetTodayEvent" outlined
-                        >Jump to today</v-btn
-                    >
+                    <v-btn @click.stop="emitSetTodayEvent" outlined>{{
+                        $t('jumpToToday')
+                    }}</v-btn>
                 </v-list-item>
                 <v-list-item>
-                    <v-btn @click.stop="emitCreateEvent" outlined
-                        >Create a new event</v-btn
-                    >
+                    <v-btn @click.stop="emitCreateEvent" outlined>{{
+                        $t('createNewEvent')
+                    }}</v-btn>
                 </v-list-item>
             </v-list>
 
