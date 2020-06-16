@@ -12,11 +12,7 @@
     </div>-->
 
     <v-container fluid class="listContainer">
-        <v-row>
-            <v-col cols="12">
-                <ClientList :clients="clients" clientCardWidth="400px" />
-            </v-col>
-        </v-row>
+        <ClientList :clients="clients" clientCardWidth="400px" />
     </v-container>
 </template>
 

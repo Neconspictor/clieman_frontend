@@ -1,10 +1,10 @@
 <template>
     <div>
-        <v-row align="start" justify="center">
+        <div class="d-flex justify-center">
             <v-subheader> {{ $i18n.t('clients') }} </v-subheader>
-        </v-row>
+        </div>
 
-        <v-row align="start" justify="center">
+        <div class="d-flex justify-center">
             <v-data-iterator
                 :items="clients"
                 item-key="id"
@@ -12,9 +12,70 @@
                 :page="page"
                 :single-expand="true"
                 hide-default-footer
+                :search="search"
+                :custom-filter="customFilter"
+                :sort-by="sortBy.toLowerCase()"
+                :sort-desc="sortDesc"
             >
+                <template v-slot:header>
+                    <v-toolbar
+                        dark
+                        color="blue darken-3"
+                        class="mb-1"
+                        align="center"
+                        justify="center"
+                    >
+                        <v-text-field
+                            v-model="search"
+                            clearable
+                            flat
+                            solo-inverted
+                            hide-details
+                            prepend-inner-icon="search"
+                            label="Search"
+                            class="mr-4"
+                        ></v-text-field>
+                        <template v-if="$vuetify.breakpoint.mdAndUp">
+                            <v-spacer></v-spacer>
+                            <v-select
+                                v-model="sortBy"
+                                flat
+                                solo-inverted
+                                hide-details
+                                :items="keys"
+                                prepend-inner-icon="search"
+                                label="Sort by"
+                                class="mr-4"
+                            ></v-select>
+                            <v-spacer></v-spacer>
+                            <v-btn-toggle v-model="sortDesc" mandatory>
+                                <v-btn
+                                    large
+                                    depressed
+                                    color="blue"
+                                    :value="false"
+                                >
+                                    <v-icon>mdi-arrow-up</v-icon>
+                                </v-btn>
+                                <v-btn
+                                    large
+                                    depressed
+                                    color="blue"
+                                    :value="true"
+                                >
+                                    <v-icon>mdi-arrow-down</v-icon>
+                                </v-btn>
+                            </v-btn-toggle>
+                        </template>
+                    </v-toolbar>
+                </template>
+
                 <template v-slot:default="{ items, isExpanded, expand }">
-                    <v-row v-for="client in items" :key="client.id">
+                    <div
+                        v-for="client in items"
+                        :key="client.id"
+                        class="d-flex"
+                    >
                         <v-hover>
                             <template v-slot="{ hover }">
                                 <ClientCard
@@ -26,11 +87,11 @@
                                 />
                             </template>
                         </v-hover>
-                    </v-row>
+                    </div>
                 </template>
 
                 <template v-slot:footer>
-                    <v-row class="mt-2" align="center" justify="center">
+                    <div class="d-flex justify-center mt-2">
                         <span class="grey--text">Items per page</span>
                         <v-menu offset-y>
                             <template v-slot:activator="{ on, attrs }">
@@ -82,15 +143,16 @@
                         >
                             <v-icon>mdi-chevron-right</v-icon>
                         </v-btn>
-                    </v-row>
+                    </div>
                 </template>
             </v-data-iterator>
-        </v-row>
+        </div>
     </div>
 </template>
 
 <script>
 import ClientCard from '@/components/ClientCard'
+import moment from 'moment-timezone'
 export default {
     components: {
         ClientCard,
@@ -113,6 +175,10 @@ export default {
             itemsPerPageArray: [2, 4, 8, 12],
             itemsPerPage: 4,
             page: 1,
+            search: '',
+            sortBy: 'name',
+            sortDesc: false,
+            keys: ['name'],
         }
     },
 
@@ -129,8 +195,39 @@ export default {
         formerPage() {
             if (this.page - 1 >= 1) this.page -= 1
         },
+
+        // eslint-disable-next-line no-unused-vars
+        customFilter(items, search) {
+            search = search.toString().toLowerCase()
+            console.log('search: ', search)
+
+            return items.filter(item => {
+                for (const key in item) {
+                    var source = item[key]
+                    if (key === 'sex') {
+                        source = this.$i18n.t(item[key])
+                    } else if (key === 'birthday') {
+                        source = moment(item[key]).format('YYYY-MM-DD')
+                    }
+                    var value = source.toString().toLowerCase()
+
+                    console.log(value)
+                    if (value.startsWith(search)) {
+                        return true
+                    }
+                }
+
+                return false
+            })
+        },
     },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1 1 auto;
+}
+</style>

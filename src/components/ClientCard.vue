@@ -25,7 +25,12 @@
                     <tr>
                         <td>{{ $i18n.t('clientData.name') }}:</td>
                         <td>
-                            {{ client.name }}
+                            <v-text-field
+                                placeholder="placeholder"
+                                readonly
+                                hint="id cannot be changed"
+                            >
+                            </v-text-field>
                         </td>
                     </tr>
 
@@ -47,6 +52,23 @@
                         <td>{{ $i18n.t('clientData.sex') }}:</td>
                         <td>
                             {{ $i18n.t(client.sex) }}
+
+                            <v-select
+                                :items="sexes"
+                                :menu-props="{ top: true, offsetY: true }"
+                                label="select sex"
+                                :value="{ sex: client.sex }"
+                                @change="v => (client.sex = v.sex)"
+                                :item-text="
+                                    v => {
+                                        return $i18n.t(v.sex)
+                                    }
+                                "
+                                solo
+                                flat
+                                dense
+                                return-object
+                            ></v-select>
                         </td>
                     </tr>
 
@@ -54,6 +76,12 @@
                         <td>{{ $i18n.t('clientData.email') }}:</td>
                         <td>
                             {{ client.email ? client.email : '-' }}
+
+                            <v-text-field
+                                placeholder="placeholder"
+                                type="email"
+                            >
+                            </v-text-field>
                         </td>
                     </tr>
 
@@ -114,6 +142,12 @@ export default {
             type: String,
             default: '100%',
         },
+    },
+
+    data() {
+        return {
+            sexes: [{ sex: 'male' }, { sex: 'female' }, { sex: 'diverse' }],
+        }
     },
 
     methods: {
