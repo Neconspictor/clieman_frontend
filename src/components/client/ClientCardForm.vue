@@ -3,7 +3,7 @@
         <v-simple-table dense>
             <template v-slot:default>
                 <tbody>
-                    <TableEntry :editable="isEditing">
+                    <TableEntry :editable="value">
                         <template v-slot:key>{{
                             $i18n.t('clientData.name')
                         }}</template>
@@ -19,7 +19,7 @@
                         {{ client.name }}
                     </TableEntry>
 
-                    <TableEntry :editable="isEditing">
+                    <TableEntry :editable="value">
                         <template v-slot:key>{{
                             $i18n.t('clientData.forename')
                         }}</template>
@@ -35,7 +35,7 @@
                         {{ client.forename }}
                     </TableEntry>
 
-                    <TableEntry :editable="isEditing">
+                    <TableEntry :editable="value">
                         <template v-slot:key>{{
                             $i18n.t('clientData.title')
                         }}</template>
@@ -51,7 +51,7 @@
                         {{ client.title ? client.title : '-' }}
                     </TableEntry>
 
-                    <TableEntry :editable="isEditing">
+                    <TableEntry :editable="value">
                         <template v-slot:key>{{
                             $i18n.t('clientData.sex')
                         }}</template>
@@ -76,7 +76,7 @@
                         {{ $i18n.t(client.sex) }}
                     </TableEntry>
 
-                    <TableEntry :editable="isEditing">
+                    <TableEntry :editable="value">
                         <template v-slot:key>{{
                             $i18n.t('clientData.email')
                         }}</template>
@@ -94,7 +94,7 @@
                         {{ client.email ? client.email : '-' }}
                     </TableEntry>
 
-                    <TableEntry :editable="isEditing">
+                    <TableEntry :editable="value">
                         <template v-slot:key>{{
                             $i18n.t('clientData.mobile')
                         }}</template>
@@ -111,7 +111,7 @@
                         {{ client.mobile ? client.mobile : '-' }}
                     </TableEntry>
 
-                    <TableEntry :editable="isEditing">
+                    <TableEntry :editable="value">
                         <template v-slot:key>{{
                             $i18n.t('clientData.address')
                         }}</template>
@@ -127,7 +127,7 @@
                         {{ client.address ? client.address : '-' }}
                     </TableEntry>
 
-                    <TableEntry :editable="isEditing">
+                    <TableEntry :editable="value">
                         <template v-slot:key>{{
                             $i18n.t('clientData.birthday')
                         }}</template>
@@ -146,7 +146,7 @@
                         {{ formatBirthday(client.birthday) }}
                     </TableEntry>
 
-                    <TableEntry :editable="isEditing">
+                    <TableEntry :editable="value">
                         <template v-slot:key>{{
                             $i18n.t('clientData.id')
                         }}</template>
@@ -165,19 +165,25 @@
                 </tbody>
             </template>
         </v-simple-table>
-    </v-form>
 
-    <!--<tr>
-                        <td>:</td>
-                        <td>
-                            <v-text-field
-                                placeholder="placeholder"
-                                readonly
-                                hint="id cannot be changed"
-                            >
-                            </v-text-field>
-                        </td>
-                    </tr>-->
+        <div v-if="value" class="ml-4 mb-4">
+            <v-btn
+                color="error"
+                flat
+                dense
+                class="mr-4"
+                @click="emitEndEditingEvent"
+                >Discard</v-btn
+            >
+            <v-btn
+                color="success"
+                flat
+                @click="validate"
+                :disabled="!formIsValid"
+                >Save</v-btn
+            >
+        </div>
+    </v-form>
 </template>
 
 <script>
@@ -196,9 +202,9 @@ export default {
             type: Object,
             required: true,
         },
-        isEditing: {
+        value: {
             type: Boolean,
-            default: false,
+            defautl: false,
         },
     },
 
@@ -267,6 +273,17 @@ export default {
         updateBirthday(v) {
             const date = new Date(v)
             if (this.checkBirthday(date)) this.clientEdit.birthday = date
+        },
+
+        emitEndEditingEvent() {
+            this.$emit('end-edit')
+        },
+
+        validate() {
+            if (this.$refs.form.validate()) {
+                this.$store.dispatch('updateClient', this.clientEdit)
+                this.emitEndEditingEvent()
+            }
         },
     },
 }

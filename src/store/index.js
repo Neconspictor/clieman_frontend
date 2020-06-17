@@ -35,6 +35,26 @@ export default new Vuex.Store({
             }
         },
 
+        UPDATE_CLIENT(state, client) {
+            // find matching client by its id
+            const findResult = state.clients
+                .map((x, index) => [index, x])
+                .filter(x => x[1].id === client.id)
+
+            //assure that we have found exactly one
+            if (findResult.length === 0) {
+                throw "Didn't found client with id " + client.id
+            } else if (findResult.length > 1) {
+                throw 'State exception: Multiple clients have the same id'
+            }
+
+            let index = findResult[0][0]
+
+            // Ensure that Vue recognizes the changes
+            // splice methods can be used for this
+            state.clients.splice(index, 1, client)
+        },
+
         UPDATE_EVENT(state, event) {
             // find matching event by its id
             const findResult = state.events
@@ -147,6 +167,10 @@ export default new Vuex.Store({
 
             commit('SET_EVENTS', events)
             return state.events
+        },
+
+        updateClient({ commit }, client) {
+            commit('UPDATE_CLIENT', client)
         },
 
         updateEvent({ commit }, event) {

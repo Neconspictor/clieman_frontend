@@ -17,9 +17,21 @@
             :label="isExpanded ? $i18n.t('expanded') : $i18n.t('closed')"
             @change="v => emitExpandEvent(v)"
         ></v-switch>
-        <v-divider></v-divider>
 
-        <ClientCardForm v-if="isExpanded" :client="client" />
+        <div v-if="isExpanded">
+            <div justify-right>
+                <v-spacer></v-spacer>
+                <v-btn icon @click="doEditing = !doEditing">
+                    <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+            </div>
+            <v-divider></v-divider>
+            <ClientCardForm
+                :client="client"
+                :value="doEditing"
+                @end-edit="doEditing = false"
+            />
+        </div>
     </v-card>
 </template>
 
@@ -53,7 +65,9 @@ export default {
     },
 
     data() {
-        return {}
+        return {
+            doEditing: false,
+        }
     },
 
     methods: {
