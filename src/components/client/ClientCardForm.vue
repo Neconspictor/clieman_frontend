@@ -59,7 +59,7 @@
                             <v-select
                                 :items="sexes"
                                 :menu-props="{ top: true, offsetY: true }"
-                                label="select sex"
+                                label=""
                                 :value="{ sex: clientEdit.sex }"
                                 @change="v => (clientEdit.sex = v.sex)"
                                 :item-text="
@@ -67,10 +67,10 @@
                                         return $i18n.t(v.sex)
                                     }
                                 "
-                                solo
                                 flat
                                 dense
                                 return-object
+                                class="mt-4 mb-0"
                             ></v-select>
                         </template>
                         {{ $i18n.t(client.sex) }}
@@ -87,6 +87,7 @@
                                 flat
                                 v-model="clientEdit.email"
                                 type="email"
+                                :rules="emailRules"
                             >
                             </v-text-field>
                         </template>
@@ -103,6 +104,7 @@
                                 dense
                                 flat
                                 v-model="clientEdit.mobile"
+                                :rules="mobileRules"
                             >
                             </v-text-field>
                         </template>
@@ -135,11 +137,9 @@
                                 dense
                                 flat
                                 :value="formatBirthday(clientEdit.birthday)"
-                                @change="
-                                    v => {
-                                        clientEdit.birthday = new Date(v)
-                                    }
-                                "
+                                @change="updateBirthday"
+                                required
+                                :rules="birthdayRules"
                             >
                             </v-text-field>
                         </template>
@@ -184,6 +184,7 @@
 import moment from 'moment-timezone'
 import copy from '@/util/copy'
 import TableEntry from '@/components/client/TableEntry'
+import DateUtil from '@/util/date'
 
 export default {
     components: {
@@ -197,7 +198,7 @@ export default {
         },
         isEditing: {
             type: Boolean,
-            default: true,
+            default: false,
         },
     },
 
@@ -209,6 +210,45 @@ export default {
         }
     },
 
+    computed: {
+        birthdayRules() {
+            return [
+                v => {
+                    return !!v || 'Birthday is required'
+                },
+
+                v => {
+                    const date = new Date(v)
+                    return (
+                        (v && !!this.checkBirthday(date)) ||
+                        'Entered birthday is not a valid date'
+                    )
+                },
+            ]
+        },
+
+        mobileRules() {
+            return [
+                v => {
+                    return (
+                        //TODO
+                        (v && /[1234567890+]+/.test(v)) ||
+                        'This is not a valid mobile/telephone number'
+                    )
+                },
+            ]
+        },
+
+        emailRules() {
+            return [
+                v => {
+                    if (!v) return true
+                    return /.+@.+\...+/.test(v) || 'E-mail must be valid'
+                },
+            ]
+        },
+    },
+
     methods: {
         formatBirthday(birthday) {
             return moment(birthday).format('YYYY-MM-DD')
@@ -216,6 +256,17 @@ export default {
 
         getEditedClient() {
             return this.clientEdit
+        },
+
+        checkBirthday(date) {
+            const result = DateUtil.isValid(date)
+            console.log('is valid: ', result)
+            return result
+        },
+
+        updateBirthday(v) {
+            const date = new Date(v)
+            if (this.checkBirthday(date)) this.clientEdit.birthday = date
         },
     },
 }

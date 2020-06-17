@@ -29,4 +29,8 @@ export default class DateUtil {
     static getHourToMinutesFormat() {
         return 'HH:mm'
     }
+
+    static isValid(date) {
+        return date.toString() !== 'Invalid Date'
+    }
 }
