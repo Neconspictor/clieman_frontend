@@ -18,7 +18,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import ClientList from '@/components/ClientList'
+import ClientList from '@/components/client/ClientList'
 export default {
     components: {
         ClientList,

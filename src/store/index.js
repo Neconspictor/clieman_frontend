@@ -89,10 +89,29 @@ export default new Vuex.Store({
             state.events.push(event)
             state.idToEvent.set(event.id, event)
         },
+
+        ADD_CLIENT(state, client) {
+            //ensure that we don't add a client twice
+            if (state.idToClient.get(client.id)) {
+                throw 'State exception: A client with id ' +
+                    client.id +
+                    ' already exists'
+            }
+
+            state.clients.push(client)
+            state.idToClient.set(client.id, client)
+        },
     },
+
     actions: {
+        addClient({ commit }, client) {
+            commit('ADD_CLIENT', client)
+        },
+
         async fetchClients({ commit, state }) {
             const snapshot = await firebaseDB.collection('clients').get()
+
+            console.log(snapshot)
 
             const clients = []
 
@@ -104,7 +123,7 @@ export default new Vuex.Store({
                 clients.push(client)
             })
 
-            commit('SET_CLIENTS', clients)
+            if (clients.length > 0) commit('SET_CLIENTS', clients)
             return state.clients
         },
 

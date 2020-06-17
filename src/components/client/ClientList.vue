@@ -151,7 +151,7 @@
 </template>
 
 <script>
-import ClientCard from '@/components/ClientCard'
+import ClientCard from '@/components/client/ClientCard'
 import moment from 'moment-timezone'
 export default {
     components: {
