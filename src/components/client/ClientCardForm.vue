@@ -13,8 +13,9 @@
                                 dense
                                 flat
                                 v-model="clientEdit.name"
-                            >
-                            </v-text-field>
+                                hide-details="true"
+                                class="v-text-field"
+                            />
                         </template>
                         {{ client.name }}
                     </TableEntry>
@@ -27,8 +28,9 @@
                             <v-text-field
                                 placeholder="Enter the forename"
                                 dense
-                                flat
+                                single-line
                                 v-model="clientEdit.forename"
+                                hide-details="true"
                             >
                             </v-text-field>
                         </template>
@@ -43,8 +45,9 @@
                             <v-text-field
                                 placeholder="Enter the title"
                                 dense
-                                flat
+                                single-line
                                 v-model="clientEdit.title"
+                                hide-details="true"
                             >
                             </v-text-field>
                         </template>
@@ -67,7 +70,8 @@
                                         return $i18n.t(v.sex)
                                     }
                                 "
-                                flat
+                                single-line
+                                hide-details="true"
                                 dense
                                 return-object
                                 class="mt-4 mb-0"
@@ -81,15 +85,17 @@
                             $i18n.t('clientData.email')
                         }}</template>
                         <template v-slot:edit>
-                            <v-text-field
+                            <TextInput
                                 placeholder="Enter the e-mail"
                                 dense
                                 flat
                                 v-model="clientEdit.email"
                                 type="email"
                                 :rules="emailRules"
+                                single-line
+                                auto-hide
                             >
-                            </v-text-field>
+                            </TextInput>
                         </template>
                         {{ client.email ? client.email : '-' }}
                     </TableEntry>
@@ -99,14 +105,15 @@
                             $i18n.t('clientData.mobile')
                         }}</template>
                         <template v-slot:edit>
-                            <v-text-field
+                            <TextInput
                                 placeholder="Enter a telephone number"
                                 dense
                                 flat
                                 v-model="clientEdit.mobile"
                                 :rules="mobileRules"
+                                auto-hide
                             >
-                            </v-text-field>
+                            </TextInput>
                         </template>
                         {{ client.mobile ? client.mobile : '-' }}
                     </TableEntry>
@@ -119,8 +126,9 @@
                             <v-text-field
                                 placeholder="Enter an address"
                                 dense
-                                flat
                                 v-model="clientEdit.address"
+                                single-line
+                                hide-details="true"
                             >
                             </v-text-field>
                         </template>
@@ -132,16 +140,17 @@
                             $i18n.t('clientData.birthday')
                         }}</template>
                         <template v-slot:edit>
-                            <v-text-field
+                            <TextInput
                                 placeholder="Enter the birthday"
                                 dense
-                                flat
                                 :value="formatBirthday(clientEdit.birthday)"
                                 @change="updateBirthday"
                                 required
                                 :rules="birthdayRules"
+                                single-line
+                                auto-hide
                             >
-                            </v-text-field>
+                            </TextInput>
                         </template>
                         {{ formatBirthday(client.birthday) }}
                     </TableEntry>
@@ -151,35 +160,20 @@
                             $i18n.t('clientData.id')
                         }}</template>
                         <template v-slot:edit>
-                            <v-text-field
-                                readonly
-                                dense
-                                flat
-                                v-model="clientEdit.id"
-                                hint="id cannot be edited"
-                            >
-                            </v-text-field>
+                            {{ client.id }}
                         </template>
                         {{ client.id }}
                     </TableEntry>
+                    <v-divider></v-divider>
                 </tbody>
             </template>
         </v-simple-table>
 
-        <div v-if="value" class="ml-4 mb-4">
-            <v-btn
-                color="error"
-                flat
-                dense
-                class="mr-4"
-                @click="emitEndEditingEvent"
+        <div v-if="value" class="ml-4 mb-4 mt-4">
+            <v-btn color="error" dense class="mr-4" @click="emitEndEditingEvent"
                 >Discard</v-btn
             >
-            <v-btn
-                color="success"
-                flat
-                @click="validate"
-                :disabled="!formIsValid"
+            <v-btn color="success" @click="validate" :disabled="!formIsValid"
                 >Save</v-btn
             >
         </div>
@@ -191,10 +185,12 @@ import moment from 'moment-timezone'
 import copy from '@/util/copy'
 import TableEntry from '@/components/client/TableEntry'
 import DateUtil from '@/util/date'
+import TextInput from '@/components/client/TextInput'
 
 export default {
     components: {
         TableEntry,
+        TextInput,
     },
 
     props: {
@@ -210,13 +206,17 @@ export default {
 
     data() {
         return {
-            clientEdit: copy.deepCopy(this.client),
             sexes: [{ sex: 'male' }, { sex: 'female' }, { sex: 'diverse' }],
             formIsValid: true,
+            birthdayInputHideDetails: true,
         }
     },
 
     computed: {
+        clientEdit() {
+            return copy.deepCopy(this.client)
+        },
+
         birthdayRules() {
             return [
                 v => {
@@ -236,8 +236,10 @@ export default {
         mobileRules() {
             return [
                 v => {
+                    if (!v) return true
                     return (
                         //TODO
+
                         (v && /[1234567890+]+/.test(v)) ||
                         'This is not a valid mobile/telephone number'
                     )
@@ -289,4 +291,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.v-text-field {
+    font-size: 1em;
+}
+</style>

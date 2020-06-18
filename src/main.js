@@ -50,7 +50,7 @@ store
         console.log("Couldn't fetch clients: ", e)
     })
 
-const testClient = {
+/*const testClient = {
     id: 'TheRealHansi',
     forename: 'Hansi',
     name: 'Göttling',
@@ -61,4 +61,4 @@ const testClient = {
     sex: 'male',
 }
 
-store.dispatch('addClient', testClient)
+store.dispatch('addClient', testClient)*/
