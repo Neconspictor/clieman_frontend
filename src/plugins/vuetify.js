@@ -10,6 +10,6 @@ import en from 'vuetify/src/locale/en.ts'
 export default new Vuetify({
     lang: {
         locales: { de, en },
-        current: 'de',
+        current: 'en',
     },
 })

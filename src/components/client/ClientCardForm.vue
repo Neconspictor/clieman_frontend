@@ -9,7 +9,9 @@
                         }}</template>
                         <template v-slot:edit>
                             <v-text-field
-                                placeholder="Enter a name"
+                                :placeholder="
+                                    $i18n.t('clientData.placeholders.name')
+                                "
                                 dense
                                 flat
                                 v-model="clientEdit.name"
@@ -17,7 +19,7 @@
                                 class="v-text-field"
                             />
                         </template>
-                        {{ client.name }}
+                        {{ formatter.string(client.name) }}
                     </TableEntry>
 
                     <TableEntry :editable="value">
@@ -26,7 +28,9 @@
                         }}</template>
                         <template v-slot:edit>
                             <v-text-field
-                                placeholder="Enter the forename"
+                                :placeholder="
+                                    $i18n.t('clientData.placeholders.forename')
+                                "
                                 dense
                                 single-line
                                 v-model="clientEdit.forename"
@@ -34,7 +38,7 @@
                             >
                             </v-text-field>
                         </template>
-                        {{ client.forename }}
+                        {{ formatter.string(client.forename) }}
                     </TableEntry>
 
                     <TableEntry :editable="value">
@@ -43,7 +47,9 @@
                         }}</template>
                         <template v-slot:edit>
                             <v-text-field
-                                placeholder="Enter the title"
+                                :placeholder="
+                                    $i18n.t('clientData.placeholders.title')
+                                "
                                 dense
                                 single-line
                                 v-model="clientEdit.title"
@@ -51,7 +57,7 @@
                             >
                             </v-text-field>
                         </template>
-                        {{ client.title ? client.title : '-' }}
+                        {{ formatter.string(client.title) }}
                     </TableEntry>
 
                     <TableEntry :editable="value">
@@ -63,13 +69,12 @@
                                 :items="sexes"
                                 :menu-props="{ top: true, offsetY: true }"
                                 label=""
-                                :value="{ sex: clientEdit.sex }"
-                                @change="v => (clientEdit.sex = v.sex)"
-                                :item-text="
-                                    v => {
-                                        return $i18n.t(v.sex)
-                                    }
+                                :value="selectedSex"
+                                :placeholder="
+                                    $i18n.t('clientData.placeholders.sex')
                                 "
+                                @change="v => (clientEdit.sex = v.sex)"
+                                :item-text="createSexSelectionText"
                                 single-line
                                 hide-details="true"
                                 dense
@@ -77,7 +82,11 @@
                                 class="mt-4 mb-0"
                             ></v-select>
                         </template>
-                        {{ $i18n.t(client.sex) }}
+                        {{
+                            formatter.object(client.sex, () =>
+                                $i18n.t(client.sex)
+                            )
+                        }}
                     </TableEntry>
 
                     <TableEntry :editable="value">
@@ -86,7 +95,9 @@
                         }}</template>
                         <template v-slot:edit>
                             <TextInput
-                                placeholder="Enter the e-mail"
+                                :placeholder="
+                                    $i18n.t('clientData.placeholders.email')
+                                "
                                 dense
                                 flat
                                 v-model="clientEdit.email"
@@ -97,7 +108,7 @@
                             >
                             </TextInput>
                         </template>
-                        {{ client.email ? client.email : '-' }}
+                        {{ formatter.string(client.email) }}
                     </TableEntry>
 
                     <TableEntry :editable="value">
@@ -106,7 +117,9 @@
                         }}</template>
                         <template v-slot:edit>
                             <TextInput
-                                placeholder="Enter a telephone number"
+                                :placeholder="
+                                    $i18n.t('clientData.placeholders.mobile')
+                                "
                                 dense
                                 flat
                                 v-model="clientEdit.mobile"
@@ -115,7 +128,7 @@
                             >
                             </TextInput>
                         </template>
-                        {{ client.mobile ? client.mobile : '-' }}
+                        {{ formatter.string(client.mobile) }}
                     </TableEntry>
 
                     <TableEntry :editable="value">
@@ -124,7 +137,9 @@
                         }}</template>
                         <template v-slot:edit>
                             <v-text-field
-                                placeholder="Enter an address"
+                                :placeholder="
+                                    $i18n.t('clientData.placeholders.address')
+                                "
                                 dense
                                 v-model="clientEdit.address"
                                 single-line
@@ -132,7 +147,7 @@
                             >
                             </v-text-field>
                         </template>
-                        {{ client.address ? client.address : '-' }}
+                        {{ formatter.string(client.address) }}
                     </TableEntry>
 
                     <TableEntry :editable="value">
@@ -140,19 +155,29 @@
                             $i18n.t('clientData.birthday')
                         }}</template>
                         <template v-slot:edit>
-                            <TextInput
-                                placeholder="Enter the birthday"
-                                dense
-                                :value="formatBirthday(clientEdit.birthday)"
-                                @change="updateBirthday"
-                                required
-                                :rules="birthdayRules"
-                                single-line
-                                auto-hide
+                            <v-menu
+                                v-model="birthdayDatePicker"
+                                :nudge-right="40"
+                                :close-on-content-click="false"
+                                transition="scale-transition"
+                                offset-y
                             >
-                            </TextInput>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-text-field
+                                        :value="displayedBirthday"
+                                        prepend-icon="event"
+                                        readonly
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    ></v-text-field>
+                                </template>
+                                <v-date-picker
+                                    v-model="birthdayDate"
+                                    @input="birthdayDatePicker = false"
+                                ></v-date-picker>
+                            </v-menu>
                         </template>
-                        {{ formatBirthday(client.birthday) }}
+                        {{ formatter.date(client.birthday, 'birthday') }}
                     </TableEntry>
 
                     <TableEntry :editable="value">
@@ -160,9 +185,9 @@
                             $i18n.t('clientData.id')
                         }}</template>
                         <template v-slot:edit>
-                            {{ client.id }}
+                            {{ formatter.string(client.id) }}
                         </template>
-                        {{ client.id }}
+                        {{ formatter.string(client.id) }}
                     </TableEntry>
                     <v-divider></v-divider>
                 </tbody>
@@ -170,11 +195,15 @@
         </v-simple-table>
 
         <div v-if="value" class="ml-4 mb-4 mt-4">
-            <v-btn color="error" dense class="mr-4" @click="emitEndEditingEvent"
-                >Discard</v-btn
-            >
-            <v-btn color="success" @click="validate" :disabled="!formIsValid"
-                >Save</v-btn
+            <v-btn color="error" text @click="emitEndEditingEvent">{{
+                $i18n.t('discard')
+            }}</v-btn>
+            <v-btn
+                color="success"
+                text
+                @click="validate"
+                :disabled="!formIsValid"
+                >{{ $i18n.t('save') }}</v-btn
             >
         </div>
     </v-form>
@@ -186,6 +215,7 @@ import copy from '@/util/copy'
 import TableEntry from '@/components/client/TableEntry'
 import DateUtil from '@/util/date'
 import TextInput from '@/components/client/TextInput'
+import Formatter from '@/util/formatter'
 
 export default {
     components: {
@@ -206,42 +236,56 @@ export default {
 
     data() {
         return {
-            sexes: [{ sex: 'male' }, { sex: 'female' }, { sex: 'diverse' }],
+            sexes: [{ sex: 'diverse' }, { sex: 'male' }, { sex: 'female' }],
             formIsValid: true,
             birthdayInputHideDetails: true,
+            birthdayDatePicker: false,
+            formatter: new Formatter(this.$i18n, '-'),
+            birthdayFormatter: new Formatter(
+                this.$i18n,
+                this.$i18n.t('clientData.placeholders.birthday')
+            ),
+            clientEdit: copy.deepCopy(this.client),
         }
     },
 
     computed: {
-        clientEdit() {
-            return copy.deepCopy(this.client)
+        selectedSex() {
+            return { sex: this.clientEdit.sex }
         },
 
-        birthdayRules() {
-            return [
-                v => {
-                    return !!v || 'Birthday is required'
-                },
+        birthdayDate: {
+            get: function() {
+                return DateUtil.formatDate(
+                    this.clientEdit.birthday,
+                    DateUtil.getDefaultTimeZone(),
+                    DateUtil.getYearToDayFormat()
+                )
+            },
 
-                v => {
-                    const date = new Date(v)
-                    return (
-                        (v && !!this.checkBirthday(date)) ||
-                        'Entered birthday is not a valid date'
-                    )
-                },
-            ]
+            set: function(value) {
+                this.clientEdit.birthday = moment(value).toDate()
+            },
+        },
+
+        displayedBirthday() {
+            return this.birthdayFormatter.date(
+                this.clientEdit.birthday,
+                'birthday'
+            )
         },
 
         mobileRules() {
             return [
                 v => {
                     if (!v) return true
+
+                    v = v.replace(/\s/g, '')
                     return (
                         //TODO
 
-                        (v && /[1234567890+]+/.test(v)) ||
-                        'This is not a valid mobile/telephone number'
+                        (v && /^[0-9+][0-9]{0,}$/.test(v)) ||
+                        this.$i18n.t('clientData.validators.mobile')
                     )
                 },
             ]
@@ -251,40 +295,37 @@ export default {
             return [
                 v => {
                     if (!v) return true
-                    return /.+@.+\...+/.test(v) || 'E-mail must be valid'
+                    return (
+                        /.+@.+\...+/.test(v) ||
+                        this.$i18n.t('clientData.validators.email')
+                    )
                 },
             ]
         },
     },
 
     methods: {
-        formatBirthday(birthday) {
-            return moment(birthday).format('YYYY-MM-DD')
+        createSexSelectionText(v) {
+            return this.formatter.string(v.sex)
         },
 
         getEditedClient() {
             return this.clientEdit
         },
 
-        checkBirthday(date) {
-            const result = DateUtil.isValid(date)
-            console.log('is valid: ', result)
-            return result
-        },
-
-        updateBirthday(v) {
-            const date = new Date(v)
-            if (this.checkBirthday(date)) this.clientEdit.birthday = date
-        },
-
         emitEndEditingEvent() {
+            // note: if nothing has changed Vue doesn't refresh
+            this.clientEdit = copy.deepCopy(this.client)
             this.$emit('end-edit')
         },
 
         validate() {
             if (this.$refs.form.validate()) {
-                this.$store.dispatch('updateClient', this.clientEdit)
-                this.emitEndEditingEvent()
+                this.$store
+                    .dispatch('updateClient', this.clientEdit)
+                    .finally(() => {
+                        this.emitEndEditingEvent()
+                    })
             }
         },
     },

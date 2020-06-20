@@ -47,7 +47,7 @@
                 >
                     <template v-slot:activator="{ on, attrs }">
                         <v-text-field
-                            v-model="dateWithoutTime"
+                            :value="$i18n.d(clonedEvent.startDate, 'event')"
                             :label="$i18n.t('date')"
                             prepend-icon="event"
                             readonly

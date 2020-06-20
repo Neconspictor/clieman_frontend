@@ -7,7 +7,11 @@
         :width="width"
     >
         <v-card-title>
-            {{ `${client.forename} ${client.name}` }}
+            {{
+                `${formatter.string(client.title)} ${formatter.string(
+                    client.forename
+                )} ${formatter.string(client.name)}`
+            }}
         </v-card-title>
 
         <v-card-subtitle>{{ client.id }}</v-card-subtitle>
@@ -21,7 +25,7 @@
         <div v-if="isExpanded">
             <div justify-right>
                 <v-spacer></v-spacer>
-                <v-btn icon @click="doEditing = !doEditing">
+                <v-btn icon @click="doEditing = true" :disabled="doEditing">
                     <v-icon>mdi-pencil</v-icon>
                 </v-btn>
             </div>
@@ -37,6 +41,8 @@
 
 <script>
 import ClientCardForm from '@/components/client/ClientCardForm'
+import Formatter from '@/util/formatter'
+
 export default {
     components: {
         ClientCardForm,
@@ -67,6 +73,7 @@ export default {
     data() {
         return {
             doEditing: false,
+            formatter: new Formatter(this.$i18n),
         }
     },
 

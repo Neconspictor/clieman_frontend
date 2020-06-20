@@ -20,6 +20,7 @@ const messages = {
         close: 'Close',
         cancel: 'Cancel',
         create: 'Create',
+        discard: 'Discard',
         save: 'Save',
         toolbar: 'Toolbar',
 
@@ -55,6 +56,21 @@ const messages = {
             mobile: 'Mobile',
             birthday: 'Birthday',
             id: 'ID',
+            placeholders: {
+                name: 'Enter a family name',
+                forename: 'Enter a forename',
+                email: 'Enter an e-mail',
+                title: 'Enter a title',
+                sex: 'Select a sex',
+                address: 'Enter an address',
+                mobile: 'Enter a mobile/telephone number',
+                birthday: 'Select a birthday date',
+            },
+
+            validators: {
+                email: 'E-mail is not valid',
+                mobile: 'Telephone/mobile number is not valid',
+            },
         },
 
         male: 'Male',
@@ -79,6 +95,7 @@ const messages = {
         close: 'Schließen',
         cancel: 'Abbrechen',
         create: 'Erstellen',
+        discard: 'Verwerfen',
         save: 'Speichern',
         toolbar: 'Werkzeugleiste',
 
@@ -114,6 +131,22 @@ const messages = {
             mobile: 'Telefon',
             birthday: 'Geburtstag',
             id: 'ID',
+
+            placeholders: {
+                name: 'Nachname angeben',
+                forename: 'Vorname angeben',
+                email: 'E-mail angeben',
+                title: 'Titel angeben',
+                sex: 'Geschlecht auswählen',
+                address: 'Adresse angeben',
+                mobile: 'Telefon-/Handynummer angeben',
+                birthday: 'Geburtstag auswählen',
+            },
+
+            validators: {
+                email: 'E-mail Adresse fehlerhaft',
+                mobile: 'Fehlerhafte Telefon-/Handynummer',
+            },
         },
 
         male: 'Männlich',
@@ -122,4 +155,45 @@ const messages = {
     },
 }
 
-export default new VueI18n({ locale: 'en', messages })
+const dateTimeFormats = {
+    en: {
+        default: {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+        },
+        birthday: {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        },
+
+        event: {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        },
+    },
+
+    de: {
+        default: {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+        },
+        birthday: {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        },
+
+        event: {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        },
+    },
+}
+export default new VueI18n({ locale: 'en', messages, dateTimeFormats })
