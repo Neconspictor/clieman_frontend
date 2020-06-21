@@ -6,7 +6,7 @@
         dense
         :width="width"
     >
-        <v-card-title>
+        <v-card-title class="text-body-2">
             {{
                 `${formatter.string(client.title)} ${formatter.string(
                     client.forename
@@ -14,8 +14,8 @@
             }}
         </v-card-title>
 
-        <v-card-subtitle>{{ client.id }}</v-card-subtitle>
-        <v-switch
+        <v-card-subtitle class="text-caption">{{ client.id }}</v-card-subtitle>
+        <!--<v-switch
             class="pl-4 mt-0"
             :input-value="isExpanded"
             :label="isExpanded ? $i18n.t('expanded') : $i18n.t('closed')"
@@ -35,17 +35,17 @@
                 :value="doEditing"
                 @end-edit="doEditing = false"
             />
-        </div>
+        </div>-->
     </v-card>
 </template>
 
 <script>
-import ClientCardForm from '@/components/client/ClientCardForm'
+//import ClientCardForm from '@/components/client/ClientCardForm'
 import Formatter from '@/util/formatter'
 
 export default {
     components: {
-        ClientCardForm,
+        // ClientCardForm,
     },
 
     props: {

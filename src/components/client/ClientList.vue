@@ -1,10 +1,10 @@
 <template>
-    <div>
-        <div class="d-flex justify-center">
+    <div style="max-width: 70em; margin: auto;" class="justify-center">
+        <div class="justify-center">
             <v-subheader> {{ $i18n.t('clients') }} </v-subheader>
         </div>
 
-        <div class="d-flex justify-center">
+        <div>
             <v-data-iterator
                 :items="clients"
                 item-key="id"
@@ -22,8 +22,8 @@
                         dark
                         color="blue darken-3"
                         class="mb-1"
-                        align="center"
-                        justify="center"
+                        align="start"
+                        justify="left"
                     >
                         <v-text-field
                             v-model="search"
@@ -71,23 +71,28 @@
                 </template>
 
                 <template v-slot:default="{ items, isExpanded, expand }">
-                    <div
-                        v-for="client in items"
-                        :key="client.id"
-                        class="d-flex"
-                    >
-                        <v-hover>
-                            <template v-slot="{ hover }">
-                                <ClientCard
-                                    :hover="hover"
-                                    :isExpanded="isExpanded(client)"
-                                    :client="client"
-                                    @expand="v => expand(client, v)"
-                                    :width="clientCardWidth"
-                                />
-                            </template>
-                        </v-hover>
-                    </div>
+                    <v-row>
+                        <v-col
+                            v-for="client in items"
+                            :key="client.id"
+                            cols="12"
+                            sm="6"
+                            md="4"
+                            lg="3"
+                        >
+                            <v-hover>
+                                <template v-slot="{ hover }">
+                                    <ClientCard
+                                        :hover="hover"
+                                        :isExpanded="isExpanded(client)"
+                                        :client="client"
+                                        @expand="v => expand(client, v)"
+                                        :width="clientCardWidth"
+                                    />
+                                </template>
+                            </v-hover>
+                        </v-col>
+                    </v-row>
                 </template>
 
                 <template v-slot:footer>
