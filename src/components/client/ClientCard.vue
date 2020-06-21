@@ -1,26 +1,27 @@
 <template>
     <v-card
         hover="true"
-        :elevation="hover ? 8 : 2"
-        class="mb-4"
+        :elevation="hover ? 4 : 2"
+        :class="'card ' + (isExpanded ? ' on-top ' : '')"
         dense
         :width="width"
+        :min-width="isExpanded ? width : 100"
+        @click="emitExpandEvent(true)"
+        v-click-outside="outsideClick"
     >
         <v-card-title class="text-body-2">
-            {{
-                `${formatter.string(client.title)} ${formatter.string(
-                    client.forename
-                )} ${formatter.string(client.name)}`
-            }}
+            <v-flex class="d-flex">
+                <div>
+                    {{
+                        `${formatter.string(client.title)} ${formatter.string(
+                            client.forename
+                        )} ${formatter.string(client.name)}`
+                    }}
+                </div>
+            </v-flex>
         </v-card-title>
 
         <v-card-subtitle class="text-caption">{{ client.id }}</v-card-subtitle>
-        <!--<v-switch
-            class="pl-4 mt-0"
-            :input-value="isExpanded"
-            :label="isExpanded ? $i18n.t('expanded') : $i18n.t('closed')"
-            @change="v => emitExpandEvent(v)"
-        ></v-switch>
 
         <div v-if="isExpanded">
             <div justify-right>
@@ -35,17 +36,17 @@
                 :value="doEditing"
                 @end-edit="doEditing = false"
             />
-        </div>-->
+        </div>
     </v-card>
 </template>
 
 <script>
-//import ClientCardForm from '@/components/client/ClientCardForm'
+import ClientCardForm from '@/components/client/ClientCardForm'
 import Formatter from '@/util/formatter'
 
 export default {
     components: {
-        // ClientCardForm,
+        ClientCardForm,
     },
 
     props: {
@@ -81,8 +82,29 @@ export default {
         emitExpandEvent(val) {
             this.$emit('expand', val)
         },
+
+        outsideClick() {
+            console.log('test')
+        },
     },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.on-top {
+    z-index: 1;
+    overflow-y: auto;
+    position: relative;
+}
+
+.title-switch {
+    margin-top: -8px;
+    margin-left: 8px;
+}
+
+.card {
+    margin-bottom: -8px;
+    padding-bottom: -8px;
+    margin-right: -8px;
+}
+</style>

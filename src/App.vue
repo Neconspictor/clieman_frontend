@@ -1,6 +1,7 @@
 <template>
     <v-app>
-        <v-app-bar app color="primary" dark>
+        <Test />
+        <!--    <v-app-bar app color="primary" dark>
             <v-toolbar-title>Dateman</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn
@@ -15,6 +16,7 @@
                 {{ link.label }}
             </v-btn>
         </v-app-bar>
+
         <v-main class="scrollable">
             <router-view />
         </v-main>
@@ -40,13 +42,18 @@
                     <strong>Dateman</strong>
                 </v-col>
             </v-row>
-        </v-footer>
+        </v-footer>-->
     </v-app>
 </template>
 
 <script>
+import Test from '@/components/Test'
+
 export default {
     name: 'App',
+    components: {
+        Test,
+    },
 
     computed: {
         links() {

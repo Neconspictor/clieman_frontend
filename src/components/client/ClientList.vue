@@ -18,51 +18,37 @@
                 :sort-desc="sortDesc"
             >
                 <template v-slot:header>
-                    <v-toolbar
-                        dark
-                        color="blue darken-3"
-                        class="mb-1"
-                        align="start"
-                        justify="left"
-                    >
+                    <v-toolbar class="mb-1" align="start" justify="left">
                         <v-text-field
                             v-model="search"
                             clearable
                             flat
-                            solo-inverted
+                            solo
                             hide-details
                             prepend-inner-icon="search"
-                            label="Search"
                             class="mr-4"
+                            placeholder="Search"
+                            outlined
                         ></v-text-field>
                         <template v-if="$vuetify.breakpoint.mdAndUp">
                             <v-spacer></v-spacer>
                             <v-select
                                 v-model="sortBy"
+                                solo
                                 flat
-                                solo-inverted
                                 hide-details
                                 :items="keys"
                                 prepend-inner-icon="search"
                                 label="Sort by"
                                 class="mr-4"
+                                outlined
                             ></v-select>
                             <v-spacer></v-spacer>
                             <v-btn-toggle v-model="sortDesc" mandatory>
-                                <v-btn
-                                    large
-                                    depressed
-                                    color="blue"
-                                    :value="false"
-                                >
+                                <v-btn large :value="false">
                                     <v-icon>mdi-arrow-up</v-icon>
                                 </v-btn>
-                                <v-btn
-                                    large
-                                    depressed
-                                    color="blue"
-                                    :value="true"
-                                >
+                                <v-btn large :value="true">
                                     <v-icon>mdi-arrow-down</v-icon>
                                 </v-btn>
                             </v-btn-toggle>
@@ -71,7 +57,7 @@
                 </template>
 
                 <template v-slot:default="{ items, isExpanded, expand }">
-                    <v-row>
+                    <v-row style="padding-bottom: 16px" class="pl-2 pr-4">
                         <v-col
                             v-for="client in items"
                             :key="client.id"
@@ -79,6 +65,7 @@
                             sm="6"
                             md="4"
                             lg="3"
+                            class="mr-0 pr-0 pl-2"
                         >
                             <v-hover>
                                 <template v-slot="{ hover }">
@@ -130,22 +117,10 @@
                         <span class="mr-4 grey--text">
                             Page {{ page }} of {{ numberOfPages }}
                         </span>
-                        <v-btn
-                            fab
-                            dark
-                            color="blue darken-3"
-                            class="mr-1"
-                            @click="formerPage"
-                        >
+                        <v-btn fab class="mr-1" @click="formerPage">
                             <v-icon>mdi-chevron-left</v-icon>
                         </v-btn>
-                        <v-btn
-                            fab
-                            dark
-                            color="blue darken-3"
-                            class="ml-1"
-                            @click="nextPage"
-                        >
+                        <v-btn fab class="ml-1" @click="nextPage">
                             <v-icon>mdi-chevron-right</v-icon>
                         </v-btn>
                     </div>

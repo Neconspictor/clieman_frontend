@@ -11,21 +11,35 @@
         <ClientList :clients="clients" clientCardWidth="400px" />
     </div>-->
 
-    <v-container fluid class="listContainer">
-        <ClientList :clients="clients" clientCardWidth="400px" />
-    </v-container>
+    <div>
+        <v-container fluid class="listContainer">
+            <ClientList :clients="clients" clientCardWidth="400px" />
+        </v-container>
+        <Test />
+    </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import ClientList from '@/components/client/ClientList'
+import Test from '@/components/Test'
 export default {
     components: {
         ClientList,
+        Test,
     },
 
     computed: {
         ...mapState(['clients']),
+    },
+
+    methods: {
+        onClickOutside() {
+            console.log('test')
+        },
+        onClick() {
+            console.log('onClick')
+        },
     },
 }
 </script>
