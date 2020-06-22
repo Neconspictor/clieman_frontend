@@ -6,8 +6,6 @@ import vuetify from './plugins/vuetify'
 import VueTextareaAutosize from 'vue-textarea-autosize'
 import i18n from './plugins/vue-i18n.js'
 
-import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
-
 Vue.use(VueTextareaAutosize)
 
 Vue.config.productionTip = false

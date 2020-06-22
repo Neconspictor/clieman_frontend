@@ -20,7 +20,9 @@ const messages = {
         close: 'Close',
         cancel: 'Cancel',
         create: 'Create',
+        delete: 'Delete',
         discard: 'Discard',
+        edit: 'Edit',
         save: 'Save',
         toolbar: 'Toolbar',
 
@@ -95,7 +97,9 @@ const messages = {
         close: 'Schließen',
         cancel: 'Abbrechen',
         create: 'Erstellen',
+        delete: 'Löschen',
         discard: 'Verwerfen',
+        edit: 'Ändern',
         save: 'Speichern',
         toolbar: 'Werkzeugleiste',
 

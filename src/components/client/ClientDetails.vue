@@ -51,16 +51,18 @@
 
             <v-card-actions>
                 <div v-if="doEditing" class="ml-4 mb-4 mt-4">
-                    <v-btn color="error" text @click="endEdit">{{
-                        $i18n.t('discard')
-                    }}</v-btn>
+                    <v-btn color="error" text @click="endEdit"
+                        >{{ $i18n.t('discard') }}
+                        <v-icon>cancel</v-icon>
+                    </v-btn>
                     <v-btn
                         color="success"
                         text
                         @click="validateForm"
                         :disabled="!formIsValid"
-                        >{{ $i18n.t('save') }}</v-btn
-                    >
+                        >{{ $i18n.t('save') }}
+                        <v-icon>mdi-content-save</v-icon>
+                    </v-btn>
                 </div>
 
                 <div v-else>
@@ -75,7 +77,7 @@
                         @click="startEdit"
                         :disabled="doEditing"
                     >
-                        Edit
+                        {{ $i18n.t('edit') }}
                         <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                     <v-btn
@@ -84,7 +86,7 @@
                         @click="startEdit"
                         :disabled="doEditing"
                     >
-                        Delete
+                        {{ $i18n.t('delete') }}
                         <v-icon>mdi-delete</v-icon>
                     </v-btn>
                 </div>

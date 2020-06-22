@@ -5,35 +5,24 @@
         :close-on-click="!currentlyEditing"
         :activator="DOMElement"
         :open-on-click="false"
-        offset-x
+        :width="'400px'"
+        :max-width="'100%'"
+        x-offset
     >
         <!-- non editing view -->
         <v-card
             v-if="!currentlyEditing"
             color="grey lighten-4"
             flat
-            style="width:400px;"
+            style="max-width: 400px; width: 100%; min-width: 400px; overflow: auto;"
+            elevation="4"
         >
-            <v-toolbar
-                :color="event.color"
-                dark
-                flat
-                style="overflow-x:auto; white-space: nowrap;"
-            >
-                <v-btn icon @click.stop="deleteEventDialogIsOpen = true">
-                    <v-icon>mdi-delete</v-icon>
-                </v-btn>
-
+            <v-toolbar :color="event.color" dark flat>
                 <div v-html="event.name"></div>
-
-                <v-spacer></v-spacer>
-                <v-btn icon @click="startEditingView">
-                    <v-icon>mdi-pencil</v-icon>
-                </v-btn>
             </v-toolbar>
             <v-card-text>
                 <!--<span v-html="event.details"></span>-->
-                <form style="width:100%;">
+                <form>
                     {{ event.details }}
                 </form>
             </v-card-text>
@@ -74,6 +63,20 @@
             <v-card-actions>
                 <v-btn text color="secondary" @click="isOpen = false">
                     {{ $i18n.t('close') }}
+                </v-btn>
+
+                <v-btn text color="secondary" @click="startEditingView">
+                    {{ $i18n.t('edit') }}
+                    <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+
+                <v-btn
+                    text
+                    color="secondary"
+                    @click.stop="deleteEventDialogIsOpen = true"
+                >
+                    {{ $i18n.t('delete') }}
+                    <v-icon>mdi-delete</v-icon>
                 </v-btn>
             </v-card-actions>
         </v-card>
