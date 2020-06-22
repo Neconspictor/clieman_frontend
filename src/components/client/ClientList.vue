@@ -185,7 +185,8 @@ export default {
 
     methods: {
         selectedClient() {
-            return this.getClientByID(this.selectedClientID)
+            let client = this.getClientByID(this.selectedClientID)
+            return client ? client : {}
         },
         handleClickedClientCard(event) {
             console.log('handleClickedClientCard')

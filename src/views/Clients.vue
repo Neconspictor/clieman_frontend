@@ -13,7 +13,7 @@
 
     <div>
         <v-container fluid class="listContainer">
-            <ClientList :clients="clients" clientCardWidth="400px" />
+            <ClientList :clients="clients" clientCardWidth="500px" />
         </v-container>
     </div>
 </template>

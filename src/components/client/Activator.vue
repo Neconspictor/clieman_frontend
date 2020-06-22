@@ -8,8 +8,7 @@
             :activator="activator"
             :persistent="doEditing"
             ref="comp"
-            width="500"
-            max-width="500"
+            :width="width"
         >
             <slot></slot>
         </component>
@@ -39,6 +38,11 @@ export default {
         doEditing: {
             type: Boolean,
             default: false,
+        },
+
+        width: {
+            type: [Number, String],
+            default: 'undef',
         },
     },
 

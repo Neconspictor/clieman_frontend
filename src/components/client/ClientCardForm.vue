@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 <template>
     <v-form
         ref="myForm"
@@ -310,8 +311,10 @@ export default {
             console.log('dateChanged, ', event)
             setTimeout(() => (this.birthdayDatePicker = false), 50)
         },
+        // eslint-disable-next-line no-unused-vars
         createSexSelectionText(v) {
-            return this.formatter.string(v.sex)
+            //return 'test'
+            return this.formatter.object(v.sex, () => this.$i18n.t(v.sex))
         },
 
         getEditedClient() {

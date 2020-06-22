@@ -1,7 +1,18 @@
 <template>
-    <Activator v-model="isOpen" :doEditing="doEditing" :activator="DOMElement">
-        <v-card elevation="4" dense :width="'undef'" :min-width="width">
-            <v-card-title class="text-body-2 flex-row justify-start">
+    <Activator
+        v-model="isOpen"
+        :doEditing="doEditing"
+        :activator="DOMElement"
+        :width="width"
+    >
+        <v-card
+            elevation="4"
+            dense
+            :min-width="width"
+            :max-width="width"
+            :width="undef"
+        >
+            <v-card-title class="d-flex flex-row justify-start">
                 <span v-if="!doEditing">
                     {{
                         `${formatter.string(client.title)} ${formatter.string(
@@ -55,9 +66,26 @@
                 <div v-else>
                     <v-btn text color="secondary" @click="isOpen = false">
                         {{ $i18n.t('close') }}
+                        <v-icon>mdi-close</v-icon>
                     </v-btn>
-                    <v-btn icon @click="startEdit" :disabled="doEditing">
+
+                    <v-btn
+                        text
+                        color="secondary"
+                        @click="startEdit"
+                        :disabled="doEditing"
+                    >
+                        Edit
                         <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                    <v-btn
+                        text
+                        color="secondary"
+                        @click="startEdit"
+                        :disabled="doEditing"
+                    >
+                        Delete
+                        <v-icon>mdi-delete</v-icon>
                     </v-btn>
                 </div>
             </v-card-actions>
