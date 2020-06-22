@@ -53,6 +53,8 @@ export default new Vuex.Store({
             // Ensure that Vue recognizes the changes
             // splice methods can be used for this
             state.clients.splice(index, 1, client)
+            state.clients = Object.assign([], state.clients)
+            state.idToClient.set(client.id, client)
         },
 
         UPDATE_EVENT(state, event) {

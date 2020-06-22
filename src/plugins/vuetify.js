@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
+import { ClickOutside } from 'vuetify/lib/directives'
 
 Vue.use(Vuetify)
 
@@ -11,5 +12,9 @@ export default new Vuetify({
     lang: {
         locales: { de, en },
         current: 'de',
+    },
+
+    directives: {
+        ClickOutside,
     },
 })

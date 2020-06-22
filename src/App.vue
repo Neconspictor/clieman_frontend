@@ -1,7 +1,6 @@
 <template>
     <v-app>
-        <Test />
-        <!--    <v-app-bar app color="primary" dark>
+        <v-app-bar app color="primary" dark>
             <v-toolbar-title>Dateman</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn
@@ -42,18 +41,13 @@
                     <strong>Dateman</strong>
                 </v-col>
             </v-row>
-        </v-footer>-->
+        </v-footer>
     </v-app>
 </template>
 
 <script>
-import Test from '@/components/Test'
-
 export default {
     name: 'App',
-    components: {
-        Test,
-    },
 
     computed: {
         links() {

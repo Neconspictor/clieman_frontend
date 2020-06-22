@@ -2,12 +2,10 @@
     <v-card
         hover="true"
         :elevation="hover ? 4 : 2"
-        :class="'card ' + (isExpanded ? ' on-top ' : '')"
+        class="card"
         dense
         :width="width"
-        :min-width="isExpanded ? width : 100"
-        @click="emitExpandEvent(true)"
-        v-click-outside="outsideClick"
+        @click="emitClickEvent"
     >
         <v-card-title class="text-body-2">
             <v-flex class="d-flex">
@@ -22,39 +20,14 @@
         </v-card-title>
 
         <v-card-subtitle class="text-caption">{{ client.id }}</v-card-subtitle>
-
-        <div v-if="isExpanded">
-            <div justify-right>
-                <v-spacer></v-spacer>
-                <v-btn icon @click="doEditing = true" :disabled="doEditing">
-                    <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-            </div>
-            <v-divider></v-divider>
-            <ClientCardForm
-                :client="client"
-                :value="doEditing"
-                @end-edit="doEditing = false"
-            />
-        </div>
     </v-card>
 </template>
 
 <script>
-import ClientCardForm from '@/components/client/ClientCardForm'
 import Formatter from '@/util/formatter'
 
 export default {
-    components: {
-        ClientCardForm,
-    },
-
     props: {
-        isExpanded: {
-            type: Boolean,
-            required: true,
-        },
-
         client: {
             type: Object,
             required: true,
@@ -73,18 +46,17 @@ export default {
 
     data() {
         return {
-            doEditing: false,
             formatter: new Formatter(this.$i18n),
         }
     },
 
     methods: {
-        emitExpandEvent(val) {
-            this.$emit('expand', val)
-        },
-
-        outsideClick() {
-            console.log('test')
+        emitClickEvent(event) {
+            this.$emit('click', {
+                domElement: event.target,
+                client: this.client,
+                nativeEvent: event,
+            })
         },
     },
 }

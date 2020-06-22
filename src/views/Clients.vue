@@ -15,18 +15,15 @@
         <v-container fluid class="listContainer">
             <ClientList :clients="clients" clientCardWidth="400px" />
         </v-container>
-        <Test />
     </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import ClientList from '@/components/client/ClientList'
-import Test from '@/components/Test'
 export default {
     components: {
         ClientList,
-        Test,
     },
 
     computed: {

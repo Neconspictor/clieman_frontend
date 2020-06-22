@@ -56,7 +56,7 @@
                     </v-toolbar>
                 </template>
 
-                <template v-slot:default="{ items, isExpanded, expand }">
+                <template v-slot:default="{ items }">
                     <v-row style="padding-bottom: 16px" class="pl-2 pr-4">
                         <v-col
                             v-for="client in items"
@@ -71,10 +71,9 @@
                                 <template v-slot="{ hover }">
                                     <ClientCard
                                         :hover="hover"
-                                        :isExpanded="isExpanded(client)"
                                         :client="client"
-                                        @expand="v => expand(client, v)"
                                         :width="clientCardWidth"
+                                        @click="handleClickedClientCard"
                                     />
                                 </template>
                             </v-hover>
@@ -127,15 +126,26 @@
                 </template>
             </v-data-iterator>
         </div>
+
+        <ClientDetails
+            ref="clientDetails"
+            v-model="selectedOpen"
+            :client="selectedClient()"
+            :width="clientCardWidth"
+            :DOMElement="clientDOMElement"
+        />
     </div>
 </template>
 
 <script>
 import ClientCard from '@/components/client/ClientCard'
+import ClientDetails from '@/components/client/ClientDetails'
 import moment from 'moment-timezone'
+import { mapGetters } from 'vuex'
 export default {
     components: {
         ClientCard,
+        ClientDetails,
     },
 
     props: {
@@ -159,16 +169,53 @@ export default {
             sortBy: 'name',
             sortDesc: false,
             keys: ['name'],
+            clientDOMElement: null,
+            selectedClientID: null,
+            selectedOpen: false,
         }
     },
 
     computed: {
+        ...mapGetters(['getClientByID']),
+
         numberOfPages() {
             return Math.ceil(this.clients.length / this.itemsPerPage)
         },
     },
 
     methods: {
+        selectedClient() {
+            return this.getClientByID(this.selectedClientID)
+        },
+        handleClickedClientCard(event) {
+            console.log('handleClickedClientCard')
+
+            if (this.$refs.clientDetails.isEditing()) {
+                return null
+            }
+
+            const open = () => {
+                console.log('handleClickedClientCard:open')
+                this.clientDOMElement = event.domElement
+                this.selectedClientID = event.client.id
+                setTimeout(() => {
+                    console.log('nextTick: selectedOpen')
+                    this.selectedOpen = true
+                }, 200)
+            }
+
+            if (this.selectedOpen) {
+                console.log('handleClickedClientCard: selectedOpen')
+                this.selectedOpen = false
+                setTimeout(open, 10)
+            } else {
+                open()
+                console.log('handleClickedClientCard: after open')
+            }
+            event.nativeEvent.stopPropagation()
+            console.log('handleClickedClientCard: end')
+        },
+
         nextPage() {
             if (this.page + 1 <= this.numberOfPages) this.page += 1
         },

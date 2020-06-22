@@ -173,7 +173,7 @@
                                 </template>
                                 <v-date-picker
                                     v-model="birthdayDate"
-                                    @input="birthdayDatePicker = false"
+                                    @click:date="dateChanged"
                                 ></v-date-picker>
                             </v-menu>
                         </template>
@@ -193,25 +193,11 @@
                 </tbody>
             </template>
         </v-simple-table>
-
-        <div v-if="value" class="ml-4 mb-4 mt-4">
-            <v-btn color="error" text @click="emitEndEditingEvent">{{
-                $i18n.t('discard')
-            }}</v-btn>
-            <v-btn
-                color="success"
-                text
-                @click="validate"
-                :disabled="!formIsValid"
-                >{{ $i18n.t('save') }}</v-btn
-            >
-        </div>
     </v-form>
 </template>
 
 <script>
 import moment from 'moment-timezone'
-import copy from '@/util/copy'
 import TableEntry from '@/components/client/TableEntry'
 import DateUtil from '@/util/date'
 import TextInput from '@/components/client/TextInput'
@@ -225,6 +211,10 @@ export default {
 
     props: {
         client: {
+            type: Object,
+            required: true,
+        },
+        clientEdit: {
             type: Object,
             required: true,
         },
@@ -245,7 +235,6 @@ export default {
                 this.$i18n,
                 this.$i18n.t('clientData.placeholders.birthday')
             ),
-            clientEdit: copy.deepCopy(this.client),
         }
     },
 
@@ -305,6 +294,10 @@ export default {
     },
 
     methods: {
+        dateChanged(event) {
+            console.log('dateChanged, ', event)
+            setTimeout(() => (this.birthdayDatePicker = false), 50)
+        },
         createSexSelectionText(v) {
             return this.formatter.string(v.sex)
         },
@@ -314,16 +307,16 @@ export default {
         },
 
         emitEndEditingEvent() {
-            // note: if nothing has changed Vue doesn't refresh
-            this.clientEdit = copy.deepCopy(this.client)
             this.$emit('end-edit')
         },
 
         validate() {
             if (this.$refs.form.validate()) {
+                console.log(this.clientEdit)
                 this.$store
                     .dispatch('updateClient', this.clientEdit)
                     .finally(() => {
+                        console.log('test')
                         this.emitEndEditingEvent()
                     })
             }
