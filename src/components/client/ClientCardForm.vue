@@ -1,5 +1,10 @@
 <template>
-    <v-form ref="form" v-model="formIsValid" :lazy-validation="true">
+    <v-form
+        ref="myForm"
+        v-model="formIsValid"
+        @input="emitFormValidation"
+        :lazy-validation="true"
+    >
         <v-simple-table dense>
             <template v-slot:default>
                 <tbody>
@@ -74,6 +79,7 @@
                                     $i18n.t('clientData.placeholders.sex')
                                 "
                                 @change="v => (clientEdit.sex = v.sex)"
+                                @click.stop="foo"
                                 :item-text="createSexSelectionText"
                                 single-line
                                 hide-details="true"
@@ -239,6 +245,9 @@ export default {
     },
 
     computed: {
+        refs() {
+            return this.$refs.myForm
+        },
         selectedSex() {
             return { sex: this.clientEdit.sex }
         },
@@ -294,6 +303,9 @@ export default {
     },
 
     methods: {
+        foo(event) {
+            console.log('foo: ', event)
+        },
         dateChanged(event) {
             console.log('dateChanged, ', event)
             setTimeout(() => (this.birthdayDatePicker = false), 50)
@@ -311,8 +323,7 @@ export default {
         },
 
         validate() {
-            if (this.$refs.form.validate()) {
-                console.log(this.clientEdit)
+            if (this.refs.validate()) {
                 this.$store
                     .dispatch('updateClient', this.clientEdit)
                     .finally(() => {
@@ -320,6 +331,11 @@ export default {
                         this.emitEndEditingEvent()
                     })
             }
+        },
+
+        emitFormValidation(e) {
+            console.log('emitFormValidation: ', e)
+            this.$emit('valid', e)
         },
     },
 }
