@@ -248,24 +248,45 @@ export default {
         customFilter(items, search) {
             if (!search) return items
 
-            search = search.toString().toLowerCase()
+            search = search
+                .toString()
+                .toLowerCase()
+                .trim()
+
+            let keywords = search.split(' ')
+
+            let test = (keyword, item, key) => {
+                var source = item[key]
+                if (key === 'sex') {
+                    source = this.$i18n.t(item[key])
+                } else if (key === 'birthday') {
+                    source = this.formatter.date(item[key], 'birthday')
+                }
+                let value = source
+                    .toString()
+                    .toLowerCase()
+                    .trim()
+
+                let tokens = value.split(' ')
+                for (let token of tokens) {
+                    if (token.startsWith(keyword)) return true
+                }
+                return false
+            }
 
             return items.filter(item => {
-                for (const key in item) {
-                    var source = item[key]
-                    if (key === 'sex') {
-                        source = this.$i18n.t(item[key])
-                    } else if (key === 'birthday') {
-                        source = this.formatter.date(item[key], 'birthday')
+                for (let keyword of keywords) {
+                    var found = false
+                    for (const key in item) {
+                        if (test(keyword, item, key)) {
+                            found = true
+                            break
+                        }
                     }
-                    var value = source.toString().toLowerCase()
-
-                    if (value.startsWith(search)) {
-                        return true
-                    }
+                    if (!found) return false
                 }
 
-                return false
+                return true
             })
         },
     },
