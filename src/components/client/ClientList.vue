@@ -165,8 +165,9 @@
 <script>
 import ClientCard from '@/components/client/ClientCard'
 import ClientDetails from '@/components/client/ClientDetails'
-import moment from 'moment-timezone'
 import { mapGetters } from 'vuex'
+import Formatter from '@/util/formatter'
+
 export default {
     components: {
         ClientCard,
@@ -197,6 +198,7 @@ export default {
             clientDOMElement: null,
             selectedClientID: null,
             selectedOpen: false,
+            formatter: new Formatter(this.$i18n, ''),
         }
     },
 
@@ -254,7 +256,7 @@ export default {
                     if (key === 'sex') {
                         source = this.$i18n.t(item[key])
                     } else if (key === 'birthday') {
-                        source = moment(item[key]).format('YYYY-MM-DD')
+                        source = this.formatter.date(item[key], 'birthday')
                     }
                     var value = source.toString().toLowerCase()
 
