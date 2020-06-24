@@ -116,7 +116,7 @@ export default {
                 start: DateUtil.formatDefault(startDate),
                 endDate: endDate,
                 end: DateUtil.formatDefault(endDate),
-                color: '#5E00A5',
+                color: this.$vuetify.theme.themes.light.primary,
                 details: '',
                 name: '',
                 clients: [],

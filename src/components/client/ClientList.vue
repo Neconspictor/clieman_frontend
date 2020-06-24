@@ -19,48 +19,50 @@
             >
                 <template v-slot:header>
                     <v-toolbar
-                        class="mb-1 primary--text primary"
+                        dark
+                        class="mb-1"
+                        color="blue darken-3"
                         align="start"
                         justify="left"
+                        rounded
+                        outlined
                     >
                         <v-text-field
                             v-model="search"
                             clearable
                             flat
-                            solo
+                            solo-inverted
                             hide-details
                             prepend-inner-icon="search"
                             class="mr-4"
                             placeholder="Search"
-                            outlined
                         ></v-text-field>
                         <template v-if="$vuetify.breakpoint.mdAndUp">
                             <v-spacer></v-spacer>
                             <v-select
                                 v-model="sortBy"
-                                solo
+                                solo-inverted
                                 flat
                                 hide-details
                                 :items="keys"
                                 prepend-inner-icon="search"
                                 label="Sort by"
-                                class="mr-4"
-                                color="primary"
-                                outlined
                             ></v-select>
                             <v-spacer></v-spacer>
                             <v-btn-toggle v-model="sortDesc" mandatory>
                                 <v-btn
+                                    depressed
+                                    color="blue"
                                     large
                                     :value="false"
-                                    color="primary darkener-4"
                                 >
                                     <v-icon>mdi-arrow-up</v-icon>
                                 </v-btn>
                                 <v-btn
                                     large
                                     :value="true"
-                                    color="primary lighter-5"
+                                    depressed
+                                    color="blue"
                                 >
                                     <v-icon>mdi-arrow-down</v-icon>
                                 </v-btn>
@@ -129,10 +131,20 @@
                         <span class="mr-4 grey--text">
                             Page {{ page }} of {{ numberOfPages }}
                         </span>
-                        <v-btn fab class="mr-1" @click="formerPage">
+                        <v-btn
+                            fab
+                            class="mr-1"
+                            color="blue darken-3"
+                            @click="formerPage"
+                        >
                             <v-icon>mdi-chevron-left</v-icon>
                         </v-btn>
-                        <v-btn fab class="ml-1" @click="nextPage">
+                        <v-btn
+                            fab
+                            class="ml-1"
+                            color="blue darken-3"
+                            @click="nextPage"
+                        >
                             <v-icon>mdi-chevron-right</v-icon>
                         </v-btn>
                     </div>

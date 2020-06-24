@@ -10,7 +10,7 @@
                 style="width:100%;"
                 :min-height="0"
                 :height="unset"
-                :placeholder="this.$i18n.t('placeholders.addDesc')"
+                :placeholder="this.$i18n.t('placeholders.addTitle')"
                 rows="1"
                 @input="checkForNewLines"
                 class="tool-header"
@@ -169,7 +169,7 @@
                 :items="clientTransformed"
                 @change="addClient"
                 item-text="Description"
-                :placeholder="$i18n.t('placeholders.search')"
+                :placeholder="$i18n.t('placeholders.addClient')"
                 return-object
                 outlined
             ></v-autocomplete>

@@ -214,7 +214,8 @@ export default {
 }
 
 .theme-dark--my-toolbar {
-    background-color: map-get($material-dark, 'bg-color');
-    outline-style: dotted;
+    // background-color: map-get($material-dark, 'bg-color');
+    background-color: var(--primary-color);
+    color: white;
 }
 </style>

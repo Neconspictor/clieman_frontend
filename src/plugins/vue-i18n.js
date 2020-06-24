@@ -31,7 +31,7 @@ const messages = {
         placeholders: {
             addTitle: 'Add title',
             addDesc: 'Add description',
-            search: 'Start typing to search',
+            addClient: 'Add client',
         },
 
         date: 'Date',
@@ -111,7 +111,7 @@ const messages = {
         placeholders: {
             addTitle: 'Titel hinzufügen',
             addDesc: 'Beschreibung hinzufügen',
-            search: 'Tippe um zu suchen',
+            addClient: 'Klienten hinzufügen',
         },
 
         date: 'Datum',
