@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 <template>
     <v-form
         ref="myForm"
@@ -278,11 +277,8 @@ export default {
             return [
                 v => {
                     if (!v) return true
-
                     v = v.replace(/\s/g, '')
                     return (
-                        //TODO
-
                         (v && /^[0-9+][0-9]{0,}$/.test(v)) ||
                         this.$i18n.t('clientData.validators.mobile')
                     )
@@ -307,9 +303,8 @@ export default {
         dateChanged() {
             setTimeout(() => (this.birthdayDatePicker = false), 50)
         },
-        // eslint-disable-next-line no-unused-vars
+
         createSexSelectionText(v) {
-            //return 'test'
             return this.formatter.object(v.sex, () => this.$i18n.t(v.sex))
         },
 
