@@ -244,6 +244,8 @@ export default {
 
         // eslint-disable-next-line no-unused-vars
         customFilter(items, search) {
+            if (!search) return items
+
             search = search.toString().toLowerCase()
 
             return items.filter(item => {
