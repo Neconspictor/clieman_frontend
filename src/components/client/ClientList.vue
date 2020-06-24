@@ -18,7 +18,11 @@
                 :sort-desc="sortDesc"
             >
                 <template v-slot:header>
-                    <v-toolbar class="mb-1" align="start" justify="left">
+                    <v-toolbar
+                        class="mb-1 primary--text primary"
+                        align="start"
+                        justify="left"
+                    >
                         <v-text-field
                             v-model="search"
                             clearable
@@ -41,14 +45,23 @@
                                 prepend-inner-icon="search"
                                 label="Sort by"
                                 class="mr-4"
+                                color="primary"
                                 outlined
                             ></v-select>
                             <v-spacer></v-spacer>
                             <v-btn-toggle v-model="sortDesc" mandatory>
-                                <v-btn large :value="false">
+                                <v-btn
+                                    large
+                                    :value="false"
+                                    color="primary darkener-4"
+                                >
                                     <v-icon>mdi-arrow-up</v-icon>
                                 </v-btn>
-                                <v-btn large :value="true">
+                                <v-btn
+                                    large
+                                    :value="true"
+                                    color="primary lighter-5"
+                                >
                                     <v-icon>mdi-arrow-down</v-icon>
                                 </v-btn>
                             </v-btn-toggle>
@@ -189,32 +202,25 @@ export default {
             return client ? client : {}
         },
         handleClickedClientCard(event) {
-            console.log('handleClickedClientCard')
-
             if (this.$refs.clientDetails.isEditing()) {
                 return null
             }
 
             const open = () => {
-                console.log('handleClickedClientCard:open')
                 this.clientDOMElement = event.domElement
                 this.selectedClientID = event.client.id
                 setTimeout(() => {
-                    console.log('nextTick: selectedOpen')
                     this.selectedOpen = true
                 }, 200)
             }
 
             if (this.selectedOpen) {
-                console.log('handleClickedClientCard: selectedOpen')
                 this.selectedOpen = false
                 setTimeout(open, 10)
             } else {
                 open()
-                console.log('handleClickedClientCard: after open')
             }
             event.nativeEvent.stopPropagation()
-            console.log('handleClickedClientCard: end')
         },
 
         nextPage() {
@@ -227,7 +233,6 @@ export default {
         // eslint-disable-next-line no-unused-vars
         customFilter(items, search) {
             search = search.toString().toLowerCase()
-            console.log('search: ', search)
 
             return items.filter(item => {
                 for (const key in item) {
@@ -239,7 +244,6 @@ export default {
                     }
                     var value = source.toString().toLowerCase()
 
-                    console.log(value)
                     if (value.startsWith(search)) {
                         return true
                     }

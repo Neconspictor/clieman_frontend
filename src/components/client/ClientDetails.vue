@@ -11,31 +11,34 @@
             :min-width="width"
             :max-width="width"
             :width="undef"
+            :style="cssProps"
         >
-            <v-card-title class="d-flex flex-row justify-start">
-                <span v-if="!doEditing">
-                    {{
-                        `${formatter.string(client.title)} ${formatter.string(
-                            client.forename
-                        )} ${formatter.string(client.name)}`
-                    }}
-                </span>
-                <span v-else>
-                    {{
-                        `${formatter.string(
-                            clientEdit.title
-                        )} ${formatter.string(
-                            clientEdit.forename
-                        )} ${formatter.string(clientEdit.name)}`
-                    }}
-                </span>
+            <div :class="toolbarClasses">
+                <v-card-title class="d-flex flex-row justify-start">
+                    <span v-if="!doEditing">
+                        {{
+                            `${formatter.string(
+                                client.title
+                            )} ${formatter.string(
+                                client.forename
+                            )} ${formatter.string(client.name)}`
+                        }}
+                    </span>
+                    <span v-else>
+                        {{
+                            `${formatter.string(
+                                clientEdit.title
+                            )} ${formatter.string(
+                                clientEdit.forename
+                            )} ${formatter.string(clientEdit.name)}`
+                        }}
+                    </span>
+                </v-card-title>
 
-                <v-spacer></v-spacer>
-            </v-card-title>
-
-            <v-card-subtitle class="text-caption">{{
-                client.id
-            }}</v-card-subtitle>
+                <v-card-subtitle class="text-caption">{{
+                    client.id
+                }}</v-card-subtitle>
+            </div>
 
             <v-card-text>
                 <v-divider></v-divider>
@@ -66,26 +69,16 @@
                 </div>
 
                 <div v-else>
-                    <v-btn text color="secondary" @click="isOpen = false">
+                    <v-btn text @click="isOpen = false">
                         {{ $i18n.t('close') }}
                         <v-icon>mdi-close</v-icon>
                     </v-btn>
 
-                    <v-btn
-                        text
-                        color="secondary"
-                        @click="startEdit"
-                        :disabled="doEditing"
-                    >
+                    <v-btn text @click="startEdit" :disabled="doEditing">
                         {{ $i18n.t('edit') }}
                         <v-icon>mdi-pencil</v-icon>
                     </v-btn>
-                    <v-btn
-                        text
-                        color="secondary"
-                        @click="startEdit"
-                        :disabled="doEditing"
-                    >
+                    <v-btn text @click="startEdit" :disabled="doEditing">
                         {{ $i18n.t('delete') }}
                         <v-icon>mdi-delete</v-icon>
                     </v-btn>
@@ -96,7 +89,7 @@
 </template>
 
 <script>
-import Activator from '@/components/client/Activator'
+import Activator from '@/components//Activator'
 import ClientCardForm from '@/components/client/ClientCardForm'
 
 import Formatter from '@/util/formatter'
@@ -134,6 +127,11 @@ export default {
     },
 
     computed: {
+        cssProps() {
+            return {
+                '--primary-color': this.$vuetify.theme.themes.light.primary,
+            }
+        },
         isOpen: {
             get: function() {
                 return this.value
@@ -141,9 +139,18 @@ export default {
 
             set: function(newValue) {
                 this.$emit('input', newValue)
-                console.log('ClientDetails:isOpen: newValue: ', newValue)
-                console.log('ClientDetails:isOpen: value: ', this.value)
             },
+        },
+
+        toolbarClasses() {
+            let classes = ''
+            if (this.$vuetify.theme.dark) {
+                classes += 'theme-dark--my-toolbar'
+            } else {
+                classes += 'theme-light--my-toolbar'
+            }
+
+            return classes
         },
     },
 
@@ -155,12 +162,12 @@ export default {
             animate: false,
             clientEdit: {},
             formIsValid: true,
+            accentColor: '',
         }
     },
 
     methods: {
         validateForm() {
-            console.log('validateForm')
             this.$refs.clientCardForm.validate()
         },
         startEdit() {
@@ -177,14 +184,16 @@ export default {
             return this.doEditing
         },
         updateValidation(e) {
-            console.log('updateValidation: ', e)
             this.formIsValid = e
         },
     },
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+// Import the Vuetify styles somewhere global
+@import '~vuetify/src/styles/styles.sass';
+
 .card {
     overflow: none;
 }
@@ -192,5 +201,20 @@ export default {
 .v-menu__content {
     overflow: auto;
     contain: unset;
+}
+
+.theme-light--my-toolbar {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.theme--light.v-card > .v-card__text,
+.theme--light.v-card .v-card__subtitle {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.theme-dark--my-toolbar {
+    background-color: map-get($material-dark, 'bg-color');
+    outline-style: dotted;
 }
 </style>

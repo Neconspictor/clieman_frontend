@@ -6,7 +6,7 @@
             :close-on-content-click="false"
             :close-on-click="!doEditing"
             :activator="activator"
-            :persistent="doEditing"
+            :persistent="dialogPersistent"
             ref="comp"
             :width="width"
         >
@@ -43,6 +43,11 @@ export default {
         width: {
             type: [Number, String],
             default: 'undef',
+        },
+
+        dialogPersistent: {
+            type: Boolean,
+            default: true,
         },
     },
 

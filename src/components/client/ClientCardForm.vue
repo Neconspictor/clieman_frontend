@@ -304,11 +304,7 @@ export default {
     },
 
     methods: {
-        foo(event) {
-            console.log('foo: ', event)
-        },
-        dateChanged(event) {
-            console.log('dateChanged, ', event)
+        dateChanged() {
             setTimeout(() => (this.birthdayDatePicker = false), 50)
         },
         // eslint-disable-next-line no-unused-vars
@@ -330,14 +326,12 @@ export default {
                 this.$store
                     .dispatch('updateClient', this.clientEdit)
                     .finally(() => {
-                        console.log('test')
                         this.emitEndEditingEvent()
                     })
             }
         },
 
         emitFormValidation(e) {
-            console.log('emitFormValidation: ', e)
             this.$emit('valid', e)
         },
     },

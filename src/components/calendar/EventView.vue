@@ -1,90 +1,95 @@
 <template>
-    <v-menu
-        v-model="isOpen"
-        :close-on-content-click="false"
-        :close-on-click="!currentlyEditing"
-        :activator="DOMElement"
-        :open-on-click="false"
-        :width="'400px'"
-        :max-width="'100%'"
+    <Activator
         x-offset
+        v-model="isOpen"
+        :doEditing="currentlyEditing"
+        :activator="DOMElement"
+        :width="width"
+        :dialogPersistent="dialogPersistent"
     >
         <!-- non editing view -->
         <v-card
-            v-if="!currentlyEditing"
-            color="grey lighten-4"
             flat
-            style="max-width: 400px; width: 100%; min-width: 400px; overflow: auto;"
+            :style="
+                `max-width: ${width}; width: 100%; min-width: ${width}; overflow: auto;`
+            "
             elevation="4"
         >
-            <v-toolbar :color="event.color" dark flat>
-                <div v-html="event.name"></div>
-            </v-toolbar>
-            <v-card-text>
-                <!--<span v-html="event.details"></span>-->
-                <form>
+            <wrapper v-if="!currentlyEditing && event">
+                <v-card-title
+                    class="tool-header"
+                    :style="`background-color: ${event.color};`"
+                >
+                    {{ event.name }}
+                </v-card-title>
+
+                <v-card-text>
                     {{ event.details }}
-                </form>
-            </v-card-text>
+                </v-card-text>
 
-            <v-card-text>
-                <v-text-field
-                    v-model="startTime"
-                    :label="$i18n.t('startTime')"
-                    prepend-icon="access_time"
-                    readonly
-                ></v-text-field>
+                <v-card-text>
+                    <v-text-field
+                        v-model="startTime"
+                        :label="$i18n.t('startTime')"
+                        prepend-icon="access_time"
+                        readonly
+                    ></v-text-field>
 
-                <v-text-field
-                    v-model="duration"
-                    :label="$i18n.t('duration')"
-                    prepend-icon="timelapse"
-                    readonly
-                ></v-text-field>
-            </v-card-text>
+                    <v-text-field
+                        v-model="duration"
+                        :label="$i18n.t('duration')"
+                        prepend-icon="timelapse"
+                        readonly
+                    ></v-text-field>
+                </v-card-text>
 
-            <v-card-text>
-                <h3 class="">{{ $i18n.t('clients') }}:</h3>
-                <v-chip
-                    v-for="(client, i) in event.clients"
-                    :key="i"
-                    label
-                    class="mr-4"
-                    >{{
-                        client.forename +
-                            ' ' +
-                            client.name +
-                            ' (id: ' +
-                            client.id +
-                            ')'
-                    }}</v-chip
+                <v-card-text>
+                    <h3 class="">{{ $i18n.t('clients') }}:</h3>
+                    <v-chip
+                        v-for="(client, i) in event.clients"
+                        :key="i"
+                        label
+                        class="mr-4"
+                        >{{
+                            client.forename +
+                                ' ' +
+                                client.name +
+                                ' (id: ' +
+                                client.id +
+                                ')'
+                        }}</v-chip
+                    >
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn text @click="isOpen = false">
+                        {{ $i18n.t('close') }}
+                    </v-btn>
+
+                    <v-btn text @click="startEditingView">
+                        {{ $i18n.t('edit') }}
+                        <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+
+                    <v-btn text @click.stop="deleteEventDialogIsOpen = true">
+                        {{ $i18n.t('delete') }}
+                        <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                </v-card-actions>
+            </wrapper>
+
+            <slot v-else name="editor">
+                <EventEditor
+                    :event="event"
+                    :width="width"
+                    @cancel="cancel"
+                    @accept="save"
                 >
-            </v-card-text>
-            <v-card-actions>
-                <v-btn text color="secondary" @click="isOpen = false">
-                    {{ $i18n.t('close') }}
-                </v-btn>
-
-                <v-btn text color="secondary" @click="startEditingView">
-                    {{ $i18n.t('edit') }}
-                    <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-
-                <v-btn
-                    text
-                    color="secondary"
-                    @click.stop="deleteEventDialogIsOpen = true"
-                >
-                    {{ $i18n.t('delete') }}
-                    <v-icon>mdi-delete</v-icon>
-                </v-btn>
-            </v-card-actions>
+                    <template v-slot:accept>
+                        {{ $i18n.t('save') }}
+                    </template>
+                </EventEditor>
+            </slot>
         </v-card>
-        <EventEditor v-else :event="event" @cancel="cancel" @accept="save">
-            <template v-slot:accept>
-                {{ $i18n.t('save') }}
-            </template>
-        </EventEditor>
 
         <ConfirmDialog
             v-model="deleteEventDialogIsOpen"
@@ -94,7 +99,7 @@
                 {{ $i18n.t('messages.assertEventDeletion') }}
             </template>
         </ConfirmDialog>
-    </v-menu>
+    </Activator>
 </template>
 
 <script>
@@ -102,11 +107,13 @@ import ConfirmDialog from '@/components/ConfirmDialog'
 import EventEditor from '@/components/calendar/EventEditor'
 //import DateUtil from '@/util/date.js'
 import moment from 'moment-timezone'
+import Activator from '@/components//Activator'
 
 export default {
     components: {
         ConfirmDialog,
         EventEditor,
+        Activator,
     },
     props: {
         DOMElement: {
@@ -121,13 +128,28 @@ export default {
             type: Boolean,
             required: true,
         },
+
+        width: {
+            type: [Number, String],
+            default: '400px',
+        },
+
+        editing: {
+            type: Boolean,
+            default: false,
+        },
+
+        dialogPersistent: {
+            type: Boolean,
+            default: true,
+        },
     },
 
     data() {
         return {
             flip: false,
             deleteEventDialogIsOpen: false,
-            currentlyEditing: false,
+            currentlyEditing: this.editing,
         }
     },
 
@@ -170,11 +192,11 @@ export default {
         },
 
         cancel() {
-            this.currentlyEditing = false
+            this.currentlyEditing = this.editing
         },
 
         save(changedEvent) {
-            this.currentlyEditing = false
+            this.currentlyEditing = this.editing
             this.$emit('event-update', changedEvent)
         },
     },

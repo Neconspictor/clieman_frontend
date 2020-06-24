@@ -78,6 +78,9 @@ const messages = {
         male: 'Male',
         female: 'Female',
         diverse: 'Diverse',
+
+        light: 'Light',
+        dark: 'Dark',
     },
 
     de: {
@@ -156,6 +159,9 @@ const messages = {
         male: 'Männlich',
         female: 'Weiblich',
         diverse: 'Divers',
+
+        light: 'Hell',
+        dark: 'Dunkel',
     },
 }
 

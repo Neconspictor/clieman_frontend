@@ -45,7 +45,28 @@
                         @delete-event="deleteSelectedEvent"
                     />
 
-                    <v-dialog
+                    <EventView
+                        v-model="eventCreateDialogIsOpen"
+                        :dialogPersistent="false"
+                        :editing="true"
+                        @input="handleEventCreatorStateChange"
+                    >
+                        <template v-slot:editor>
+                            <EventEditor
+                                ref="eventCreatorEditor"
+                                v-if="eventCreateDialogIsOpen"
+                                :event="defaultEvent"
+                                @cancel="eventCreateDialogIsOpen = false"
+                                @accept="createEvent"
+                            >
+                                <template v-slot:accept>
+                                    {{ $i18n.t('create') }}
+                                </template>
+                            </EventEditor>
+                        </template>
+                    </EventView>
+
+                    <!--<v-dialog
                         v-model="eventCreateDialogIsOpen"
                         @click:outside="eventCreateDialogIsOpen = false"
                         width="unset"
@@ -60,7 +81,7 @@
                                 {{ $i18n.t('create') }}
                             </template>
                         </EventEditor>
-                    </v-dialog>
+                    </v-dialog>-->
                 </v-sheet>
             </v-col>
         </v-row>
@@ -160,7 +181,6 @@ export default {
         },
 
         updateRange({ start, end }) {
-            console.log('start', start)
             this.start = start
             this.end = end
         },
@@ -211,10 +231,15 @@ export default {
         },
 
         createEvent(eventData) {
-            console.log(eventData)
             const id = idUtil.defaultCreateUniqueID(this.events)
             this.$store.dispatch('addEvent', { ...eventData, id: id })
             this.eventCreateDialogIsOpen = false
+        },
+
+        handleEventCreatorStateChange(value) {
+            if (!value) {
+                this.$refs.eventCreatorEditor.reset()
+            }
         },
     },
 }

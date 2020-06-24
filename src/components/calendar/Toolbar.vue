@@ -1,43 +1,23 @@
 /* eslint-disable no-unused-vars */
 <template>
     <div>
-        <v-toolbar flat color="white">
-            <v-btn
-                outlined
-                class="mr-4 d-none d-sm-flex"
-                color="grey darken-2"
-                @click="emitSetToday"
-            >
+        <v-toolbar flat>
+            <v-btn outlined class="mr-4 d-none d-sm-flex" @click="emitSetToday">
                 {{ $t('today') }}
             </v-btn>
 
             <v-btn
                 outlined
                 class="mr-4 d-none d-sm-flex"
-                color="grey darken-2"
                 @click="emitCreateEvent"
             >
                 {{ $t('create') }}
             </v-btn>
 
-            <v-btn
-                fab
-                text
-                small
-                color="grey darken-2"
-                @click="emitPrev"
-                class="d-none d-sm-flex"
-            >
+            <v-btn fab text small @click="emitPrev" class="d-none d-sm-flex">
                 <v-icon small>mdi-chevron-left</v-icon>
             </v-btn>
-            <v-btn
-                fab
-                text
-                small
-                color="grey darken-2"
-                @click="emitNext"
-                class="d-none d-sm-flex"
-            >
+            <v-btn fab text small @click="emitNext" class="d-none d-sm-flex">
                 <v-icon small>mdi-chevron-right</v-icon>
             </v-btn>
             <v-spacer></v-spacer>
@@ -47,7 +27,6 @@
                 fab
                 text
                 small
-                color="grey darken-2"
                 @click="showMobilMenu = true"
                 class="hidden-sm-and-up"
             >

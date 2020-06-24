@@ -3,8 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
-import VueTextareaAutosize from 'vue-textarea-autosize'
+import VueTextareaAutosize from '@/components/extern/TextareaAutosize'
 import i18n from './plugins/vue-i18n.js'
+// Import the Vuetify styles somewhere global
+import 'vuetify/src/styles/styles.sass'
 
 Vue.use(VueTextareaAutosize)
 

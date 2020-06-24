@@ -1,196 +1,189 @@
 <template>
-    <!-- editing view -->
-    <div>
-        <v-card color="grey lighten-4" flat style="width:400px;">
-            <v-toolbar
-                :color="clonedEvent.color"
-                dark
-                flat
-                style="overflow-x:auto; white-space: nowrap;"
+    <wrapper>
+        <v-card-title
+            :style="`background-color: ${clonedEvent.color};`"
+            :class="'tool-header'"
+        >
+            <textarea-autosize
+                v-model="clonedEvent.name"
+                type="text"
+                style="width:100%;"
+                :min-height="0"
+                :height="unset"
+                :placeholder="this.$i18n.t('placeholders.addDesc')"
+                rows="1"
+                @input="checkForNewLines"
+                class="tool-header"
+            ></textarea-autosize>
+        </v-card-title>
+
+        <v-card-text>
+            <textarea-autosize
+                v-model="clonedEvent.details"
+                type="text"
+                style="width:100%;"
+                :min-height="0"
+                :placeholder="this.$i18n.t('placeholders.addDesc')"
+                :class="textareaClasses"
+            ></textarea-autosize>
+
+            <v-divider></v-divider>
+        </v-card-text>
+        <v-card-text>
+            <v-menu
+                v-model="menuDatePicker"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
             >
-                <v-btn icon disabled>
-                    <v-icon>mdi-delete</v-icon>
-                </v-btn>
+                <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                        :value="$i18n.d(clonedEvent.startDate, 'event')"
+                        :label="$i18n.t('date')"
+                        prepend-icon="event"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                        :color="'purple'"
+                        required
+                    ></v-text-field>
+                </template>
+                <v-date-picker
+                    v-model="dateWithoutTime"
+                    @input="menuDatePicker = false"
+                ></v-date-picker>
+            </v-menu>
 
-                <!-- <div v-html="event.name"></div>-->
-                <input
-                    type="text"
-                    v-model="clonedEvent.name"
-                    :placeholder="this.$i18n.t('placeholders.addTitle')"
-                />
-
-                <v-spacer></v-spacer>
-                <v-btn icon disabled>
-                    <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-            </v-toolbar>
-            <v-card-text>
-                <form>
-                    <textarea-autosize
-                        v-model="clonedEvent.details"
-                        type="text"
-                        style="width:100%;"
-                        :min-height="0"
-                        :placeholder="this.$i18n.t('placeholders.addDesc')"
-                    ></textarea-autosize>
-                </form>
-                <v-divider></v-divider>
-            </v-card-text>
-            <v-card-text>
-                <v-menu
-                    v-model="menuDatePicker"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="290px"
-                >
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                            :value="$i18n.d(clonedEvent.startDate, 'event')"
-                            :label="$i18n.t('date')"
-                            prepend-icon="event"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                        ></v-text-field>
-                    </template>
-                    <v-date-picker
-                        v-model="dateWithoutTime"
-                        @input="menuDatePicker = false"
-                    ></v-date-picker>
-                </v-menu>
-
-                <v-menu
-                    ref="menuTimePicker"
-                    v-model="menuTimePicker"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    :return-value.sync="dateOnlyTime"
-                    transition="scale-transition"
-                    offset-y
-                    max-width="290px"
-                    min-width="290px"
-                >
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                            v-model="dateOnlyTime"
-                            :label="$i18n.t('startTime')"
-                            prepend-icon="access_time"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                        ></v-text-field>
-                    </template>
-                    <v-time-picker
-                        v-if="menuTimePicker"
+            <v-menu
+                ref="menuTimePicker"
+                v-model="menuTimePicker"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                :return-value.sync="dateOnlyTime"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+            >
+                <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
                         v-model="dateOnlyTime"
-                        format="24hr"
-                        full-width
-                        @click:hour="closeTimePicker"
-                        @click:minute="$refs.menuTimePicker.save(dateOnlyTime)"
-                    ></v-time-picker>
-                </v-menu>
+                        :label="$i18n.t('startTime')"
+                        prepend-icon="access_time"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                    ></v-text-field>
+                </template>
+                <v-time-picker
+                    v-if="menuTimePicker"
+                    v-model="dateOnlyTime"
+                    format="24hr"
+                    full-width
+                    @click:hour="closeTimePicker"
+                    @click:minute="$refs.menuTimePicker.save(dateOnlyTime)"
+                ></v-time-picker>
+            </v-menu>
 
-                <v-menu
-                    ref="menuDurationPicker"
-                    v-model="menuDurationPicker"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    :return-value.sync="dateDuration"
-                    transition="scale-transition"
-                    offset-y
-                    max-width="290px"
-                    min-width="290px"
-                >
-                    <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                            v-model="dateDuration"
-                            :label="$i18n.t('duration')"
-                            prepend-icon="timelapse"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                        ></v-text-field>
-                    </template>
-                    <v-time-picker
-                        v-if="menuDurationPicker"
+            <v-menu
+                ref="menuDurationPicker"
+                v-model="menuDurationPicker"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                :return-value.sync="dateDuration"
+                transition="scale-transition"
+                offset-y
+                max-width="290px"
+                min-width="290px"
+            >
+                <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
                         v-model="dateDuration"
-                        format="24hr"
-                        full-width
-                        @click:hour="closeDurationPicker"
-                        @click:minute="
-                            $refs.menuDurationPicker.save(dateDuration)
-                        "
-                        :allowed-hours="allowedDurations"
-                    ></v-time-picker>
-                </v-menu>
+                        :label="$i18n.t('duration')"
+                        prepend-icon="timelapse"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                    ></v-text-field>
+                </template>
+                <v-time-picker
+                    v-if="menuDurationPicker"
+                    v-model="dateDuration"
+                    format="24hr"
+                    full-width
+                    @click:hour="closeDurationPicker"
+                    @click:minute="$refs.menuDurationPicker.save(dateDuration)"
+                    :allowed-hours="allowedDurations"
+                ></v-time-picker>
+            </v-menu>
 
-                <v-text-field
-                    v-model="clonedEvent.color"
-                    v-mask="mask"
-                    hide-details
-                    class="ma-0 pa-0"
-                    solo
-                >
-                    <template v-slot:append>
-                        <v-menu
-                            v-model="menuColorPicker"
-                            top
-                            nudge-bottom="105"
-                            nudge-left="16"
-                            :close-on-content-click="false"
-                        >
-                            <template v-slot:activator="{ on }">
-                                <div :style="swatchStyle" v-on="on" />
-                            </template>
-                            <v-card>
-                                <v-card-text class="pa-0">
-                                    <v-color-picker
-                                        v-model="clonedEvent.color"
-                                        flat
-                                    />
-                                </v-card-text>
-                            </v-card>
-                        </v-menu>
-                    </template>
-                </v-text-field>
-            </v-card-text>
+            <v-text-field
+                v-model="clonedEvent.color"
+                v-mask="mask"
+                hide-details
+                class="ma-0 pa-0"
+                solo
+            >
+                <template v-slot:append>
+                    <v-menu
+                        v-model="menuColorPicker"
+                        top
+                        nudge-bottom="105"
+                        nudge-left="16"
+                        :close-on-content-click="false"
+                    >
+                        <template v-slot:activator="{ on }">
+                            <div :style="swatchStyle" v-on="on" />
+                        </template>
+                        <v-card>
+                            <v-card-text class="pa-0">
+                                <v-color-picker
+                                    v-model="clonedEvent.color"
+                                    flat
+                                />
+                            </v-card-text>
+                        </v-card>
+                    </v-menu>
+                </template>
+            </v-text-field>
+        </v-card-text>
 
-            <v-card-text>
-                <h3 class="">{{ $i18n.t('clients') }}:</h3>
-                <v-chip
-                    v-for="(client, i) in clonedEvent.clients"
-                    :key="i"
-                    label
-                    close
-                    class="mr-4"
-                    @click:close="clonedEvent.clients.splice(i, 1)"
-                    >{{ client.forename + ' ' + client.name }}</v-chip
-                >
-            </v-card-text>
+        <v-card-text>
+            <h3 class="">{{ $i18n.t('clients') }}:</h3>
+            <v-chip
+                v-for="(client, i) in clonedEvent.clients"
+                :key="i"
+                label
+                close
+                class="mr-4"
+                @click:close="clonedEvent.clients.splice(i, 1)"
+                >{{ client.forename + ' ' + client.name }}</v-chip
+            >
+        </v-card-text>
 
-            <v-card-text>
-                <v-autocomplete
-                    v-model="clientToAdd"
-                    :items="clientTransformed"
-                    @change="addClient"
-                    item-text="Description"
-                    :placeholder="$i18n.t('placeholders.search')"
-                    return-object
-                ></v-autocomplete>
-            </v-card-text>
+        <v-card-text>
+            <v-autocomplete
+                v-model="clientToAdd"
+                :items="clientTransformed"
+                @change="addClient"
+                item-text="Description"
+                :placeholder="$i18n.t('placeholders.search')"
+                return-object
+                outlined
+            ></v-autocomplete>
+        </v-card-text>
 
-            <v-card-actions>
-                <v-btn text color="error" @click="cancel">
-                    {{ $i18n.t('cancel') }}
-                </v-btn>
-                <v-btn text color="success" @click="accept">
-                    <slot name="accept">{{ $i18n.t('accept') }}</slot>
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </div>
+        <v-card-actions>
+            <v-btn text color="error" @click="cancel">
+                {{ $i18n.t('cancel') }}
+            </v-btn>
+            <v-btn text color="success" @click="accept">
+                <slot name="accept">{{ $i18n.t('accept') }}</slot>
+            </v-btn>
+        </v-card-actions>
+    </wrapper>
 </template>
 
 <script>
@@ -198,14 +191,23 @@ import rfdc from 'rfdc'
 import DateUtil from '@/util/date.js'
 import moment from 'moment-timezone'
 import { mapState } from 'vuex'
+import TextareaAutosize from '@/components/extern/TextareaAutosize'
+//import colors from 'vuetify/lib/util/colors'
 
 export default {
-    components: {},
+    components: {
+        TextareaAutosize,
+    },
 
     props: {
         event: {
             type: Object,
             required: true,
+        },
+
+        width: {
+            type: [Number, String],
+            default: '400px',
         },
     },
 
@@ -222,6 +224,13 @@ export default {
     },
 
     computed: {
+        secondary() {
+            if (this.$vuetify.theme.isDark) {
+                return 'white'
+            }
+            return 'white'
+        },
+
         ...mapState(['clients']),
         clientTransformed() {
             return this.clients.map((client, i) => {
@@ -319,9 +328,29 @@ export default {
                 transition: 'border-radius 200ms ease-in-out',
             }
         },
+
+        textareaClasses() {
+            let classes = ''
+            if (this.$vuetify.theme.dark) {
+                classes += 'theme-dark--text'
+            } else {
+                classes += 'theme-light--text'
+            }
+
+            return classes
+        },
     },
 
     methods: {
+        checkForNewLines() {
+            this.$nextTick(() => {
+                this.clonedEvent.name = this.clonedEvent.name.replaceAll(
+                    String.fromCharCode(10),
+                    ''
+                )
+            })
+        },
+
         closeTimePicker: function(v) {
             v = v < 10 ? '0' + v : v
             const time = v + ':00'
@@ -335,11 +364,13 @@ export default {
         },
 
         cancel() {
+            this.reset()
             this.$emit('cancel')
         },
 
         accept() {
-            this.$emit('accept', this.clonedEvent)
+            this.$emit('accept', rfdc()(this.clonedEvent))
+            this.reset()
         },
 
         createDesc(client) {
@@ -369,8 +400,29 @@ export default {
         allowedDurations(v) {
             return [1, 2, 3, 4].includes(v)
         },
+
+        reset() {
+            this.clonedEvent = rfdc()(this.event)
+        },
     },
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '~vuetify/src/styles/styles.sass';
+
+.theme-light--text {
+    color: map-get($material-light, 'fg-color');
+}
+
+.theme-dark--text {
+    color: map-get($material-dark, 'fg-color');
+}
+
+.theme--light.v-list {
+    background: map-get($material-light, 'app-bar');
+}
+.theme--dark.v-list {
+    background: map-get($material-dark, 'bg-color');
+}
+</style>

@@ -1,18 +1,28 @@
 <template>
-    <v-app>
-        <v-app-bar app color="primary" dark>
+    <v-app class="my-app">
+        <v-app-bar
+            app
+            src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
+            dark
+        >
             <v-toolbar-title>Dateman</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn
                 v-for="link in links"
                 :key="`${link.label} - header-link`"
-                color="white"
                 text
                 rounded
-                class="my-2"
                 :to="link.route"
             >
                 {{ link.label }}
+            </v-btn>
+
+            <v-btn text rounded @click="toggleTheme">
+                {{
+                    this.$vuetify.theme.dark
+                        ? this.$i18n.t('dark')
+                        : this.$i18n.t('light')
+                }}
             </v-btn>
         </v-app-bar>
 
@@ -20,23 +30,22 @@
             <router-view />
         </v-main>
 
-        <v-footer color="primary lighten-1" padless>
+        <v-footer
+            padless
+            style="background: url('https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg');"
+        >
             <v-row justify="center" no-gutters>
                 <v-btn
                     v-for="link in links"
                     :key="`${link.label} - footer-link`"
-                    color="white"
                     text
                     rounded
-                    class="my-2"
                     :to="link.route"
+                    dark
                 >
                     {{ link.label }}
                 </v-btn>
-                <v-col
-                    class="primary lighten-2 py-4 text-center white--text"
-                    cols="12"
-                >
+                <v-col class="py-4 text-center white--text" cols="12" dark>
                     {{ new Date().getFullYear() }} —
                     <strong>Dateman</strong>
                 </v-col>
@@ -63,8 +72,24 @@ export default {
             ]
         },
     },
+
+    methods: {
+        toggleTheme() {
+            this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+        },
+    },
 }
 </script>
+
+<!-- global style -->
+<style lang="scss">
+// Import the Vuetify styles somewhere global
+@import '~vuetify/src/styles/styles.sass';
+
+.tool-header {
+    color: white;
+}
+</style>
 
 <style scoped="true">
 .scrollable {

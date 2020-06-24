@@ -133,8 +133,6 @@ export default new Vuex.Store({
         async fetchClients({ commit, state }) {
             const snapshot = await firebaseDB.collection('clients').get()
 
-            console.log(snapshot)
-
             const clients = []
 
             snapshot.forEach(doc => {

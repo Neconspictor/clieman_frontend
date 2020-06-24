@@ -3,7 +3,7 @@
     <div>
         <v-menu bottom right>
             <template v-slot:activator="{ on }">
-                <v-btn outlined color="grey darken-2" v-on="on">
+                <v-btn outlined v-on="on">
                     <span>{{ typeToLabel[type] }}</span>
                     <v-icon right>mdi-menu-down</v-icon>
                 </v-btn>

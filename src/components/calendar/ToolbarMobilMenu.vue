@@ -8,14 +8,13 @@
     >
         <v-card tile>
             <div>
-                <v-toolbar flat dark color="primary">
+                <v-toolbar>
                     <v-toolbar-title>{{ $t('toolbar') }}</v-toolbar-title>
                     <v-spacer></v-spacer>
-                    <v-toolbar-items>
-                        <v-btn dark text @click="dialog = false">
-                            {{ $t('close') }}
-                        </v-btn>
-                    </v-toolbar-items>
+
+                    <v-btn rounded text outlined @click="dialog = false">
+                        {{ $t('close') }}
+                    </v-btn>
                 </v-toolbar>
             </div>
 
