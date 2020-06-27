@@ -106,7 +106,7 @@ export default {
 
     computed: {
         ...mapGetters(['getClientByID']),
-        ...mapState(['clients', 'events']),
+        ...mapState(['clients', 'events', 'calendarOptions']),
         defaultEvent() {
             const startDate = this.createDefaultStartDate()
             const endDate = this.createDefaultEndDate()
@@ -119,6 +119,19 @@ export default {
                 details: '',
                 name: '',
                 clients: [],
+            }
+        },
+
+        intervals() {
+            return {
+                first: this.calendarOptions.workingRange.start.getHours(),
+                minutes: 60,
+                count: Math.max(
+                    this.calendarOptions.workingRange.end.getHours() -
+                        this.calendarOptions.workingRange.start.getHours(),
+                    0
+                ),
+                height: 100,
             }
         },
     },
@@ -139,8 +152,6 @@ export default {
         selectedOpen: false,
         dialog: false,
         eventCreateDialogIsOpen: false,
-
-        intervals: { first: 0, minutes: 60, count: 24, height: 100 },
     }),
 
     methods: {
