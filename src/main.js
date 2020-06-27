@@ -6,9 +6,15 @@ import vuetify from './plugins/vuetify'
 import VueTextareaAutosize from '@/components/extern/TextareaAutosize'
 import i18n from './plugins/vue-i18n.js'
 // Import the Vuetify styles somewhere global
+import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
 import 'vuetify/src/styles/styles.sass'
+// In main.js
+import LoadScript from 'vue-plugin-load-script'
+import IconifyIcon from '@iconify/vue'
 
+Vue.use(IconifyIcon)
 Vue.use(VueTextareaAutosize)
+Vue.use(LoadScript)
 
 Vue.config.productionTip = false
 
@@ -23,6 +29,8 @@ Vue.config.warnHandler = function(msg, vm, trace) {
         trace = null
     }
 }
+
+Vue.loadScript('https://code.iconify.design/1/1.0.7/iconify.min.js')
 
 var vm = new Vue({
     router,

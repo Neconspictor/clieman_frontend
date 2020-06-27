@@ -81,6 +81,8 @@ const messages = {
 
         light: 'Light',
         dark: 'Dark',
+        nightmode: 'Night mode',
+        settings: 'Settings',
     },
 
     de: {
@@ -162,6 +164,8 @@ const messages = {
 
         light: 'Hell',
         dark: 'Dunkel',
+        nightmode: 'Nachtmodus',
+        settings: 'Einstellungen',
     },
 }
 

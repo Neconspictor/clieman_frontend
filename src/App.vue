@@ -1,5 +1,6 @@
 <template>
     <v-app class="my-app">
+        -
         <v-app-bar
             app
             src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
@@ -17,14 +18,48 @@
                 {{ link.label }}
             </v-btn>
 
-            <v-btn text rounded @click="toggleTheme">
-                {{
-                    this.$vuetify.theme.dark
-                        ? this.$i18n.t('dark')
-                        : this.$i18n.t('light')
-                }}
-            </v-btn>
+            <v-menu offset-y>
+                <template v-slot:activator="{ on }">
+                    <v-btn icon text rounded v-on="on">
+                        <v-icon>mdi-menu</v-icon>
+                    </v-btn>
+                </template>
+
+                <v-list>
+                    <v-list-item @click="toggleTheme">
+                        <v-avatar color="grey" size="36" class="mr-2">
+                            <iconify-icon
+                                :class="
+                                    `v-icon ${
+                                        isDark ? 'theme--dark' : 'theme--light'
+                                    }`
+                                "
+                                :icon="icons.baselineBedtime"
+                            />
+                        </v-avatar>
+                        {{ this.$i18n.t('nightmode') }}
+
+                        <v-spacer></v-spacer>
+
+                        <v-switch
+                            class="ml-2"
+                            disabled
+                            :value="this.$vuetify.theme.dark"
+                        >
+                        </v-switch>
+                    </v-list-item>
+
+                    <v-list-item @click="$router.push({ name: 'settings' })">
+                        <v-avatar color="grey" size="36" class="mr-2">
+                            <v-icon>settings</v-icon>
+                        </v-avatar>
+                        {{ this.$i18n.t('settings') }}
+                    </v-list-item>
+                </v-list>
+            </v-menu>
         </v-app-bar>
+
+        <!--<router-view />-->
 
         <v-main class="scrollable">
             <router-view />
@@ -55,10 +90,22 @@
 </template>
 
 <script>
+import accountIcon from '@iconify/icons-mdi/account'
+import baselineBedtime from '@iconify/icons-ic/baseline-bedtime'
+
 export default {
     name: 'App',
 
+    data() {
+        return {
+            icons: { account: accountIcon, baselineBedtime: baselineBedtime },
+        }
+    },
+
     computed: {
+        isDark() {
+            return this.$vuetify.theme.dark
+        },
         links() {
             return [
                 {
@@ -94,5 +141,11 @@ export default {
 <style scoped="true">
 .scrollable {
     overflow: auto;
+    //height: 100%;
+}
+
+.my-app {
+    width: 100%;
+    //height: 100vh;
 }
 </style>

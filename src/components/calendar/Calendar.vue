@@ -21,7 +21,7 @@
                         @create-event="startCreateEventDialog"
                     />
                 </v-sheet>
-                <v-sheet height="600" v-show="this.checkCardVisibility()">
+                <v-sheet v-show="this.checkCardVisibility()">
                     <v-calendar
                         ref="calendar"
                         v-model="focus"
@@ -35,7 +35,23 @@
                         @click:date="viewDay"
                         @change="updateRange"
                         :locale="$vuetify.lang.current"
+                        :first-interval="intervals.first"
+                        :interval-minutes="intervals.minutes"
+                        :interval-count="intervals.count"
+                        :interval-height="intervals.height"
+                        :show-interval-label="showIntervalLabel"
+                        class="calendar-daily"
                     >
+                        <!-- <template
+                            v-slot:event="{ event, eventParsed, formatTime }"
+                        >
+                            <div>
+                                {{ formatTime(eventParsed.start) }}
+                                -
+                                {{ formatTime(eventParsed.end) }}:
+                                {{ event.name }}
+                            </div>
+                        </template>-->
                     </v-calendar>
                     <EventView
                         :DOMElement="DOMElement"
@@ -65,23 +81,6 @@
                             </EventEditor>
                         </template>
                     </EventView>
-
-                    <!--<v-dialog
-                        v-model="eventCreateDialogIsOpen"
-                        @click:outside="eventCreateDialogIsOpen = false"
-                        width="unset"
-                    >
-                        <EventEditor
-                            v-if="eventCreateDialogIsOpen"
-                            :event="defaultEvent"
-                            @cancel="eventCreateDialogIsOpen = false"
-                            @accept="createEvent"
-                        >
-                            <template v-slot:accept>
-                                {{ $i18n.t('create') }}
-                            </template>
-                        </EventEditor>
-                    </v-dialog>-->
                 </v-sheet>
             </v-col>
         </v-row>
@@ -140,9 +139,17 @@ export default {
         selectedOpen: false,
         dialog: false,
         eventCreateDialogIsOpen: false,
+
+        intervals: { first: 0, minutes: 60, count: 24, height: 100 },
     }),
 
     methods: {
+        showIntervalLabel(interval) {
+            console.log('interval', interval)
+            return true
+            //return interval.minute === 0
+        },
+
         getEventColor(ev) {
             return ev.color
         },
@@ -244,3 +251,10 @@ export default {
     },
 }
 </script>
+
+<style lang="css" scoped>
+.calendar-daily >>> .v-calendar-daily__interval-text {
+    font-size: 12px;
+    top: -3px;
+}
+</style>

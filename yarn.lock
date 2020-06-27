@@ -1119,6 +1119,21 @@
   dependencies:
     "@hapi/hoek" "^8.3.0"
 
+"@iconify/icons-ic@^1.0.13":
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-ic/-/icons-ic-1.0.13.tgz#bb3f4b2aaa2559c276db30bf578c822e63c2b466"
+  integrity sha512-faUTU3t5NhU+9bqWl8ytH43TQ2ZHWqDP2GToQmHTwdMU0IyK5cMCv69NJKSZjsPkmwBcvqC8q055ceMUUjrf3A==
+
+"@iconify/icons-mdi@^1.0.113":
+  version "1.0.113"
+  resolved "https://registry.yarnpkg.com/@iconify/icons-mdi/-/icons-mdi-1.0.113.tgz#2064d86f6cdd94db5c3c80c036eb9ec8cff46a6d"
+  integrity sha512-ewmhtiPRwoAGfk7WHzQOeZ3GWVpXmNneHQr35n8UzNX8KRGWG36ufS0h9sJnNDM4Hwj4IAZ2D2B5bKNYn8S4TQ==
+
+"@iconify/vue@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@iconify/vue/-/vue-1.0.1.tgz#99b8d2750e7a61bff800a442ccbc4197f40114ed"
+  integrity sha512-zMbkznq98AZ3gP7XrJhnrSYNgxQVVXC02mEqHJ5OkyiPT7u+SGdHtBy3Xyyhdjx/VMbequ6pO6Az/I6HNcyaVg==
+
 "@intervolga/optimize-cssnano-plugin@^1.0.5":
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/@intervolga/optimize-cssnano-plugin/-/optimize-cssnano-plugin-1.0.6.tgz#be7c7846128b88f6a9b1d1261a0ad06eb5c0fdf8"
@@ -11091,6 +11106,11 @@ vue-loader@^15.9.2:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-plugin-load-script@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/vue-plugin-load-script/-/vue-plugin-load-script-1.2.0.tgz#d8cfb0ed68a78f67e24c6254d864f0c77aa80108"
+  integrity sha512-QbWjZSFRToSP6S0nZFsH618PsTlZgSg8m8Xv602vezznLTHYd0wAXEw0jlYND7L6BMe0KcA7cvUwLROyfBlQ4w==
 
 vue-router@^3.2.0:
   version "3.3.2"

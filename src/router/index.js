@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home'
 import Clients from '@/views/Clients'
+import Settings from '@/views/Settings'
 
 Vue.use(VueRouter)
 
@@ -16,6 +17,12 @@ const routes = [
         path: '/clients',
         name: 'clients',
         component: Clients,
+    },
+
+    {
+        path: '/settings',
+        name: 'settings',
+        component: Settings,
     },
 ]
 
