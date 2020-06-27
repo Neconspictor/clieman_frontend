@@ -1,12 +1,14 @@
 <template>
     <div class="body">
         <div id="left" class="column">
-            <div class="bottom left-content">
+            <div class="left-bottom left-content">
                 <v-container class="pl-8">
                     <v-row>
                         <v-col>
                             <v-list>
-                                <v-list-item @click="() => {}">
+                                <v-list-item
+                                    @click="goToInRightSide($refs.calendar)"
+                                >
                                     <v-icon>event</v-icon>
                                     <div class="ml-1">
                                         {{ this.$i18n.t('calendar') }}
@@ -19,41 +21,30 @@
             </div>
         </div>
 
-        <div id="right" class="column">
-            <div class="bottom">
-                <v-container class="ml-4 mr-0">
-                    <v-row>
-                        <v-col>
-                            <div v-for="index of 10" :key="index">
-                                <div>right-bottom</div>
-                                <div>right-bottom</div>
-                                <div>right-bottom</div>
-                                <div>right-bottom</div>
-                                <div>right-bottom</div>
-                                <div>right-bottom</div>
-                                <div>right-bottom</div>
-                                <div>right-bottom</div>
-                                <div>right-bottom</div>
-                                <div>right-bottom</div>
-                                <div>right-bottom</div>
-                                <div>right-bottom</div>
-                                <div>right-bottom</div>
-                            </div>
-                            <v-divider></v-divider>
-                            <div>
-                                <h1 class="font-weight-thin">
-                                    {{ this.$i18n.t('calendar') }}
-                                </h1>
-                            </div>
-                        </v-col>
-                    </v-row>
-                </v-container>
+        <div id="right" class="column" ref="rightside">
+            <div class="right-bottom" ref="rightbottom">
+                <div class="right-content" ref="rightcontent">
+                    <v-container class="ml-4 mr-0">
+                        <v-row>
+                            <v-col>
+                                <div ref="calendar" id="test">
+                                    <h1 class="font-weight-thin">
+                                        {{ this.$i18n.t('calendar') }}
+                                    </h1>
+                                </div>
+                                <v-divider></v-divider>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import $ from 'jquery'
+
 export default {
     data() {
         return {
@@ -63,6 +54,17 @@ export default {
                 { title: 'Users', icon: 'mdi-account-group-outline' },
             ],
         }
+    },
+
+    methods: {
+        goToInRightSide(elem) {
+            $([this.$refs.rightbottom]).animate(
+                {
+                    scrollTop: elem.offsetTop,
+                },
+                400
+            )
+        },
     },
 }
 </script>
@@ -74,7 +76,7 @@ scrollbar {
 
 .body {
     height: calc(100vh - 179px);
-    overflow: hidden; /*makes the body non-scrollable (we will add scrolling to the sidebar and main content containers)*/
+    //overflow: hidden; /*makes the body non-scrollable (we will add scrolling to the sidebar and main content containers)*/
     //margin: 0px; /*removes default style*/
     display: flex; /*enables flex content for its children*/
     //box-sizing: border-box;
@@ -105,7 +107,7 @@ ul {
     list-style: none;
 }
 
-.bottom {
+.left-bottom {
     flex-grow: 1; /*ensures that the container will take up the full height of the parent container*/
     overflow-y: auto; /*adds scroll to this container*/
     width: 100%;
@@ -117,5 +119,16 @@ ul {
     text-overflow: ellipsis;
     //overflow-x: hidden;
     //margin-right: 10px;
+}
+
+.right-bottom {
+    flex-grow: 1; /*ensures that the container will take up the full height of the parent container*/
+    overflow-y: auto; /*adds scroll to this container*/
+}
+
+.right-content {
+    //max-width: 700px;
+    width: 90%;
+    //width: fit-content;
 }
 </style>
