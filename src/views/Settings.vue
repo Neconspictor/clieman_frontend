@@ -44,8 +44,17 @@
                                             >
                                                 <div>
                                                     <TimePicker
-                                                        v-model="
-                                                            calendarWorkingHourStart
+                                                        :value="
+                                                            calendarOptions
+                                                                .workingRange
+                                                                .start
+                                                        "
+                                                        @input="
+                                                            v =>
+                                                                updateWorkingRange(
+                                                                    v,
+                                                                    'start'
+                                                                )
                                                         "
                                                         label="Start"
                                                         width="100px"
@@ -53,8 +62,17 @@
                                                 </div>
                                                 <div>
                                                     <TimePicker
-                                                        v-model="
-                                                            calendarWorkingHourEnd
+                                                        :value="
+                                                            calendarOptions
+                                                                .workingRange
+                                                                .end
+                                                        "
+                                                        @input="
+                                                            v =>
+                                                                updateWorkingRange(
+                                                                    v,
+                                                                    'end'
+                                                                )
                                                         "
                                                         label="End"
                                                         width="100px"
@@ -79,6 +97,8 @@
 import $ from 'jquery'
 import moment from 'moment-timezone'
 import TimePicker from '@/components/TimePicker'
+import { mapState, mapActions } from 'vuex'
+import rfdc from 'rfdc'
 
 export default {
     components: {
@@ -97,7 +117,12 @@ export default {
         }
     },
 
+    computed: {
+        ...mapState(['calendarOptions']),
+    },
+
     methods: {
+        ...mapActions(['setCalendarOptions']),
         goToInRightSide(elem) {
             $([this.$refs.rightbottom]).animate(
                 {
@@ -105,6 +130,12 @@ export default {
                 },
                 400
             )
+        },
+
+        updateWorkingRange(newDate, key) {
+            const copy = rfdc()(this.calendarOptions)
+            copy.workingRange[key] = newDate
+            this.setCalendarOptions(copy)
         },
     },
 }

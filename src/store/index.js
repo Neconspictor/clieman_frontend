@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import firebase from './firebase.js'
 import 'firebase/firestore'
 import DateUtil from '@/util/date.js'
+import moment from 'moment-timezone'
 
 Vue.use(Vuex)
 const firebaseDB = firebase.init()
@@ -13,6 +14,12 @@ export default new Vuex.Store({
         idToClient: new Map(),
         idToEvent: new Map(),
         events: [],
+        calendarOptions: {
+            workingRange: {
+                start: moment('08:00', 'HH:mm').toDate(),
+                end: moment('18:00', 'HH:mm').toDate(),
+            },
+        },
     },
     mutations: {
         SET_CLIENTS(state, clients) {
@@ -123,6 +130,10 @@ export default new Vuex.Store({
             state.clients.push(client)
             state.idToClient.set(client.id, client)
         },
+
+        SET_CALENDER_OPTIONS(state, options) {
+            state.calendarOptions = options
+        },
     },
 
     actions: {
@@ -184,6 +195,10 @@ export default new Vuex.Store({
         addEvent({ commit }, event) {
             commit('ADD_EVENT', event)
         },
+
+        setCalendarOptions({ commit }, options) {
+            commit('SET_CALENDER_OPTIONS', options)
+        },
     },
 
     getters: {
@@ -194,6 +209,8 @@ export default new Vuex.Store({
         getEventByID: state => id => {
             return state.idToEvent.get(id)
         },
+
+        getCalendarOptions: state => state.calendarOptions,
     },
     modules: {},
 })

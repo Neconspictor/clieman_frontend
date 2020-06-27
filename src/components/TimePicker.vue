@@ -9,7 +9,7 @@
     >
         <template v-slot:activator="{ on, attrs }">
             <v-text-field
-                v-model="dateOnlyTime"
+                :value="dateOnlyTime"
                 :label="label"
                 prepend-icon="access_time"
                 readonly
@@ -23,7 +23,7 @@
         </template>
         <v-time-picker
             v-if="datePicker"
-            v-model="dateOnlyTime"
+            :value="dateOnlyTime"
             format="24hr"
             full-width
             @click:hour="closeTimePicker"
