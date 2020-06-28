@@ -133,6 +133,7 @@
                         </span>
                         <v-btn
                             fab
+                            dark
                             class="mr-1"
                             color="blue darken-3"
                             @click="formerPage"
@@ -141,6 +142,7 @@
                         </v-btn>
                         <v-btn
                             fab
+                            dark
                             class="ml-1"
                             color="blue darken-3"
                             @click="nextPage"
