@@ -116,6 +116,10 @@ export default {
                     label: this.$i18n.t('clients'),
                     route: { name: 'clients' },
                 },
+                {
+                    label: this.$i18n.t('login'),
+                    route: { name: 'login' },
+                },
             ]
         },
     },

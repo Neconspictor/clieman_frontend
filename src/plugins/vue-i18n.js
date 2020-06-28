@@ -83,6 +83,17 @@ const messages = {
         dark: 'Dark',
         nightmode: 'Night mode',
         settings: 'Settings',
+
+        register: 'Register',
+        createAccount: 'Create account',
+        login: 'Login',
+        username: 'user name',
+        password: 'Password',
+
+        notHavingAnAccount: 'Not having an account, yet?',
+        havingAnAccount: 'Already having an account?',
+        hidePassword: 'Hide password',
+        showPassword: 'Show password',
     },
 
     de: {
@@ -166,6 +177,16 @@ const messages = {
         dark: 'Dunkel',
         nightmode: 'Nachtmodus',
         settings: 'Einstellungen',
+
+        register: 'Registrieren',
+        createAccount: 'Konto erstellen',
+        login: 'Login',
+        username: 'Benutzername',
+        password: 'Passwort',
+        notHavingAnAccount: 'Noch kein Konto?',
+        havingAnAccount: 'Schon ein Konto vorhanden?',
+        hidePassword: 'Passwort anzeigen',
+        showPassword: 'Passwort verbergen',
     },
 }
 
