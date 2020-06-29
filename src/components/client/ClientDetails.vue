@@ -4,6 +4,7 @@
         :doEditing="doEditing"
         :activator="DOMElement"
         :width="width"
+        :dialogPersistent="dialogPersistent"
     >
         <v-card
             elevation="4"
@@ -54,17 +55,20 @@
 
             <v-card-actions>
                 <div v-if="doEditing" class="ml-4 mb-4 mt-4">
-                    <v-btn color="error" text @click="endEdit"
+                    <v-btn color="error" text @click="cancel"
                         >{{ $i18n.t('discard') }}
                         <v-icon>cancel</v-icon>
                     </v-btn>
                     <v-btn
                         color="success"
                         text
-                        @click="validateForm"
+                        @click="evaluateAccept"
                         :disabled="!formIsValid"
-                        >{{ $i18n.t('save') }}
-                        <v-icon>mdi-content-save</v-icon>
+                    >
+                        <slot name="editor-accept-button-content">
+                            {{ $i18n.t('save') }}
+                            <v-icon>mdi-content-save</v-icon>
+                        </slot>
                     </v-btn>
                 </div>
 
@@ -120,6 +124,10 @@ export default {
     mixins: [Dependent],
 
     props: {
+        acceptPromise: {
+            type: Function,
+            default: () => {},
+        },
         value: {
             type: Boolean,
             required: true,
@@ -130,6 +138,11 @@ export default {
             required: true,
         },
 
+        editing: {
+            type: Boolean,
+            default: false,
+        },
+
         width: {
             type: String,
             default: '100%',
@@ -138,6 +151,10 @@ export default {
         DOMElement: {
             type: Object,
             required: true,
+        },
+        dialogPersistent: {
+            type: Boolean,
+            default: true,
         },
     },
 
@@ -171,7 +188,7 @@ export default {
 
     data() {
         return {
-            doEditing: false,
+            doEditing: this.editing,
             formatter: new Formatter(this.$i18n),
             isExpanded: false,
             animate: false,
@@ -182,18 +199,39 @@ export default {
         }
     },
 
+    watch: {
+        client: {
+            deep: true,
+            handler(val) {
+                this.clientEdit = copy.deepCopy(val)
+            },
+        },
+    },
+
     methods: {
-        validateForm() {
-            this.$refs.clientCardForm.validate()
+        cancel() {
+            this.endEdit()
+            this.$emit('cancel')
+        },
+        evaluateAccept() {
+            if (this.$refs.clientCardForm.validate()) {
+                console.log('this.clientEdit = ', this.clientEdit)
+                this.acceptPromise(this.clientEdit).finally(() => {
+                    this.$refs.clientCardForm.emitEndEditingEvent()
+                })
+            }
         },
         startEdit() {
             this.clientEdit = copy.deepCopy(this.client)
             this.doEditing = true
+            return true
         },
         endEdit() {
-            this.clientEdit = {}
-            this.doEditing = false
-            this.$forceUpdate()
+            if (!this.editing) {
+                this.clientEdit = {}
+                this.doEditing = false
+                this.$forceUpdate()
+            }
         },
 
         isEditing() {

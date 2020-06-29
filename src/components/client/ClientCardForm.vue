@@ -79,7 +79,6 @@
                                     $i18n.t('clientData.placeholders.sex')
                                 "
                                 @change="v => (clientEdit.sex = v.sex)"
-                                @click.stop="foo"
                                 :item-text="createSexSelectionText"
                                 single-line
                                 hide-details="true"
@@ -254,8 +253,11 @@ export default {
 
         birthdayDate: {
             get: function() {
+                var date = this.clientEdit.birthday
+                    ? this.clientEdit.birthday
+                    : new Date()
                 return DateUtil.formatDate(
-                    this.clientEdit.birthday,
+                    date,
                     DateUtil.getDefaultTimeZone(),
                     DateUtil.getYearToDayFormat()
                 )
@@ -317,13 +319,7 @@ export default {
         },
 
         validate() {
-            if (this.refs.validate()) {
-                this.$store
-                    .dispatch('updateClient', this.clientEdit)
-                    .finally(() => {
-                        this.emitEndEditingEvent()
-                    })
-            }
+            return this.refs.validate()
         },
 
         emitFormValidation(e) {

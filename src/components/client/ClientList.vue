@@ -27,6 +27,14 @@
                         rounded
                         outlined
                     >
+                        <v-btn
+                            fab
+                            depressed
+                            color="blue"
+                            @click="createClientDialogIsOpen = true"
+                        >
+                            <v-icon>mdi-plus</v-icon>
+                        </v-btn>
                         <v-text-field
                             v-model="search"
                             clearable
@@ -34,7 +42,7 @@
                             solo-inverted
                             hide-details
                             prepend-inner-icon="search"
-                            class="mr-4"
+                            class="mr-4 ml-4"
                             placeholder="Search"
                         ></v-text-field>
                         <template v-if="$vuetify.breakpoint.mdAndUp">
@@ -161,7 +169,25 @@
             :width="clientCardWidth"
             :DOMElement="clientDOMElement"
             @delete-client="deleteSelectedClient"
+            :accept-promise="commitClientChanges"
         />
+
+        <ClientDetails
+            v-model="createClientDialogIsOpen"
+            :editing="true"
+            :client="defaultClient"
+            :width="clientCardWidth"
+            :DOMElement="null"
+            :accept-promise="createNewClient"
+            :dialogPersistent="false"
+            @cancel="createClientDialogIsOpen = false"
+        >
+            <template v-slot:editor-accept-button-content>
+                {{ $i18n.t('create') }}
+
+                <v-icon>add</v-icon>
+            </template>
+        </ClientDetails>
     </div>
 </template>
 
@@ -171,6 +197,7 @@ import ClientDetails from '@/components/client/ClientDetails'
 import { mapGetters } from 'vuex'
 import Formatter from '@/util/formatter'
 import { mapActions } from 'vuex'
+import ID from '@/util/id'
 
 export default {
     components: {
@@ -203,6 +230,8 @@ export default {
             selectedClientID: null,
             selectedOpen: false,
             formatter: new Formatter(this.$i18n, ''),
+            createClientDialogIsOpen: false,
+            defaultClient: this.createDefaultClient(),
         }
     },
 
@@ -214,8 +243,32 @@ export default {
         },
     },
 
+    watch: {
+        createClientDialogIsOpen: function(value) {
+            if (value) {
+                this.defaultClient = this.createDefaultClient()
+            }
+        },
+    },
+
     methods: {
-        ...mapActions(['deleteClient']),
+        ...mapActions(['addClient', 'deleteClient']),
+
+        commitClientChanges(newClient) {
+            return this.$store.dispatch('updateClient', newClient)
+        },
+
+        createDefaultClient() {
+            return {
+                id: ID.defaultCreateUniqueID(this.clients),
+            }
+        },
+
+        createNewClient(newClient) {
+            return this.addClient(newClient).then(() => {
+                this.createClientDialogIsOpen = false
+            })
+        },
 
         deleteSelectedClient() {
             this.deleteClient(this.selectedClient())
