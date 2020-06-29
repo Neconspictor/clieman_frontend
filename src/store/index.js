@@ -22,6 +22,15 @@ export default new Vuex.Store({
         },
     },
     mutations: {
+        DELETE_CLIENT(state, id) {
+            const index = state.clients.findIndex(e => e.id === id)
+            if (index != -1) {
+                // splice ensures that Vue recognizes the changes
+                state.clients.splice(index, 1)
+                state.idToClient.delete(id)
+            }
+        },
+
         SET_CLIENTS(state, clients) {
             state.clients = clients
 
@@ -139,6 +148,10 @@ export default new Vuex.Store({
     actions: {
         addClient({ commit }, client) {
             commit('ADD_CLIENT', client)
+        },
+
+        deleteClient({ commit }, client) {
+            commit('DELETE_CLIENT', client.id)
         },
 
         async fetchClients({ commit, state }) {

@@ -78,19 +78,33 @@
                         {{ $i18n.t('edit') }}
                         <v-icon>mdi-pencil</v-icon>
                     </v-btn>
-                    <v-btn text @click="startEdit" :disabled="doEditing">
+                    <v-btn
+                        text
+                        @click="deleteDialogIsOpen = true"
+                        :disabled="doEditing"
+                    >
                         {{ $i18n.t('delete') }}
                         <v-icon>mdi-delete</v-icon>
                     </v-btn>
                 </div>
             </v-card-actions>
         </v-card>
+
+        <ConfirmDialog
+            v-model="deleteDialogIsOpen"
+            @accepted="evaluateDeletion"
+        >
+            <template v-slot:title>
+                {{ $i18n.t('messages.assertClientDeletion') }}
+            </template>
+        </ConfirmDialog>
     </Activator>
 </template>
 
 <script>
 import Activator from '@/components//Activator'
 import ClientCardForm from '@/components/client/ClientCardForm'
+import ConfirmDialog from '@/components/ConfirmDialog'
 
 import Formatter from '@/util/formatter'
 import copy from '@/util/copy'
@@ -100,6 +114,7 @@ export default {
     components: {
         ClientCardForm,
         Activator,
+        ConfirmDialog,
     },
 
     mixins: [Dependent],
@@ -163,6 +178,7 @@ export default {
             clientEdit: {},
             formIsValid: true,
             accentColor: '',
+            deleteDialogIsOpen: false,
         }
     },
 
@@ -185,6 +201,12 @@ export default {
         },
         updateValidation(e) {
             this.formIsValid = e
+        },
+
+        evaluateDeletion(deleteSelected) {
+            if (deleteSelected) {
+                this.$emit('delete-client', this.client)
+            }
         },
     },
 }

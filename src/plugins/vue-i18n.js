@@ -40,6 +40,7 @@ const messages = {
 
         messages: {
             assertEventDeletion: 'Do you really want to delete this event?',
+            assertClientDeletion: 'Do you really want to delete this client?',
         },
 
         yes: 'Yes',
@@ -133,6 +134,8 @@ const messages = {
 
         messages: {
             assertEventDeletion: 'Möchtest du wirklich diesen Termin löschen?',
+            assertClientDeletion:
+                'Möchtest du wirklich diesen Klienten löschen?',
         },
 
         yes: 'Ja',
@@ -185,8 +188,8 @@ const messages = {
         password: 'Passwort',
         notHavingAnAccount: 'Noch kein Konto?',
         havingAnAccount: 'Schon ein Konto vorhanden?',
-        hidePassword: 'Passwort anzeigen',
-        showPassword: 'Passwort verbergen',
+        hidePassword: 'Passwort verbergen',
+        showPassword: 'Passwort anzeigen',
     },
 }
 

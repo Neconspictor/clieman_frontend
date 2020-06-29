@@ -160,6 +160,7 @@
             :client="selectedClient()"
             :width="clientCardWidth"
             :DOMElement="clientDOMElement"
+            @delete-client="deleteSelectedClient"
         />
     </div>
 </template>
@@ -169,6 +170,7 @@ import ClientCard from '@/components/client/ClientCard'
 import ClientDetails from '@/components/client/ClientDetails'
 import { mapGetters } from 'vuex'
 import Formatter from '@/util/formatter'
+import { mapActions } from 'vuex'
 
 export default {
     components: {
@@ -213,6 +215,14 @@ export default {
     },
 
     methods: {
+        ...mapActions(['deleteClient']),
+
+        deleteSelectedClient() {
+            this.deleteClient(this.selectedClient())
+            this.selectedClientID = null
+            this.selectedOpen = false
+        },
+
         selectedClient() {
             let client = this.getClientByID(this.selectedClientID)
             return client ? client : {}
