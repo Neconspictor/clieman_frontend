@@ -32,6 +32,9 @@ Vue.config.warnHandler = function(msg, vm, trace) {
 
 Vue.loadScript('https://code.iconify.design/1/1.0.7/iconify.min.js')
 
+i18n.locale = vuetify.userPreset.lang.current
+
+// eslint-disable-next-line no-unused-vars
 var vm = new Vue({
     router,
     store,
@@ -39,8 +42,6 @@ var vm = new Vue({
     i18n,
     render: h => h(App),
 }).$mount('#app')
-
-vm.$i18n.locale = vm.$vuetify.lang.current
 
 store
     .dispatch('fetchClients')

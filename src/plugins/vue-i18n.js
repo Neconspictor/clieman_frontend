@@ -86,6 +86,7 @@ const messages = {
         settings: 'Settings',
 
         register: 'Register',
+        registerHeader: 'Register',
         createAccount: 'Create account',
         login: 'Login',
         username: 'user name',
@@ -101,9 +102,21 @@ const messages = {
             sendEmailTo: 'We send an e-mail to: ',
             verifyAccount:
                 'Please activate your acoount by opening the e-mail and clicking on the verification link',
+            emailRequired: 'E-mail is required.',
+            emailRequiredUserName: 'E-mail should have a user name',
+            emailRequiresAt: 'E-mail should include an @ symbol',
+            emailValidDomain: 'E-mail should contain a valid domain.',
+            emailDomainExtension:
+                'E-mail should contain a valid domain extenion.',
+            passwordRequired: 'Password is required.',
+            passwordTooShort: 'Password is too short (Minimal 8 characters).',
+            confirmPassword: 'Confirm password',
+            passwordsDontMatch: "Passwords don't match.",
+            confirmationRequired: 'Confirmation is required',
         },
 
         language: 'Language',
+        email: 'E-mail',
     },
 
     de: {
@@ -191,6 +204,7 @@ const messages = {
         settings: 'Einstellungen',
 
         register: 'Registrieren',
+        registerHeader: 'Registrierung',
         createAccount: 'Konto erstellen',
         login: 'Login',
         username: 'Benutzername',
@@ -205,9 +219,21 @@ const messages = {
             sendEmailTo: 'Eine E-mail wurde geschickt an: ',
             verifyAccount:
                 'Bitte aktiviere dein Konto indem du auf den Aktivierungslink in der gesendeten E-mail klickst.',
+            emailRequired: 'E-mail wird benötigt.',
+            emailRequiredUserName: 'E-mail braucht einen Benutzernamen.',
+            emailRequiresAt: 'E-mail muss ein @ Symbol beinhalten',
+            emailValidDomain: 'E-mail muss eine gültige Domain beinhalten.',
+            emailDomainExtension:
+                'E-mail muss eine gültige Domain Endung enthalten.',
+            passwordRequired: 'Passwort wird benötigt.',
+            passwordTooShort: 'Passwort ist zu kurz (Mindestens 8 Zeichen).',
+            confirmPassword: 'Passwort bestätigen',
+            passwordsDontMatch: 'Passwörter stimmen nicht überein.',
+            confirmationRequired: 'Bestätigung wird benötigt.',
         },
 
         language: 'Sprache',
+        email: 'E-mail',
     },
 }
 

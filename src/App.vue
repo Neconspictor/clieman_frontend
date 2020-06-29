@@ -143,6 +143,8 @@ export default {
         setLanguage(lang) {
             this.$vuetify.lang.current = lang
             this.$i18n.locale = this.$vuetify.lang.current
+            this.$forceUpdate()
+            //this.$router.go()
         },
     },
 }
