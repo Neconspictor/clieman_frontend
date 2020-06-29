@@ -215,7 +215,6 @@ export default {
         },
         evaluateAccept() {
             if (this.$refs.clientCardForm.validate()) {
-                console.log('this.clientEdit = ', this.clientEdit)
                 this.acceptPromise(this.clientEdit).finally(() => {
                     this.$refs.clientCardForm.emitEndEditingEvent()
                 })

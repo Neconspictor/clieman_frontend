@@ -176,11 +176,15 @@
         </v-card-text>
 
         <v-card-actions>
-            <v-btn text color="error" @click="cancel">
-                {{ $i18n.t('cancel') }}
+            <v-btn color="error" text @click="cancel"
+                >{{ $i18n.t('discard') }}
+                <v-icon>cancel</v-icon>
             </v-btn>
             <v-btn text color="success" @click="accept">
-                <slot name="accept">{{ $i18n.t('accept') }}</slot>
+                <slot name="accept"
+                    >{{ $i18n.t('accept') }}
+                    <v-icon>mdi-content-save</v-icon></slot
+                >
             </v-btn>
         </v-card-actions>
     </wrapper>

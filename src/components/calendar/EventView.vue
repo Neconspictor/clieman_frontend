@@ -86,6 +86,7 @@
                 >
                     <template v-slot:accept>
                         {{ $i18n.t('save') }}
+                        <v-icon>mdi-content-save</v-icon>
                     </template>
                 </EventEditor>
             </slot>

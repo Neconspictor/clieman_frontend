@@ -39,7 +39,7 @@
                         :interval-minutes="intervals.minutes"
                         :interval-count="intervals.count"
                         :interval-height="intervals.height"
-                        :show-interval-label="showIntervalLabel"
+                        :show-interval-label="true"
                         class="calendar-daily"
                     >
                         <!-- <template
@@ -77,6 +77,7 @@
                             >
                                 <template v-slot:accept>
                                     {{ $i18n.t('create') }}
+                                    <v-icon>add</v-icon>
                                 </template>
                             </EventEditor>
                         </template>
@@ -155,12 +156,6 @@ export default {
     }),
 
     methods: {
-        showIntervalLabel(interval) {
-            console.log('interval', interval)
-            return true
-            //return interval.minute === 0
-        },
-
         getEventColor(ev) {
             return ev.color
         },
