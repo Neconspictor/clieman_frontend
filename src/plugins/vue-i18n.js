@@ -95,6 +95,13 @@ const messages = {
         havingAnAccount: 'Already having an account?',
         hidePassword: 'Hide password',
         showPassword: 'Show password',
+
+        registerData: {
+            accountCreated: 'Account created!',
+            sendEmailTo: 'We send an e-mail to: ',
+            verifyAccount:
+                'Please activate your acoount by opening the e-mail and clicking on the verification link',
+        },
     },
 
     de: {
@@ -190,6 +197,13 @@ const messages = {
         havingAnAccount: 'Schon ein Konto vorhanden?',
         hidePassword: 'Passwort verbergen',
         showPassword: 'Passwort anzeigen',
+
+        registerData: {
+            accountCreated: 'Konto erstellt!',
+            sendEmailTo: 'Eine E-mail wurde geschickt an: ',
+            verifyAccount:
+                'Bitte aktiviere dein Konto indem du auf den Aktivierungslink in der gesendeten E-mail klickst.',
+        },
     },
 }
 

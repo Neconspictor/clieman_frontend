@@ -39,7 +39,7 @@
                         :interval-minutes="intervals.minutes"
                         :interval-count="intervals.count"
                         :interval-height="intervals.height"
-                        :show-interval-label="true"
+                        :show-interval-label="() => true"
                         class="calendar-daily"
                     >
                         <!-- <template

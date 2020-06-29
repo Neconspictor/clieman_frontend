@@ -1,6 +1,6 @@
 <template>
     <div class="mx-auto mt-5 " style="width: 400px;">
-        <v-card class="mx-auto mt-5 ">
+        <v-card>
             <v-card-title>
                 <h1 class="display-1">{{ $i18n.t('login') }}</h1>
             </v-card-title>
