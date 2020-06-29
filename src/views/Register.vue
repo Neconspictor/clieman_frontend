@@ -21,14 +21,6 @@
                                 required
                             >
                             </v-text-field>
-
-                            <!--<v-btn class="mr-4" color="success" @click="validateForm"
-                        >Validate Form</v-btn
-                    >
-                    <v-btn color="warning" @click="resetValidation" class="mr-4"
-                        >Reset Validation</v-btn
-                    >
-                    <v-btn color="error" @click="resetForm">Reset</v-btn>-->
                         </v-form>
                     </v-card-text>
                     <v-divider></v-divider>

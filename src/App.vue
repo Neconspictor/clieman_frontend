@@ -71,18 +71,17 @@
         >
             <v-row justify="center" no-gutters>
                 <v-btn
-                    v-for="link in links"
-                    :key="`${link.label} - footer-link`"
+                    v-for="(language, index) in languages"
+                    :key="index"
                     text
                     rounded
-                    :to="link.route"
+                    @click="setLanguage(language.lang)"
                     dark
                 >
-                    {{ link.label }}
+                    {{ language.label }}
                 </v-btn>
                 <v-col class="py-4 text-center white--text" cols="12" dark>
-                    {{ new Date().getFullYear() }} —
-                    <strong>Dateman</strong>
+                    <small>Dateman &copy; {{ new Date().getFullYear() }}</small>
                 </v-col>
             </v-row>
         </v-footer>
@@ -99,6 +98,17 @@ export default {
     data() {
         return {
             icons: { account: accountIcon, baselineBedtime: baselineBedtime },
+
+            languages: [
+                {
+                    label: 'Deutsch',
+                    lang: 'de',
+                },
+                {
+                    label: 'English',
+                    lang: 'en',
+                },
+            ],
         }
     },
 
@@ -106,6 +116,7 @@ export default {
         isDark() {
             return this.$vuetify.theme.dark
         },
+
         links() {
             return [
                 {
@@ -127,6 +138,11 @@ export default {
     methods: {
         toggleTheme() {
             this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+        },
+
+        setLanguage(lang) {
+            this.$vuetify.lang.current = lang
+            this.$i18n.locale = this.$vuetify.lang.current
         },
     },
 }
