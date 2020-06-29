@@ -20,6 +20,17 @@ export default new Vuex.Store({
                 end: moment('18:00', 'HH:mm').toDate(),
             },
         },
+
+        languages: [
+            {
+                label: 'Deutsch',
+                lang: 'de',
+            },
+            {
+                label: 'English',
+                lang: 'en',
+            },
+        ],
     },
     mutations: {
         DELETE_CLIENT(state, id) {
@@ -224,6 +235,14 @@ export default new Vuex.Store({
         },
 
         getCalendarOptions: state => state.calendarOptions,
+
+        getLanguage: state => langID => {
+            for (let language of state.languages) {
+                if (language.lang === langID) return language
+            }
+
+            return null
+        },
     },
     modules: {},
 })

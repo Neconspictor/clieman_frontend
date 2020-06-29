@@ -14,6 +14,14 @@
                                         {{ this.$i18n.t('calendar') }}
                                     </div>
                                 </v-list-item>
+                                <v-list-item
+                                    @click="goToInRightSide($refs.language)"
+                                >
+                                    <v-icon>language</v-icon>
+                                    <div class="ml-1">
+                                        {{ this.$i18n.t('language') }}
+                                    </div>
+                                </v-list-item>
                             </v-list>
                         </v-col>
                     </v-row>
@@ -23,71 +31,57 @@
 
         <div id="right" class="column" ref="rightside">
             <div class="right-bottom" ref="rightbottom">
-                <div class="right-content" ref="rightcontent">
-                    <v-container class="ml-4 mr-0">
-                        <v-row>
-                            <v-col>
-                                <div ref="calendar">
-                                    <h1 class="font-weight-thin">
-                                        {{ this.$i18n.t('calendar') }}
-                                    </h1>
+                <v-container class="right-content" ref="rightcontent">
+                    <SettingEntry ref="calendar" :title="$i18n.t('calendar')">
+                        <v-row class="ml-4" align="center">
+                            <span class="mr-4 ">
+                                Active working hours:
+                            </span>
+                            <v-row style="margin-bottom: -10px;">
+                                <div>
+                                    <TimePicker
+                                        :value="
+                                            calendarOptions.workingRange.start
+                                        "
+                                        @input="
+                                            v => updateWorkingRange(v, 'start')
+                                        "
+                                        label="Start"
+                                        width="100px"
+                                    />
                                 </div>
-
-                                <v-row>
-                                    <v-col justify-center align-center>
-                                        <v-row class="ml-4" align="center">
-                                            <span class="mr-4 ">
-                                                Active working hours:
-                                            </span>
-                                            <v-row
-                                                style="margin-bottom: -10px;"
-                                            >
-                                                <div>
-                                                    <TimePicker
-                                                        :value="
-                                                            calendarOptions
-                                                                .workingRange
-                                                                .start
-                                                        "
-                                                        @input="
-                                                            v =>
-                                                                updateWorkingRange(
-                                                                    v,
-                                                                    'start'
-                                                                )
-                                                        "
-                                                        label="Start"
-                                                        width="100px"
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <TimePicker
-                                                        :value="
-                                                            calendarOptions
-                                                                .workingRange
-                                                                .end
-                                                        "
-                                                        @input="
-                                                            v =>
-                                                                updateWorkingRange(
-                                                                    v,
-                                                                    'end'
-                                                                )
-                                                        "
-                                                        label="End"
-                                                        width="100px"
-                                                    />
-                                                </div>
-                                            </v-row>
-                                        </v-row>
-                                    </v-col>
-                                </v-row>
-
-                                <v-divider></v-divider>
-                            </v-col>
+                                <div>
+                                    <TimePicker
+                                        :value="
+                                            calendarOptions.workingRange.end
+                                        "
+                                        @input="
+                                            v => updateWorkingRange(v, 'end')
+                                        "
+                                        label="End"
+                                        width="100px"
+                                    />
+                                </div>
+                            </v-row>
                         </v-row>
-                    </v-container>
-                </div>
+                    </SettingEntry>
+                    <SettingEntry ref="language" :title="$i18n.t('language')">
+                        <v-row class="ml-4" align="center">
+                            <v-select
+                                :value="currentLanguage"
+                                style="max-width: max-content;"
+                                :items="languages"
+                                :placeholder="
+                                    $i18n.t('settingsData.selectLanguage')
+                                "
+                                outlined
+                                :item-text="lang => lang.label"
+                                @change="setLanguage"
+                                return-object
+                            ></v-select>
+                        </v-row>
+                    </SettingEntry>
+                </v-container>
             </div>
         </div>
     </div>
@@ -97,12 +91,14 @@
 import $ from 'jquery'
 import moment from 'moment-timezone'
 import TimePicker from '@/components/TimePicker'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapGetters } from 'vuex'
 import rfdc from 'rfdc'
+import SettingEntry from '@/components/SettingEntry'
 
 export default {
     components: {
         TimePicker,
+        SettingEntry,
     },
     data() {
         return {
@@ -118,11 +114,15 @@ export default {
     },
 
     computed: {
-        ...mapState(['calendarOptions']),
+        ...mapState(['calendarOptions', 'languages']),
+        currentLanguage() {
+            return this.$store.getters.getLanguage(this.$vuetify.lang.current)
+        },
     },
 
     methods: {
         ...mapActions(['setCalendarOptions']),
+        ...mapGetters(['getLanguage']),
         goToInRightSide(elem) {
             $([this.$refs.rightbottom]).animate(
                 {
@@ -136,6 +136,11 @@ export default {
             const copy = rfdc()(this.calendarOptions)
             copy.workingRange[key] = newDate
             this.setCalendarOptions(copy)
+        },
+
+        setLanguage(language) {
+            this.$vuetify.lang.current = language.lang
+            this.$i18n.locale = this.$vuetify.lang.current
         },
     },
 }

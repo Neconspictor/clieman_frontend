@@ -102,6 +102,8 @@ const messages = {
             verifyAccount:
                 'Please activate your acoount by opening the e-mail and clicking on the verification link',
         },
+
+        language: 'Language',
     },
 
     de: {
@@ -204,6 +206,8 @@ const messages = {
             verifyAccount:
                 'Bitte aktiviere dein Konto indem du auf den Aktivierungslink in der gesendeten E-mail klickst.',
         },
+
+        language: 'Sprache',
     },
 }
 
