@@ -7,35 +7,12 @@
             <v-card-text>
                 <v-form>
                     <v-text-field
+                        v-model="username"
                         :label="`${$i18n.t('username')} / ${$i18n.t('email')}`"
                         prepend-icon="mdi-account-circle"
                     />
-                    <v-text-field
-                        :label="$i18n.t('password')"
-                        :type="showPassword ? 'text' : 'password'"
-                        prepend-icon="mdi-lock"
-                    >
-                        <v-tooltip slot="append" bottom>
-                            <template v-slot:activator="{ on }"
-                                ><v-btn
-                                    icon
-                                    color="primary"
-                                    v-on="on"
-                                    @click="showPassword = !showPassword"
-                                >
-                                    <v-icon>{{
-                                        showPassword ? 'mdi-eye' : 'mdi-eye-off'
-                                    }}</v-icon>
-                                </v-btn>
-                            </template>
 
-                            <span>{{
-                                showPassword
-                                    ? $i18n.t('hidePassword')
-                                    : $i18n.t('showPassword')
-                            }}</span>
-                        </v-tooltip></v-text-field
-                    >
+                    <PasswordField v-model="password" />
                 </v-form>
             </v-card-text>
             <v-divider></v-divider>
@@ -54,9 +31,16 @@
 </template>
 
 <script>
+import PasswordField from '@/components/util/PasswordField'
+
 export default {
+    components: {
+        PasswordField,
+    },
     data: () => ({
         showPassword: false,
+        username: '',
+        password: '',
     }),
 }
 </script>

@@ -35,73 +35,18 @@
                             >
                             </v-text-field>
 
-                            <v-text-field
-                                :label="$i18n.t('password')"
+                            <PasswordField
                                 v-model="password"
+                                required
                                 :rules="passwordRules"
-                                :type="showPassword ? 'text' : 'password'"
-                                required
-                                prepend-icon="mdi-lock"
-                            >
-                                <v-tooltip slot="append" bottom>
-                                    <template v-slot:activator="{ on }"
-                                        ><v-btn
-                                            icon
-                                            color="primary"
-                                            v-on="on"
-                                            @click="
-                                                showPassword = !showPassword
-                                            "
-                                        >
-                                            <v-icon>{{
-                                                showPassword
-                                                    ? 'mdi-eye'
-                                                    : 'mdi-eye-off'
-                                            }}</v-icon>
-                                        </v-btn>
-                                    </template>
+                            />
 
-                                    <span>{{
-                                        showPassword
-                                            ? $i18n.t('hidePassword')
-                                            : $i18n.t('showPassword')
-                                    }}</span>
-                                </v-tooltip>
-                            </v-text-field>
-
-                            <v-text-field
-                                :label="$i18n.t('registerData.confirmPassword')"
+                            <PasswordField
                                 v-model="confirmationPassword"
-                                :rules="confirmationPasswordRules"
-                                :type="showPassword ? 'text' : 'password'"
                                 required
-                                prepend-icon="mdi-lock"
-                            >
-                                <v-tooltip slot="append" bottom>
-                                    <template v-slot:activator="{ on }"
-                                        ><v-btn
-                                            icon
-                                            color="primary"
-                                            v-on="on"
-                                            @click="
-                                                showPassword = !showPassword
-                                            "
-                                        >
-                                            <v-icon>{{
-                                                showPassword
-                                                    ? 'mdi-eye'
-                                                    : 'mdi-eye-off'
-                                            }}</v-icon>
-                                        </v-btn>
-                                    </template>
-
-                                    <span>{{
-                                        showPassword
-                                            ? $i18n.t('hidePassword')
-                                            : $i18n.t('showPassword')
-                                    }}</span>
-                                </v-tooltip>
-                            </v-text-field>
+                                :rules="confirmationPasswordRules"
+                                :label="$i18n.t('registerData.confirmPassword')"
+                            />
                         </v-form>
                     </v-card-text>
 
@@ -137,8 +82,11 @@
 
 <script>
 //mdi-account-circle
+import PasswordField from '@/components/util/PasswordField'
 export default {
-    components: {},
+    components: {
+        PasswordField,
+    },
     data() {
         return {
             email: '',

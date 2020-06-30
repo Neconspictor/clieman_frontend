@@ -118,40 +118,8 @@
                             />
                         </v-row>
                         <v-row class="ml-4" style="max-width: 500px">
-                            <v-text-field
-                                :label="$i18n.t('password')"
-                                :type="
-                                    account.showPassword ? 'text' : 'password'
-                                "
-                                prepend-icon="mdi-lock"
-                                readonly
-                                v-model="account.password"
-                            >
-                                <v-tooltip slot="append" bottom>
-                                    <template v-slot:activator="{ on }"
-                                        ><v-btn
-                                            icon
-                                            color="primary"
-                                            v-on="on"
-                                            @click="
-                                                account.showPassword = !account.showPassword
-                                            "
-                                        >
-                                            <v-icon>{{
-                                                account.showPassword
-                                                    ? 'mdi-eye'
-                                                    : 'mdi-eye-off'
-                                            }}</v-icon>
-                                        </v-btn>
-                                    </template>
+                            <PasswordField v-model="account.password" />
 
-                                    <span>{{
-                                        accountshowPassword
-                                            ? $i18n.t('hidePassword')
-                                            : $i18n.t('showPassword')
-                                    }}</span>
-                                </v-tooltip>
-                            </v-text-field>
                             <EditButton
                                 btnClass="mt-4"
                                 :tooltipText="$i18n.t('editData.password')"
@@ -172,12 +140,14 @@ import { mapState, mapActions, mapGetters } from 'vuex'
 import rfdc from 'rfdc'
 import SettingEntry from '@/components/SettingEntry'
 import EditButton from '@/components/util/EditButton'
+import PasswordField from '@/components/util/PasswordField'
 
 export default {
     components: {
         TimePicker,
         SettingEntry,
         EditButton,
+        PasswordField,
     },
     data() {
         return {
@@ -194,7 +164,6 @@ export default {
                 username: 'Schlomo',
                 email: 'testimonial.schlomo@googlemail.com',
                 password: 'testPassword1234',
-                showPassword: false,
             },
         }
     },
