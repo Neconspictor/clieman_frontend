@@ -1,7 +1,7 @@
 <template>
     <v-text-field
         :label="computedLabel"
-        :type="showPassword ? 'text' : 'password'"
+        :type="computedShowPassword ? 'text' : 'password'"
         prepend-icon="mdi-lock"
         :value="value"
         @input.self="emitNewValue"
@@ -15,16 +15,18 @@
                     icon
                     color="primary"
                     v-on="on"
-                    @click="showPassword = !showPassword"
+                    @click="computedShowPassword = !computedShowPassword"
                 >
                     <v-icon>{{
-                        showPassword ? 'mdi-eye' : 'mdi-eye-off'
+                        computedShowPassword ? 'mdi-eye' : 'mdi-eye-off'
                     }}</v-icon>
                 </v-btn>
             </template>
 
             <span>{{
-                showPassword ? $i18n.t('hidePassword') : $i18n.t('showPassword')
+                computedShowPassword
+                    ? $i18n.t('hidePassword')
+                    : $i18n.t('showPassword')
             }}</span>
         </v-tooltip>
     </v-text-field>
@@ -33,11 +35,6 @@
 <script>
 export default {
     props: {
-        initialVisible: {
-            type: Boolean,
-            default: false,
-        },
-
         label: {
             type: String,
             default: '',
@@ -58,6 +55,11 @@ export default {
             default: () => [],
         },
 
+        showPassword: {
+            type: Boolean,
+            default: undefined,
+        },
+
         value: {
             type: String,
             default: '',
@@ -65,7 +67,7 @@ export default {
     },
     data() {
         return {
-            showPassword: this.initialVisible,
+            privateShowPassword: this.initialVisible,
         }
     },
 
@@ -73,6 +75,17 @@ export default {
         computedLabel() {
             if (this.label !== '') return this.label
             return this.$i18n.t('password')
+        },
+
+        computedShowPassword: {
+            get() {
+                if (this.showPassword !== undefined) return this.showPassword
+                return this.privateShowPassword
+            },
+            set(newValue) {
+                this.privateShowPassword = newValue
+                this.$emit('visible', newValue)
+            },
         },
     },
 

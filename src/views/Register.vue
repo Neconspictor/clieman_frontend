@@ -39,6 +39,8 @@
                                 v-model="password"
                                 required
                                 :rules="passwordRules"
+                                :show-password="showPassword"
+                                @visible="setShowPassword"
                             />
 
                             <PasswordField
@@ -46,6 +48,8 @@
                                 required
                                 :rules="confirmationPasswordRules"
                                 :label="$i18n.t('registerData.confirmPassword')"
+                                :show-password="showPassword"
+                                @visible="setShowPassword"
                             />
                         </v-form>
                     </v-card-text>
@@ -181,6 +185,10 @@ export default {
             if (this.formValidity) {
                 ++this.step
             }
+        },
+
+        setShowPassword(visible) {
+            this.showPassword = visible
         },
     },
 }
