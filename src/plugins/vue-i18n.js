@@ -127,6 +127,12 @@ const messages = {
             email: 'Edit E-mail',
             username: 'Edit user name',
         },
+
+        clientListData: {
+            createNewClient: 'Add a new client',
+            sortAscending: 'Sort ascending',
+            sortDescending: 'Sort descending',
+        },
     },
 
     de: {
@@ -252,6 +258,12 @@ const messages = {
             password: 'Passwort ändern',
             email: 'E-mail ändern',
             username: 'Benutzername ändern',
+        },
+
+        clientListData: {
+            createNewClient: 'Einen neuen Klienten hinzufügen',
+            sortAscending: 'Aufsteigend sortieren',
+            sortDescending: 'Absteigend sortieren',
         },
     },
 }

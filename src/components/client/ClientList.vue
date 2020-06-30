@@ -27,14 +27,23 @@
                         rounded
                         outlined
                     >
-                        <v-btn
-                            fab
-                            depressed
-                            color="blue"
-                            @click="createClientDialogIsOpen = true"
-                        >
-                            <v-icon>mdi-plus</v-icon>
-                        </v-btn>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on }">
+                                <v-btn
+                                    v-on="on"
+                                    fab
+                                    depressed
+                                    color="blue"
+                                    @click="createClientDialogIsOpen = true"
+                                >
+                                    <v-icon>mdi-plus</v-icon>
+                                </v-btn>
+                            </template>
+                            <span
+                                >{{ $i18n.t('clientListData.createNewClient') }}
+                            </span>
+                        </v-tooltip>
+
                         <v-text-field
                             v-model="search"
                             clearable
@@ -45,9 +54,8 @@
                             class="mr-4 ml-4"
                             placeholder="Search"
                         ></v-text-field>
-                        <template v-if="$vuetify.breakpoint.mdAndUp">
-                            <v-spacer></v-spacer>
-                            <v-select
+                        <v-spacer></v-spacer>
+                        <!--<v-select
                                 v-model="sortBy"
                                 solo-inverted
                                 flat
@@ -56,26 +64,46 @@
                                 prepend-inner-icon="search"
                                 label="Sort by"
                             ></v-select>
-                            <v-spacer></v-spacer>
-                            <v-btn-toggle v-model="sortDesc" mandatory>
-                                <v-btn
-                                    depressed
-                                    color="blue"
-                                    large
-                                    :value="false"
-                                >
-                                    <v-icon>mdi-arrow-up</v-icon>
-                                </v-btn>
-                                <v-btn
-                                    large
-                                    :value="true"
-                                    depressed
-                                    color="blue"
-                                >
-                                    <v-icon>mdi-arrow-down</v-icon>
-                                </v-btn>
-                            </v-btn-toggle>
-                        </template>
+                            <v-spacer></v-spacer>-->
+                        <v-btn-toggle v-model="sortDesc" mandatory>
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn
+                                        v-on="on"
+                                        depressed
+                                        color="blue"
+                                        large
+                                        :value="false"
+                                    >
+                                        <v-icon>mdi-arrow-up</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span
+                                    >{{
+                                        $i18n.t('clientListData.sortAscending')
+                                    }}
+                                </span>
+                            </v-tooltip>
+
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on }">
+                                    <v-btn
+                                        v-on="on"
+                                        large
+                                        :value="true"
+                                        depressed
+                                        color="blue"
+                                    >
+                                        <v-icon>mdi-arrow-down</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span
+                                    >{{
+                                        $i18n.t('clientListData.sortDescending')
+                                    }}
+                                </span>
+                            </v-tooltip>
+                        </v-btn-toggle>
                     </v-toolbar>
                 </template>
 
