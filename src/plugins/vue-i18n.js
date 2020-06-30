@@ -101,7 +101,7 @@ const messages = {
             accountCreated: 'Account created!',
             sendEmailTo: 'We send an e-mail to: ',
             verifyAccount:
-                'Please activate your acoount by opening the e-mail and clicking on the verification link',
+                'Please activate your account by opening the e-mail and clicking on the verification link',
             emailRequired: 'E-mail is required.',
             emailRequiredUserName: 'E-mail should have a user name',
             emailRequiresAt: 'E-mail should include an @ symbol',
@@ -117,6 +117,16 @@ const messages = {
 
         language: 'Language',
         email: 'E-mail',
+
+        account: 'Account',
+
+        optional: 'optional',
+
+        editData: {
+            password: 'Change password',
+            email: 'Edit E-mail',
+            username: 'Edit user name',
+        },
     },
 
     de: {
@@ -234,6 +244,15 @@ const messages = {
 
         language: 'Sprache',
         email: 'E-mail',
+        account: 'Konto',
+
+        optional: 'optional',
+
+        editData: {
+            password: 'Passwort ändern',
+            email: 'E-mail ändern',
+            username: 'Benutzername ändern',
+        },
     },
 }
 

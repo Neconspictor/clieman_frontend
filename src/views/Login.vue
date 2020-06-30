@@ -7,7 +7,7 @@
             <v-card-text>
                 <v-form>
                     <v-text-field
-                        :label="$i18n.t('username')"
+                        :label="`${$i18n.t('username')} / ${$i18n.t('email')}`"
                         prepend-icon="mdi-account-circle"
                     />
                     <v-text-field

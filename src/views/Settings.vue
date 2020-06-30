@@ -22,6 +22,14 @@
                                         {{ this.$i18n.t('language') }}
                                     </div>
                                 </v-list-item>
+                                <v-list-item
+                                    @click="goToInRightSide($refs.account)"
+                                >
+                                    <v-icon>mdi-account</v-icon>
+                                    <div class="ml-1">
+                                        {{ this.$i18n.t('account') }}
+                                    </div>
+                                </v-list-item>
                             </v-list>
                         </v-col>
                     </v-row>
@@ -66,7 +74,7 @@
                         </v-row>
                     </SettingEntry>
                     <SettingEntry ref="language" :title="$i18n.t('language')">
-                        <v-row class="ml-4" align="center">
+                        <v-row class="ml-4">
                             <v-select
                                 :value="currentLanguage"
                                 style="max-width: max-content;"
@@ -79,6 +87,75 @@
                                 @change="setLanguage"
                                 return-object
                             ></v-select>
+                        </v-row>
+                    </SettingEntry>
+                    <SettingEntry ref="account" :title="$i18n.t('account')">
+                        <v-row class="ml-4" style="max-width: 500px">
+                            <v-text-field
+                                :label="$i18n.t('username')"
+                                v-model="account.username"
+                                prepend-icon="mdi-account-circle"
+                                readonly
+                            >
+                            </v-text-field>
+                            <EditButton
+                                btnClass="mt-4"
+                                :tooltipText="$i18n.t('editData.username')"
+                            />
+                        </v-row>
+                        <v-row class="ml-4" style="max-width: 500px">
+                            <v-text-field
+                                :label="$i18n.t('email')"
+                                type="email"
+                                v-model="account.email"
+                                prepend-icon="alternate_email"
+                                readonly
+                            >
+                            </v-text-field>
+                            <EditButton
+                                btnClass="mt-4"
+                                :tooltipText="$i18n.t('editData.email')"
+                            />
+                        </v-row>
+                        <v-row class="ml-4" style="max-width: 500px">
+                            <v-text-field
+                                :label="$i18n.t('password')"
+                                :type="
+                                    account.showPassword ? 'text' : 'password'
+                                "
+                                prepend-icon="mdi-lock"
+                                readonly
+                                v-model="account.password"
+                            >
+                                <v-tooltip slot="append" bottom>
+                                    <template v-slot:activator="{ on }"
+                                        ><v-btn
+                                            icon
+                                            color="primary"
+                                            v-on="on"
+                                            @click="
+                                                account.showPassword = !account.showPassword
+                                            "
+                                        >
+                                            <v-icon>{{
+                                                account.showPassword
+                                                    ? 'mdi-eye'
+                                                    : 'mdi-eye-off'
+                                            }}</v-icon>
+                                        </v-btn>
+                                    </template>
+
+                                    <span>{{
+                                        accountshowPassword
+                                            ? $i18n.t('hidePassword')
+                                            : $i18n.t('showPassword')
+                                    }}</span>
+                                </v-tooltip>
+                            </v-text-field>
+                            <EditButton
+                                btnClass="mt-4"
+                                :tooltipText="$i18n.t('editData.password')"
+                            />
                         </v-row>
                     </SettingEntry>
                 </v-container>
@@ -94,11 +171,13 @@ import TimePicker from '@/components/TimePicker'
 import { mapState, mapActions, mapGetters } from 'vuex'
 import rfdc from 'rfdc'
 import SettingEntry from '@/components/SettingEntry'
+import EditButton from '@/components/util/EditButton'
 
 export default {
     components: {
         TimePicker,
         SettingEntry,
+        EditButton,
     },
     data() {
         return {
@@ -110,6 +189,13 @@ export default {
 
             calendarWorkingHourStart: moment('08:00', 'HH:mm').toDate(),
             calendarWorkingHourEnd: moment('18:00', 'HH:mm').toDate(),
+
+            account: {
+                username: 'Schlomo',
+                email: 'testimonial.schlomo@googlemail.com',
+                password: 'testPassword1234',
+                showPassword: false,
+            },
         }
     },
 
@@ -123,10 +209,12 @@ export default {
     methods: {
         ...mapActions(['setCalendarOptions']),
         ...mapGetters(['getLanguage']),
-        goToInRightSide(elem) {
+        goToInRightSide(ref) {
+            console.log('ref: ', ref)
+
             $([this.$refs.rightbottom]).animate(
                 {
-                    scrollTop: elem.offsetTop,
+                    scrollTop: ref.$el.offsetTop,
                 },
                 400
             )

@@ -19,6 +19,18 @@
                                 v-model="email"
                                 :rules="emailRules"
                                 required
+                                prepend-icon="alternate_email"
+                            >
+                            </v-text-field>
+
+                            <v-text-field
+                                :label="
+                                    `${$i18n.t('username')} (${$i18n.t(
+                                        'optional'
+                                    )})`
+                                "
+                                v-model="username"
+                                :rules="usernameRules"
                                 prepend-icon="mdi-account-circle"
                             >
                             </v-text-field>
@@ -124,6 +136,7 @@
 </template>
 
 <script>
+//mdi-account-circle
 export default {
     components: {},
     data() {
