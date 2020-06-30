@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
 import VueTextareaAutosize from '@/components/extern/TextareaAutosize'
-import i18n from './plugins/vue-i18n.js'
+import i18n from './plugins/vue-i18n'
 // Import the Vuetify styles somewhere global
 import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
 import 'vuetify/src/styles/styles.sass'

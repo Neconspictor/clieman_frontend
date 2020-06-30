@@ -44,6 +44,8 @@
                             </span>
                         </v-tooltip>
 
+                        <v-spacer></v-spacer>
+
                         <v-text-field
                             v-model="search"
                             clearable
@@ -52,19 +54,10 @@
                             hide-details
                             prepend-inner-icon="search"
                             class="mr-4 ml-4"
-                            placeholder="Search"
+                            :placeholder="$i18n.t('clientListData.search')"
                         ></v-text-field>
                         <v-spacer></v-spacer>
-                        <!--<v-select
-                                v-model="sortBy"
-                                solo-inverted
-                                flat
-                                hide-details
-                                :items="keys"
-                                prepend-inner-icon="search"
-                                label="Sort by"
-                            ></v-select>
-                            <v-spacer></v-spacer>-->
+
                         <v-btn-toggle v-model="sortDesc" mandatory>
                             <v-tooltip bottom>
                                 <template v-slot:activator="{ on }">
@@ -133,39 +126,48 @@
                 </template>
 
                 <template v-slot:footer>
-                    <div class="d-flex justify-center mt-2">
-                        <span class="grey--text">Items per page</span>
-                        <v-menu offset-y>
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                    dark
-                                    text
-                                    color="primary"
-                                    class="ml-2"
-                                    v-bind="attrs"
-                                    v-on="on"
-                                >
-                                    {{ itemsPerPage }}
-                                    <v-icon>mdi-chevron-down</v-icon>
-                                </v-btn>
-                            </template>
-                            <v-list>
-                                <v-list-item
-                                    v-for="(number, index) in itemsPerPageArray"
-                                    :key="index"
-                                    @click="event => (itemsPerPage = number)"
-                                >
-                                    <v-list-item-title>{{
-                                        number
-                                    }}</v-list-item-title>
-                                </v-list-item>
-                            </v-list>
-                        </v-menu>
+                    <v-row class="d-flex justify-center mt-2" no-gutters>
+                        <v-row class="mt-4" no-gutters>
+                            <span class="grey--text pt-1" align="center">{{
+                                $i18n.t('clientListData.itemsPerPage')
+                            }}</span>
+                            <v-menu offset-y>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                        dark
+                                        text
+                                        color="primary"
+                                        class="ml-2"
+                                        v-bind="attrs"
+                                        v-on="on"
+                                    >
+                                        {{ itemsPerPage }}
+                                        <v-icon>mdi-chevron-down</v-icon>
+                                    </v-btn>
+                                </template>
+                                <v-list>
+                                    <v-list-item
+                                        v-for="(number,
+                                        index) in itemsPerPageArray"
+                                        :key="index"
+                                        @click="
+                                            event => (itemsPerPage = number)
+                                        "
+                                    >
+                                        <v-list-item-title>{{
+                                            number
+                                        }}</v-list-item-title>
+                                    </v-list-item>
+                                </v-list>
+                            </v-menu>
+                        </v-row>
 
                         <v-spacer></v-spacer>
 
-                        <span class="mr-4 grey--text">
-                            Page {{ page }} of {{ numberOfPages }}
+                        <span class="mr-4 grey--text pt-4">
+                            {{ $i18n.t('clientListData.page') }} {{ page }}
+                            {{ $i18n.t('clientListData.of') }}
+                            {{ numberOfPages }}
                         </span>
                         <v-btn
                             fab
@@ -185,7 +187,7 @@
                         >
                             <v-icon>mdi-chevron-right</v-icon>
                         </v-btn>
-                    </div>
+                    </v-row>
                 </template>
             </v-data-iterator>
         </div>
@@ -247,13 +249,12 @@ export default {
 
     data() {
         return {
-            itemsPerPageArray: [2, 4, 8, 12],
-            itemsPerPage: 4,
+            itemsPerPageArray: [4, 8, 12, 16, 20],
+            itemsPerPage: 12,
             page: 1,
             search: '',
             sortBy: 'name',
             sortDesc: false,
-            keys: ['name'],
             clientDOMElement: null,
             selectedClientID: null,
             selectedOpen: false,
