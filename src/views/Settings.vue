@@ -90,19 +90,15 @@
                         </v-row>
                     </SettingEntry>
                     <SettingEntry ref="account" :title="$i18n.t('account')">
-                        <v-row class="ml-4" style="max-width: 500px">
-                            <v-text-field
-                                :label="$i18n.t('username')"
-                                v-model="account.username"
-                                prepend-icon="mdi-account-circle"
-                                readonly
-                            >
-                            </v-text-field>
-                            <EditButton
-                                btnClass="mt-4"
-                                :tooltipText="$i18n.t('editData.username')"
-                            />
-                        </v-row>
+                        <EditableText
+                            :maxWidth="'500px'"
+                            @save="saveEditedUserName"
+                            :label="$i18n.t('username')"
+                            prepend-icon="mdi-account-circle"
+                            :tooltipText="$i18n.t('editData.username')"
+                            :value="account.username"
+                        />
+
                         <v-row class="ml-4" style="max-width: 500px">
                             <v-text-field
                                 :label="$i18n.t('email')"
@@ -141,6 +137,8 @@ import rfdc from 'rfdc'
 import SettingEntry from '@/components/SettingEntry'
 import EditButton from '@/components/util/EditButton'
 import PasswordField from '@/components/util/PasswordField'
+//import EditableField from '@/components/util/EditableField'
+import EditableText from '@/components/util/EditableText'
 
 export default {
     components: {
@@ -148,6 +146,8 @@ export default {
         SettingEntry,
         EditButton,
         PasswordField,
+        // EditableField,
+        EditableText,
     },
     data() {
         return {
@@ -162,6 +162,7 @@ export default {
 
             account: {
                 username: 'Schlomo',
+                usernameEdit: '',
                 email: 'testimonial.schlomo@googlemail.com',
                 password: 'testPassword1234',
             },
@@ -204,6 +205,11 @@ export default {
         setLanguage(language) {
             this.$vuetify.lang.current = language.lang
             this.$i18n.locale = this.$vuetify.lang.current
+        },
+
+        saveEditedUserName({ setEditState, value }) {
+            this.account.username = value
+            setEditState(false)
         },
     },
 }

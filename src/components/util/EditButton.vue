@@ -1,7 +1,7 @@
 <template>
     <v-tooltip bottom>
         <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" :class="btnClass">
+            <v-btn icon v-on="on" :class="btnClass" @click="emitClick">
                 <v-icon>mdi-pencil</v-icon>
             </v-btn>
         </template>
@@ -20,6 +20,12 @@ export default {
         tooltipText: {
             type: String,
             default: '',
+        },
+    },
+
+    methods: {
+        emitClick(e) {
+            this.$emit('click', e)
         },
     },
 }
