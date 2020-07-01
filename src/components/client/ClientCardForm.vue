@@ -264,7 +264,7 @@ export default {
             },
 
             set: function(value) {
-                this.clientEdit.birthday = moment(value).toDate()
+                this.$set(this.clientEdit, 'birthday', moment(value).toDate())
             },
         },
 
