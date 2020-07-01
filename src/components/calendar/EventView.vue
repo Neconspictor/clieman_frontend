@@ -106,7 +106,6 @@
 <script>
 import ConfirmDialog from '@/components/ConfirmDialog'
 import EventEditor from '@/components/calendar/EventEditor'
-//import DateUtil from '@/util/date.js'
 import moment from 'moment-timezone'
 import Activator from '@/components//Activator'
 

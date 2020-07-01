@@ -132,6 +132,10 @@ export default {
             of: 'of',
             itemsPerPage: 'Results per page',
         },
+
+        settingsData: {
+            selectLanguage: 'Select language',
+        },
     },
 
     dateTimeFormats: {

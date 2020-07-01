@@ -106,8 +106,11 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['getClientByID']),
-        ...mapState(['clients', 'events', 'calendarOptions']),
+        ...mapGetters('client', ['getClientByID']),
+        ...mapState('client', ['clients']),
+        ...mapState('event', ['events']),
+        ...mapState('settings', ['calendarOptions']),
+
         defaultEvent() {
             const startDate = this.createDefaultStartDate()
             const endDate = this.createDefaultEndDate()
@@ -215,7 +218,7 @@ export default {
         },
 
         updateSelectedEvent(newEvent) {
-            this.$store.dispatch('updateEvent', newEvent).then(() => {
+            this.$store.dispatch('event/updateEvent', newEvent).then(() => {
                 this.selectedEvent = newEvent
             })
         },
@@ -223,7 +226,7 @@ export default {
         deleteSelectedEvent(event) {
             this.selectedOpen = false
             this.selectedEvent = {}
-            this.$store.dispatch('deleteEvent', event).then(() => {})
+            this.$store.dispatch('event/deleteEvent', event).then(() => {})
         },
 
         startCreateEventDialog() {
@@ -245,7 +248,7 @@ export default {
 
         createEvent(eventData) {
             const id = idUtil.defaultCreateUniqueID(this.events)
-            this.$store.dispatch('addEvent', { ...eventData, id: id })
+            this.$store.dispatch('event/addEvent', { ...eventData, id: id })
             this.eventCreateDialogIsOpen = false
         },
 

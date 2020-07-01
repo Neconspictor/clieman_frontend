@@ -169,15 +169,21 @@ export default {
     },
 
     computed: {
-        ...mapState(['calendarOptions', 'languages']),
+        ...mapState('settings', {
+            calendarOptions: state => state.calendarOptions,
+            languages: state => state.languages,
+        }),
+
+        ...mapGetters('settings', ['getLanguage']),
+
         currentLanguage() {
-            return this.$store.getters.getLanguage(this.$vuetify.lang.current)
+            return this.getLanguage(this.$vuetify.lang.current)
         },
     },
 
     methods: {
-        ...mapActions(['setCalendarOptions']),
-        ...mapGetters(['getLanguage']),
+        ...mapActions('settings', ['setCalendarOptions']),
+
         goToInRightSide(ref) {
             console.log('ref: ', ref)
 
@@ -225,10 +231,6 @@ scrollbar {
 
 #right {
     width: 100%;
-}
-
-.top-left {
-    //flex-shink: 0;
 }
 
 .top-right {

@@ -235,7 +235,7 @@ export default {
             return 'white'
         },
 
-        ...mapState(['clients']),
+        ...mapState('client', ['clients']),
         clientTransformed() {
             return this.clients.map((client, i) => {
                 const Description =

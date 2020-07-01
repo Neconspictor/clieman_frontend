@@ -27,7 +27,7 @@ export default {
     },
 
     computed: {
-        ...mapState(['clients']),
+        ...mapState('client', ['clients']),
     },
 
     methods: {

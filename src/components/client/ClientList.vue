@@ -265,7 +265,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters(['getClientByID']),
+        ...mapGetters('client', ['getClientByID']),
 
         numberOfPages() {
             return Math.ceil(this.clients.length / this.itemsPerPage)
@@ -281,10 +281,10 @@ export default {
     },
 
     methods: {
-        ...mapActions(['addClient', 'deleteClient']),
+        ...mapActions('client', ['addClient', 'deleteClient', 'updateClient']),
 
         commitClientChanges(newClient) {
-            return this.$store.dispatch('updateClient', newClient)
+            return this.updateClient(newClient)
         },
 
         createDefaultClient() {

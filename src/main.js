@@ -8,7 +8,7 @@ import i18n from './plugins/vue-i18n'
 // Import the Vuetify styles somewhere global
 import 'material-design-icons-iconfont/dist/material-design-icons.css' // Ensure you are using css-loader
 import 'vuetify/src/styles/styles.sass'
-// In main.js
+
 import LoadScript from 'vue-plugin-load-script'
 import IconifyIcon from '@iconify/vue'
 
@@ -44,13 +44,13 @@ var vm = new Vue({
 }).$mount('#app')
 
 store
-    .dispatch('fetchClients')
+    .dispatch('client/fetchClients')
     .then(() => {
         store
-            .dispatch('fetchEvents')
-            .then(() => {
-                store.commit('RESOLVE_CLIENT_REFERENCES', store.getters)
-            })
+            .dispatch(
+                'event/fetchEvents',
+                store.getters['client/getClientByID']
+            )
             .catch(e => {
                 console.log("Couldn't fetch events: ", e)
             })
@@ -58,16 +58,3 @@ store
     .catch(e => {
         console.log("Couldn't fetch clients: ", e)
     })
-
-/*const testClient = {
-    id: 'TheRealHansi',
-    forename: 'Hansi',
-    name: 'Göttling',
-    address: 'Sumpf',
-    mobile: '',
-    birthday: new Date('1972/05/12'),
-    email: 'hansi.goettling@gmx.de',
-    sex: 'male',
-}
-
-store.dispatch('addClient', testClient)*/

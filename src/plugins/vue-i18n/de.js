@@ -133,6 +133,10 @@ export default {
             of: 'von',
             itemsPerPage: 'Ergebnisse pro Seite',
         },
+
+        settingsData: {
+            selectLanguage: 'Sprache auswählen',
+        },
     },
 
     dateTimeFormats: {
