@@ -74,6 +74,14 @@
                     </v-card-text>
                 </v-window-item>
             </v-window>
+
+            <div
+                v-for="(error, $errorIndex) in errors"
+                :key="$errorIndex"
+                class="error"
+            >
+                {{ error }}
+            </div>
         </v-card>
         <p class="mt-4">
             {{ $i18n.t('havingAnAccount') }}
@@ -94,13 +102,14 @@ export default {
     data() {
         return {
             email: '',
-
+            username: '',
             password: '',
             confirmationPassword: '',
 
             formValidity: true,
             step: 0,
             showPassword: false,
+            errors: [],
         }
     },
 
@@ -181,9 +190,26 @@ export default {
         },
 
         submit() {
+            this.errors = []
             this.validateForm()
             if (this.formValidity) {
-                ++this.step
+                this.$store
+                    .dispatch('authentication/register', {
+                        username: this.username,
+                        email: this.email,
+                        password: this.password,
+                    })
+                    .then(() => {
+                        ++this.step
+                    })
+                    .catch(error => {
+                        console.log('error: ', error)
+                        if (error.response) {
+                            this.errors = error.response.data.errors
+                        } else {
+                            this.errors = [error]
+                        }
+                    })
             }
         },
 
