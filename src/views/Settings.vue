@@ -1,6 +1,6 @@
 <template>
     <div class="body">
-        <div id="left" class="column">
+        <div id="left" class="column" v-if="!$vuetify.breakpoint.smAndDown">
             <div class="left-bottom left-content">
                 <v-container class="pl-8">
                     <v-row>
@@ -91,36 +91,35 @@
                     </SettingEntry>
                     <SettingEntry ref="account" :title="$i18n.t('account')">
                         <EditableText
-                            :maxWidth="'500px'"
+                            max-width="500px"
                             @save="saveEditedUserName"
                             :label="$i18n.t('username')"
                             prepend-icon="mdi-account-circle"
                             :tooltipText="$i18n.t('editData.username')"
                             :value="account.username"
+                            required
                         />
 
-                        <v-row class="ml-4" style="max-width: 500px">
-                            <v-text-field
-                                :label="$i18n.t('email')"
-                                type="email"
-                                v-model="account.email"
-                                prepend-icon="alternate_email"
-                                readonly
-                            >
-                            </v-text-field>
-                            <EditButton
-                                btnClass="mt-4"
-                                :tooltipText="$i18n.t('editData.email')"
-                            />
-                        </v-row>
-                        <v-row class="ml-4" style="max-width: 500px">
-                            <PasswordField v-model="account.password" />
+                        <EditableText
+                            max-width="500px"
+                            @save="saveEditedEmail"
+                            :label="$i18n.t('email')"
+                            prepend-icon="alternate_email"
+                            :tooltipText="$i18n.t('editData.email')"
+                            :value="account.email"
+                            type="email"
+                            :rules="emailRules"
+                            required
+                        />
 
-                            <EditButton
-                                btnClass="mt-4"
-                                :tooltipText="$i18n.t('editData.password')"
-                            />
-                        </v-row>
+                        <EditablePassword
+                            max-width="500px"
+                            :value="account.password"
+                            :tooltipText="$i18n.t('editData.password')"
+                            @save="saveEditedPassword"
+                            :rules="passwordRules"
+                            required
+                        />
                     </SettingEntry>
                 </v-container>
             </div>
@@ -135,19 +134,15 @@ import TimePicker from '@/components/TimePicker'
 import { mapState, mapActions, mapGetters } from 'vuex'
 import rfdc from 'rfdc'
 import SettingEntry from '@/components/SettingEntry'
-import EditButton from '@/components/util/EditButton'
-import PasswordField from '@/components/util/PasswordField'
-//import EditableField from '@/components/util/EditableField'
 import EditableText from '@/components/util/EditableText'
+import EditablePassword from '@/components/util/EditablePassword'
 
 export default {
     components: {
         TimePicker,
         SettingEntry,
-        EditButton,
-        PasswordField,
-        // EditableField,
         EditableText,
+        EditablePassword,
     },
     data() {
         return {
@@ -180,6 +175,37 @@ export default {
         currentLanguage() {
             return this.getLanguage(this.$vuetify.lang.current)
         },
+
+        emailRules() {
+            return [
+                email => !!email || this.$i18n.t('registerData.emailRequired'),
+                email =>
+                    email.indexOf('@') !== 0 ||
+                    this.$i18n.t('registerData.emailRequiredUserName'),
+                email =>
+                    email.includes('@') > 0 ||
+                    this.$i18n.t('registerData.emailRequiresAt'),
+                email => {
+                    return (
+                        email.lastIndexOf('.') - email.indexOf('@') > 1 ||
+                        this.$i18n.t('registerData.emailValidDomain')
+                    )
+                },
+                email =>
+                    email.lastIndexOf('.') <= email.length - 3 ||
+                    this.$i18n.t('registerData.emailDomainExtension'),
+            ]
+        },
+
+        passwordRules() {
+            return [
+                password =>
+                    !!password || this.$i18n.t('registerData.passwordRequired'),
+                password =>
+                    password.length >= 8 ||
+                    this.$i18n.t('registerData.passwordTooShort'),
+            ]
+        },
     },
 
     methods: {
@@ -209,6 +235,15 @@ export default {
 
         saveEditedUserName({ setEditState, value }) {
             this.account.username = value
+            setEditState(false)
+        },
+
+        saveEditedEmail({ setEditState, value }) {
+            this.account.email = value
+            setEditState(false)
+        },
+        saveEditedPassword({ setEditState, value }) {
+            this.account.password = value
             setEditState(false)
         },
     },

@@ -2,23 +2,30 @@
     <EditableField :maxWidth="maxWidth" @save="saveEdited">
         <template v-slot:edit>
             <v-card-text>
-                <v-text-field
-                    :label="label"
-                    v-model="editableText"
-                    :prepend-icon="prependIcon"
-                >
-                </v-text-field>
+                <slot name="edit-text-field" v-bind:context="context">
+                    <v-text-field
+                        :label="label"
+                        v-model="context.editableText"
+                        :prepend-icon="prependIcon"
+                        :rules="rules"
+                        :required="required"
+                        :type="type"
+                    >
+                    </v-text-field>
+                </slot>
             </v-card-text>
         </template>
         <template v-slot:default="{ setEditState }">
             <v-row class="ml-4">
-                <v-text-field
-                    :label="label"
-                    v-model="value"
-                    :prepend-icon="prependIcon"
-                    readonly
-                >
-                </v-text-field>
+                <slot name="non-edit-text-field">
+                    <v-text-field
+                        :label="label"
+                        v-model="value"
+                        :prepend-icon="prependIcon"
+                        readonly
+                    >
+                    </v-text-field>
+                </slot>
                 <EditButton
                     btnClass="mt-4"
                     :tooltipText="tooltipText"
@@ -56,33 +63,50 @@ export default {
             default: '',
         },
 
+        required: {
+            type: Boolean,
+            default: false,
+        },
+
+        rules: {
+            type: Array,
+            default: () => [],
+        },
+
         tooltipText: {
             type: String,
             default: '',
         },
 
+        type: {
+            type: String,
+            default: 'text',
+        },
+
         value: {
             type: String,
-            default: 'Hello',
+            default: '',
         },
     },
 
     data() {
         return {
-            editableText: '',
+            context: {
+                editableText: '',
+            },
         }
     },
 
     methods: {
         startEdit(setEditState) {
-            this.editableText = rfdc()(this.value)
+            this.context.editableText = rfdc()(this.value)
             setEditState(true)
         },
 
         saveEdited(setEditState) {
             this.$emit('save', {
                 setEditState: setEditState,
-                value: rfdc()(this.editableText),
+                value: rfdc()(this.context.editableText),
             })
         },
     },

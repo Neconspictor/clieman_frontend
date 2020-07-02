@@ -3,15 +3,21 @@
         <slot name="default" v-bind:setEditState="setEditState"> </slot>
         <v-dialog v-model="edit" :width="maxWidth" persistent>
             <v-card>
-                <slot name="edit"> </slot>
-                <v-card-actions>
-                    <v-btn text color="error" @click="edit = false">{{
-                        $i18n.t('discard')
-                    }}</v-btn>
-                    <v-btn text color="success" @click="emitSave">{{
-                        $i18n.t('save')
-                    }}</v-btn>
-                </v-card-actions>
+                <v-form ref="form" v-model="formValidity">
+                    <slot name="edit"> </slot>
+                    <v-card-actions>
+                        <v-btn text color="error" @click="edit = false">{{
+                            $i18n.t('discard')
+                        }}</v-btn>
+                        <v-btn
+                            text
+                            color="success"
+                            @click="trySave"
+                            :disabled="!formValidity"
+                            >{{ $i18n.t('save') }}</v-btn
+                        >
+                    </v-card-actions>
+                </v-form>
             </v-card>
         </v-dialog>
     </div>
@@ -29,6 +35,7 @@ export default {
     data() {
         return {
             edit: false,
+            formValidity: false,
         }
     },
 
@@ -37,8 +44,15 @@ export default {
             this.edit = state
         },
 
-        emitSave() {
-            this.$emit('save', this.setEditState)
+        trySave() {
+            this.validateForm()
+            if (this.formValidity) {
+                this.$emit('save', this.setEditState)
+            }
+        },
+
+        validateForm() {
+            this.$refs.form.validate()
         },
     },
 }
