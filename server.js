@@ -3,11 +3,14 @@ const jwt = require('jsonwebtoken')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const fs = require('fs')
+
 //const events = require('./db/events.json')
 
 const app = express()
 
 const TOKEN_NAME = 'authentication_key'
+
+var dbUser = require('./db/user.json')
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -17,6 +20,16 @@ app.get('/', (req, res) => {
         message: 'Welcome to the API.',
     })
 })
+
+function preprocess(user) {
+    if (user.username) {
+        user.username = user.username.toLowerCase()
+    }
+
+    if (user.email) {
+        user.email = user.email.toLowerCase()
+    }
+}
 
 /*app.get('/dashboard', verifyToken, (req, res) => {
     jwt.verify(req.token, TOKEN_NAME, err => {
@@ -39,9 +52,10 @@ app.post('/register', (req, res) => {
             // In a production app, you'll want to encrypt the password
         }
 
+        preprocess(user)
+
         const data = JSON.stringify(user, null, 2)
 
-        var dbUserEmail = require('./db/user.json').email
         var errorsToSend = []
 
         if (user === null || user === undefined) {
@@ -60,15 +74,25 @@ app.post('/register', (req, res) => {
             errorsToSend.push('E-mail is not specified')
         }
 
-        if (dbUserEmail === user.email) {
+        if (dbUser.email === user.email) {
             errorsToSend.push('An account with this email already exists.')
+        }
+        if (dbUser.username === user.username) {
+            errorsToSend.push('An account with this user name already exists.')
         }
         if (user.password.length < 5) {
             errorsToSend.push('Password too short.')
         }
+
+        console.log('user: ', user)
+        console.log('dbUser: ', dbUser)
+        console.log('errorsToSend: ', errorsToSend)
+
         if (errorsToSend.length > 0) {
             res.status(400).json({ errors: errorsToSend })
         } else {
+            dbUser = user
+
             fs.writeFile('./db/user.json', data, err => {
                 if (err) {
                     console.log(err + data)

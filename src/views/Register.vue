@@ -59,10 +59,10 @@
                         <v-spacer />
                         <v-btn
                             color="primary"
-                            :disabled="!formValidity"
+                            :disabled="!formValidity || showSpinner"
                             @click="submit"
-                            >{{ $i18n.t('createAccount') }}</v-btn
-                        >
+                            >{{ $i18n.t('createAccount') }}
+                        </v-btn>
                     </v-card-actions>
                 </v-window-item>
                 <v-window-item :value="1">
@@ -89,6 +89,13 @@
                 $i18n.t('login')
             }}</v-btn>
         </p>
+
+        <v-overlay :value="showSpinner">
+            <v-progress-circular
+                indeterminate
+                color="primary"
+            ></v-progress-circular>
+        </v-overlay>
     </div>
 </template>
 
@@ -110,6 +117,7 @@ export default {
             step: 0,
             showPassword: false,
             errors: [],
+            showSpinner: false,
         }
     },
 
@@ -193,13 +201,15 @@ export default {
             this.errors = []
             this.validateForm()
             if (this.formValidity) {
+                this.showSpinner = true
                 this.$store
                     .dispatch('authentication/register', {
                         username: this.username,
                         email: this.email,
                         password: this.password,
                     })
-                    .then(() => {
+                    .then(response => {
+                        console.log('response: ', response)
                         ++this.step
                     })
                     .catch(error => {
@@ -209,6 +219,9 @@ export default {
                         } else {
                             this.errors = [error]
                         }
+                    })
+                    .finally(() => {
+                        this.showSpinner = false
                     })
             }
         },
