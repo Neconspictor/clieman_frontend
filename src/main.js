@@ -11,6 +11,7 @@ import 'vuetify/src/styles/styles.sass'
 
 import LoadScript from 'vue-plugin-load-script'
 import IconifyIcon from '@iconify/vue'
+import Axios from 'axios'
 
 Vue.use(IconifyIcon)
 Vue.use(VueTextareaAutosize)
@@ -40,21 +41,32 @@ var vm = new Vue({
     store,
     vuetify,
     i18n,
+    created() {
+        const userString = localStorage.getItem('user')
+        try {
+            const user = JSON.parse(userString)
+            this.$store.commit('authentication/SET_USER_DATA', user)
+            // eslint-disable-next-line no-empty
+        } catch (error) {}
+
+        Axios.interceptors.response.use(
+            response => response,
+            error => {
+                if (error.response.status === 401) {
+                    this.$store.dispatch('logout').then(() => {
+                        console.log('location: ', location)
+
+                        if (
+                            location.pathname !== '/login' &&
+                            location.pathname !== '/register'
+                        ) {
+                            location.reload()
+                        }
+                    })
+                }
+                return Promise.reject(error)
+            }
+        )
+    },
     render: h => h(App),
 }).$mount('#app')
-
-store
-    .dispatch('client/fetchClients')
-    .then(() => {
-        store
-            .dispatch(
-                'event/fetchEvents',
-                store.getters['client/getClientByID']
-            )
-            .catch(e => {
-                console.log("Couldn't fetch events: ", e)
-            })
-    })
-    .catch(e => {
-        console.log("Couldn't fetch clients: ", e)
-    })

@@ -29,6 +29,10 @@ function preprocess(user) {
     if (user.email) {
         user.email = user.email.toLowerCase()
     }
+
+    if (user.authName) {
+        user.authName = user.authName.toLowerCase()
+    }
 }
 
 /*app.get('/dashboard', verifyToken, (req, res) => {
@@ -115,11 +119,22 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
     const userDB = fs.readFileSync('./db/user.json')
     const userInfo = JSON.parse(userDB)
+
+    const data = {
+        authName: req.body ? req.body.authName : undefined,
+        password: req.body ? req.body.password : undefined,
+    }
+
+    preprocess(data)
+
+    console.log('data: ', data)
+    console.log('userInfo: ', userInfo)
+
     if (
         req.body &&
-        (req.body.authName === userInfo.email ||
-            req.body.authName === userInfo.username) &&
-        req.body.password === userInfo.password
+        (data.authName === userInfo.email ||
+            data.authName === userInfo.username) &&
+        data.password === userInfo.password
     ) {
         const token = jwt.sign({ userInfo }, TOKEN_NAME)
         // In a production app, you'll want the secret key to be an environment variable
@@ -129,7 +144,7 @@ app.post('/login', (req, res) => {
             username: userInfo.username,
         })
     } else {
-        res.status(401).json({ error: 'Invalid login. Please try again.' })
+        res.status(401).json({ errors: ['Invalid login. Please try again.'] })
     }
 })
 

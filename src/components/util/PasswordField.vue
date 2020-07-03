@@ -91,7 +91,6 @@ export default {
 
     methods: {
         emitNewValue(val) {
-            console.log('emit')
             this.$emit('input', val)
         },
     },

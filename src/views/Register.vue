@@ -90,21 +90,18 @@
             }}</v-btn>
         </p>
 
-        <v-overlay :value="showSpinner">
-            <v-progress-circular
-                indeterminate
-                color="primary"
-            ></v-progress-circular>
-        </v-overlay>
+        <LoadingSpinner :value="showSpinner" />
     </div>
 </template>
 
 <script>
 //mdi-account-circle
 import PasswordField from '@/components/util/PasswordField'
+import LoadingSpinner from '@/components/util/LoadingSpinner'
 export default {
     components: {
         PasswordField,
+        LoadingSpinner,
     },
     data() {
         return {

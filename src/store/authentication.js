@@ -54,5 +54,5 @@ const AuthenticationModule = {
 export default AuthenticationModule
 
 export const authComputed = {
-    ...mapGetters(['loggedIn']),
+    ...mapGetters('authentication', ['loggedIn']),
 }

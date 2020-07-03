@@ -1,62 +1,71 @@
 <template>
     <v-app class="my-app">
         -
-        <v-app-bar
-            app
-            src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
-            dark
-        >
+        <v-app-bar app :src="require('./assets/vbanner.jpg')" dark>
             <v-toolbar-title>Dateman</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn
-                v-for="link in links"
-                :key="`${link.label} - header-link`"
-                text
-                rounded
-                :to="link.route"
-            >
-                {{ link.label }}
-            </v-btn>
 
-            <v-menu offset-y>
-                <template v-slot:activator="{ on }">
-                    <v-btn icon text rounded v-on="on">
-                        <v-icon>mdi-menu</v-icon>
-                    </v-btn>
-                </template>
+            <template v-if="loggedIn">
+                <v-btn
+                    v-for="link in links"
+                    :key="`${link.label} - header-link`"
+                    text
+                    rounded
+                    :to="link.route"
+                >
+                    {{ link.label }}
+                </v-btn>
 
-                <v-list>
-                    <v-list-item @click="toggleTheme">
-                        <v-avatar color="grey" size="36" class="mr-2">
-                            <iconify-icon
-                                :class="
-                                    `v-icon ${
-                                        isDark ? 'theme--dark' : 'theme--light'
-                                    }`
-                                "
-                                :icon="icons.baselineBedtime"
-                            />
-                        </v-avatar>
-                        {{ this.$i18n.t('nightmode') }}
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on }">
+                        <v-btn icon text rounded v-on="on">
+                            <v-icon>mdi-menu</v-icon>
+                        </v-btn>
+                    </template>
 
-                        <v-spacer></v-spacer>
+                    <v-list>
+                        <v-list-item @click="toggleTheme">
+                            <v-avatar color="grey" size="36" class="mr-2">
+                                <iconify-icon
+                                    :class="
+                                        `v-icon ${
+                                            isDark
+                                                ? 'theme--dark'
+                                                : 'theme--light'
+                                        }`
+                                    "
+                                    :icon="icons.baselineBedtime"
+                                />
+                            </v-avatar>
+                            {{ this.$i18n.t('nightmode') }}
 
-                        <v-switch
-                            class="ml-2"
-                            disabled
-                            :value="this.$vuetify.theme.dark"
+                            <v-spacer></v-spacer>
+
+                            <v-switch
+                                class="ml-2"
+                                disabled
+                                :value="this.$vuetify.theme.dark"
+                            >
+                            </v-switch>
+                        </v-list-item>
+
+                        <v-list-item
+                            @click="$router.push({ name: 'settings' })"
                         >
-                        </v-switch>
-                    </v-list-item>
-
-                    <v-list-item @click="$router.push({ name: 'settings' })">
-                        <v-avatar color="grey" size="36" class="mr-2">
-                            <v-icon>settings</v-icon>
-                        </v-avatar>
-                        {{ this.$i18n.t('settings') }}
-                    </v-list-item>
-                </v-list>
-            </v-menu>
+                            <v-avatar color="grey" size="36" class="mr-2">
+                                <v-icon>settings</v-icon>
+                            </v-avatar>
+                            {{ this.$i18n.t('settings') }}
+                        </v-list-item>
+                        <v-list-item @click="logout">
+                            <v-avatar color="grey" size="36" class="mr-2">
+                                <v-icon>exit_to_app</v-icon>
+                            </v-avatar>
+                            {{ this.$i18n.t('logout') }}
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </template>
         </v-app-bar>
 
         <!--<router-view />-->
@@ -67,7 +76,10 @@
 
         <v-footer
             padless
-            style="background: url('https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg');"
+            :style="{
+                'background-image':
+                    'url(' + require('./assets/vbanner.jpg') + ')',
+            }"
         >
             <v-row justify="center" no-gutters>
                 <v-btn
@@ -91,6 +103,7 @@
 <script>
 import accountIcon from '@iconify/icons-mdi/account'
 import baselineBedtime from '@iconify/icons-ic/baseline-bedtime'
+import { authComputed } from '@/store/authentication'
 
 export default {
     name: 'App',
@@ -113,6 +126,8 @@ export default {
     },
 
     computed: {
+        ...authComputed,
+
         isDark() {
             return this.$vuetify.theme.dark
         },
@@ -126,10 +141,6 @@ export default {
                 {
                     label: this.$i18n.t('clients'),
                     route: { name: 'clients' },
-                },
-                {
-                    label: this.$i18n.t('login'),
-                    route: { name: 'login' },
                 },
             ]
         },
@@ -145,6 +156,12 @@ export default {
             this.$i18n.locale = this.$vuetify.lang.current
             this.$forceUpdate()
             //this.$router.go()
+        },
+
+        logout() {
+            this.$store.dispatch('authentication/logout').then(() => {
+                this.$router.push({ name: 'login' })
+            })
         },
     },
 }

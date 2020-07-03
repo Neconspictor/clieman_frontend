@@ -84,7 +84,9 @@ export default {
         registerHeader: 'Register',
         createAccount: 'Create account',
         login: 'Login',
-        username: 'user name',
+        loginNoun: 'Login',
+        logout: 'Logout',
+        username: 'User name',
         password: 'Password',
 
         notHavingAnAccount: 'Not having an account, yet?',

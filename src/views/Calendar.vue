@@ -1,31 +1,17 @@
 <template>
-    <!--<div style="min-width: 440px;">
-        <v-container fluid style="min-width: 440px;">
-        <v-row>
-            <v-col cols="12">
-                <ClientList :clients="clients" clientCardWidth="400px" />
-            </v-col>
-        </v-row>
-    </v-container>
-
-        <ClientList :clients="clients" clientCardWidth="400px" />
-    </div>-->
-
     <div>
-        <v-container fluid class="listContainer">
-            <ClientList :clients="clients" clientCardWidth="500px" />
-        </v-container>
+        <Calendar ref="calendar" />
         <LoadingSpinner :value="showSpinner" />
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import ClientList from '@/components/client/ClientList'
+import Calendar from '@/components/calendar/Calendar'
 import LoadingSpinner from '@/components/util/LoadingSpinner'
+
 export default {
     components: {
-        ClientList,
+        Calendar,
         LoadingSpinner,
     },
 
@@ -33,19 +19,6 @@ export default {
         return {
             showSpinner: false,
         }
-    },
-
-    computed: {
-        ...mapState('client', ['clients']),
-    },
-
-    methods: {
-        onClickOutside() {
-            console.log('test')
-        },
-        onClick() {
-            console.log('onClick')
-        },
     },
 
     created() {
@@ -72,8 +45,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-.listContainer {
-    min-width: 440px;
-}
-</style>
+<style lang="scss" scoped></style>

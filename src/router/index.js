@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '@/views/Home'
+import Calendar from '@/views/Calendar'
 import Clients from '@/views/Clients'
 import Settings from '@/views/Settings'
 import Login from '@/views/Login'
@@ -12,13 +12,15 @@ const routes = [
     {
         path: '/',
         name: 'calendar',
-        component: Home,
+        component: Calendar,
+        meta: { requiresAuth: true },
     },
 
     {
         path: '/clients',
         name: 'clients',
         component: Clients,
+        meta: { requiresAuth: true },
     },
 
     {
@@ -37,6 +39,7 @@ const routes = [
         path: '/settings',
         name: 'settings',
         component: Settings,
+        meta: { requiresAuth: true },
     },
 ]
 
@@ -44,6 +47,16 @@ const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes,
+})
+
+router.beforeEach((to, from, next) => {
+    const user = JSON.parse(localStorage.getItem('user'))
+    const loggedIn = user !== null
+
+    if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
+        return next({ name: 'login' })
+    }
+    next()
 })
 
 export default router
