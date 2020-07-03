@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { mapGetters } from 'vuex'
+import { apiClient } from '@/services/server.js'
 
 const AuthenticationModule = {
     namespaced: true,
@@ -22,16 +23,16 @@ const AuthenticationModule = {
     },
     actions: {
         register({ commit }, credentials) {
-            return axios
-                .post('//localhost:3000/register', credentials)
+            return apiClient()
+                .post('/register', credentials)
                 .then(({ data }) => {
                     // const data = response.data
                     commit('SET_USER_DATA', data)
                 })
         },
         login({ commit }, credentials) {
-            return axios
-                .post('//localhost:3000/login', credentials)
+            return apiClient()
+                .post('/login', credentials)
                 .then(({ data }) => {
                     commit('SET_USER_DATA', data)
                 })

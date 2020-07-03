@@ -1,4 +1,5 @@
-import DateUtil from '@/util/date.js'
+//import DateUtil from '@/util/date.js'
+import { apiClient } from '@/services/server.js'
 
 // eslint-disable-next-line no-unused-vars
 function resolveClientReferences(events, getClientByID) {
@@ -79,25 +80,14 @@ const EventModule = {
             commit('DELETE_EVENT', event.id)
         },
 
-        async fetchEvents({ commit, state, rootState }, getClientByID) {
-            const snapshot = await rootState.firebaseDB
-                .collection('clientDates')
-                .get()
+        async fetchEvents({ commit, state }, getClientByID) {
+            const response = await apiClient().get('events')
+            const events = response.data.events
 
-            const events = []
-
-            snapshot.forEach(doc => {
-                let data = doc.data()
-                let event = data
-                event.id = doc.id
-
-                event.startDate = event.start.toDate()
-                event.start = DateUtil.formatDefault(event.startDate)
-                event.endDate = event.end.toDate()
-                event.end = DateUtil.formatDefault(event.endDate)
-
-                events.push(event)
-            })
+            for (let event of events) {
+                event.startDate = new Date(event.startDate)
+                event.endDate = new Date(event.endDate)
+            }
 
             resolveClientReferences(events, getClientByID)
 

@@ -53,7 +53,7 @@ var vm = new Vue({
             response => response,
             error => {
                 if (error.response.status === 401) {
-                    this.$store.dispatch('logout').then(() => {
+                    this.$store.dispatch('authentication/logout').then(() => {
                         console.log('location: ', location)
 
                         if (

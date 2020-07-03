@@ -1,3 +1,5 @@
+import { apiClient } from '@/services/server.js'
+
 const ClientModule = {
     namespaced: true,
     state: {
@@ -67,22 +69,18 @@ const ClientModule = {
             commit('DELETE_CLIENT', client.id)
         },
 
-        async fetchClients({ commit, state, rootState }) {
-            const snapshot = await rootState.firebaseDB
-                .collection('clients')
-                .get()
+        async fetchClients({ commit, state }) {
+            const response = await apiClient().get('clients')
+            const clients = response.data.clients
 
-            const clients = []
+            for (let client of clients) {
+                client.birthday = new Date(client.birthday)
+                if (client.birthday.getTime() !== client.birthday.getTime()) {
+                    client.birthday = null
+                }
+            }
 
-            snapshot.forEach(doc => {
-                let data = doc.data()
-                let client = data
-                client.birthday = client.birthday.toDate()
-                client.id = doc.id
-                clients.push(client)
-            })
-
-            if (clients.length > 0) commit('SET_CLIENTS', clients)
+            commit('SET_CLIENTS', clients)
             return state.clients
         },
 

@@ -1,0 +1,35 @@
+[
+    {
+        "end": "2020-06-11 18:00:00",
+        "name": "Herr Dr. Meier",
+        "start": "2020-06-11 17:00:00",
+        "color": "#ff8080",
+        "clients": ["iILVrlEwuCr94b4TP5Lt"],
+        "details": "Termin mit Herrn Meier am Donnerstag um 17:00Uhr",
+        "id": "DilYYu9rdSecYdnmcdSS",
+        "startDate": "Thu Jun 11 2020 17:00:00 GMT+0200",
+        "endDate": "Thu Jun 11 2020 18:00:00 GMT+0200"
+    },
+    {
+        "details": "Termin mit Frau Schmitt um 14:00Uhr",
+        "color": "#ff00ff",
+        "start": "2020-06-10 14:00:00",
+        "name": "Frau Schmitt",
+        "end": "2020-06-10 15:00:00",
+        "clients": ["0BQr5UZj1RWxaEECITdp"],
+        "id": "XQUM0eJJYyhq1tni2TBS",
+        "startDate": "Wed Jun 10 2020 14:00:00 GMT+0200",
+        "endDate": "Wed Jun 10 2020 15:00:00 GMT+0200"
+    },
+    {
+        "details": "Doppelstunde mit Ehepaar Maler um 15:00Uhr",
+        "clients": ["MPMOK6RxHA5pV205EFCB", "9QBuwHAHYpV6ZMjxTgCy"],
+        "name": "Ehepaar Maler",
+        "start": "2020-06-10 15:00:00",
+        "end": "2020-06-10 17:00:00",
+        "color": "#001090",
+        "id": "vu5fp4RHXEQGuAZit7WS",
+        "startDate": "Wed Jun 10 2020 15:00:00 GMT+0200",
+        "endDate": "Wed Jun 10 2020 17:00:00 GMT+0200"
+    }
+]

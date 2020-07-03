@@ -4,7 +4,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const fs = require('fs')
 
-//const events = require('./db/events.json')
+const events = require('./db/events.json')
+const clients = require('./db/clients.json')
 
 const app = express()
 
@@ -35,7 +36,19 @@ function preprocess(user) {
     }
 }
 
-/*app.get('/dashboard', verifyToken, (req, res) => {
+app.get('/clients', verifyToken, (req, res) => {
+    jwt.verify(req.token, TOKEN_NAME, err => {
+        if (err) {
+            res.sendStatus(401)
+        } else {
+            res.json({
+                clients: clients,
+            })
+        }
+    })
+})
+
+app.get('/events', verifyToken, (req, res) => {
     jwt.verify(req.token, TOKEN_NAME, err => {
         if (err) {
             res.sendStatus(401)
@@ -45,7 +58,7 @@ function preprocess(user) {
             })
         }
     })
-})*/
+})
 
 app.post('/register', (req, res) => {
     if (req.body) {
