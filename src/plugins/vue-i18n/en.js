@@ -159,6 +159,18 @@ export default {
             'Error: Network Error': 'Network error.',
             noEventsFetched: "Couldn't fetch events.",
             noClientsFetched: "Couldn't fetch clients.",
+            'Error: Request failed with status code 400': 'Bad request',
+            'Error: Request failed with status code 401':
+                'Unauthorized request',
+
+            changeUserNameUserNameAlreadyExists:
+                'Another account with this user name already exists',
+            changeUserNameNoUserName: 'No user name specified.',
+
+            changeEmailNoValidEmail:
+                'Specified Email address is not a valid email',
+            changeEmailAnotherEmailAlreadyExists:
+                'Another account with this email already exists.',
         },
     },
 

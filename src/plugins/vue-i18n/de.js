@@ -164,6 +164,18 @@ export default {
             noEventsFetched: 'Termine konnten nicht heruntergeladen werden.',
             noClientsFetched:
                 'Informationen zu den Klienten konnten nicht heruntergeladen werden.',
+            'Error: Request failed with status code 400': 'Ungültige Anfrage',
+            'Error: Request failed with status code 401':
+                'Nicht authorisierte Anfrage',
+
+            changeUserNameUserNameAlreadyExists:
+                'Ein Konto mit diesem Benutzernamen existiert bereits.',
+            changeUserNameNoUserName: 'Kein Benutzername angegeben.',
+
+            changeEmailNoValidEmail:
+                'Die angegebene E-mail-Adresse ist keine gültige E-mail-Adresse',
+            changeEmailAnotherEmailAlreadyExists:
+                'Ein Konto mit dieser E-mail-Adresse existiert bereits.',
         },
     },
 

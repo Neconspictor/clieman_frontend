@@ -70,7 +70,14 @@ const ClientModule = {
         },
 
         async fetchClients({ commit, state }) {
-            const response = await apiClient().get('clients')
+            var response
+            try {
+                response = await apiClient().get('clients')
+            } catch (e) {
+                commit('SET_CLIENTS', [])
+                throw e
+            }
+
             const clients = response.data.clients
 
             for (let client of clients) {

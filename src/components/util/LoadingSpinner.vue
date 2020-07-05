@@ -1,5 +1,5 @@
 <template>
-    <v-overlay :value="value" :absolute="absolute">
+    <v-overlay :value="value" :absolute="absolute" :z-index="zIndex">
         <v-progress-circular
             indeterminate
             color="primary"
@@ -18,6 +18,11 @@ export default {
         value: {
             type: Boolean,
             default: false,
+        },
+
+        zIndex: {
+            type: Number,
+            default: 300,
         },
     },
 }

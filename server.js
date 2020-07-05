@@ -108,7 +108,118 @@ function handleChangePassword(req, res) {
                 if (err) {
                     console.log(err + newUserData)
                 } else {
-                    const token = jwt.sign({ newUser }, 'the_secret_key')
+                    const token = jwt.sign({ newUser }, TOKEN_NAME)
+                    // In a production app, you'll want the secret key to be an environment variable
+                    res.json({
+                        token,
+                        email: newUser.email,
+                        username: newUser.username,
+                    })
+                }
+            })
+        }
+    } else {
+        res.sendStatus(400)
+    }
+}
+
+app.post('/changeEmail', verifyToken, (req, res) => {
+    jwt.verify(req.token, TOKEN_NAME, err => {
+        if (err) {
+            res.sendStatus(401)
+        } else {
+            handleChangeEmail(req, res)
+        }
+    })
+})
+
+function handleChangeEmail(req, res) {
+    var errorsToSend = []
+    const userDB = JSON.parse(fs.readFileSync('./db/user.json'))
+    const newUser = JSON.parse(JSON.stringify(userDB))
+
+    if (req.body) {
+        const data = {
+            email: req.body.email,
+        }
+
+        console.log('data = ', data)
+
+        if (!data.email) {
+            errorsToSend.push('changeEmailNoValidEmail')
+        }
+
+        if (data.email === userDB.email) {
+            errorsToSend.push('changeEmailAnotherEmailAlreadyExists')
+        }
+
+        if (errorsToSend.length > 0) {
+            res.status(400).json({ errors: errorsToSend })
+        } else {
+            newUser.email = data.email
+            const newUserData = JSON.stringify(newUser, null, 2)
+            fs.writeFile('./db/user.json', newUserData, err => {
+                if (err) {
+                    console.log(err + newUserData)
+                } else {
+                    const token = jwt.sign({ newUser }, TOKEN_NAME)
+                    // In a production app, you'll want the secret key to be an environment variable
+                    res.json({
+                        token,
+                        email: newUser.email,
+                        username: newUser.username,
+                    })
+                }
+            })
+        }
+    } else {
+        res.sendStatus(400)
+    }
+}
+
+app.post('/changeUserName', verifyToken, (req, res) => {
+    jwt.verify(req.token, TOKEN_NAME, err => {
+        if (err) {
+            res.sendStatus(401)
+        } else {
+            handleChangeUserName(req, res)
+        }
+    })
+})
+
+function handleChangeUserName(req, res) {
+    var errorsToSend = []
+    const userDB = JSON.parse(fs.readFileSync('./db/user.json'))
+    const newUser = JSON.parse(JSON.stringify(userDB))
+
+    if (req.body) {
+        const data = {
+            username: req.body.username,
+        }
+
+        preprocess(data)
+        preprocess(userDB)
+
+        console.log('data = ', data)
+
+        if (data === null || data === undefined) {
+            errorsToSend.push('changeUserNameNoUserName')
+        }
+
+        if (data.username === userDB.username) {
+            errorsToSend.push('changeUserNameUserNameAlreadyExists')
+        }
+
+        if (errorsToSend.length > 0) {
+            res.status(400).json({ errors: errorsToSend })
+        } else {
+            newUser.username = data.username
+            const newUserData = JSON.stringify(newUser, null, 2)
+            fs.writeFile('./db/user.json', newUserData, err => {
+                if (err) {
+                    console.log(err + newUserData)
+                } else {
+                    const token = jwt.sign({ newUser }, TOKEN_NAME)
                     // In a production app, you'll want the secret key to be an environment variable
                     res.json({
                         token,
@@ -132,21 +243,16 @@ app.post('/register', (req, res) => {
             // In a production app, you'll want to encrypt the password
         }
 
-        preprocess(user)
-
-        const userDB = JSON.parse(fs.readFileSync('./db/user.json'))
-
         const data = JSON.stringify(user, null, 2)
+        const userDB = JSON.parse(fs.readFileSync('./db/user.json'))
+        preprocess(user)
+        preprocess(userDB)
 
         var errorsToSend = []
 
         if (user === null || user === undefined) {
             errorsToSend.push('noCredentials')
         }
-
-        //if (user.name === null || user.name === undefined || user.name === '') {
-        //    errorsToSend.push('Name is not specified')
-        //}
 
         if (
             user.email === null ||
@@ -177,7 +283,7 @@ app.post('/register', (req, res) => {
                 if (err) {
                     console.log(err + data)
                 } else {
-                    const token = jwt.sign({ user }, 'the_secret_key')
+                    const token = jwt.sign({ user }, TOKEN_NAME)
                     // In a production app, you'll want the secret key to be an environment variable
                     res.json({
                         token,
@@ -202,12 +308,14 @@ app.post('/login', (req, res) => {
     }
 
     preprocess(data)
+    preprocess(userInfo)
 
     console.log('data: ', data)
     console.log('userInfo: ', userInfo)
 
     if (
         req.body &&
+        data.authName &&
         (data.authName === userInfo.email ||
             data.authName === userInfo.username) &&
         data.password === userInfo.password

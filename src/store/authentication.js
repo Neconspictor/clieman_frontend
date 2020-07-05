@@ -22,14 +22,30 @@ const AuthenticationModule = {
         },
     },
     actions: {
+        changeEmail({ commit }, email) {
+            return apiClient()
+                .post('/changeEmail', email)
+                .then(({ data }) => {
+                    commit('SET_USER_DATA', data)
+                })
+        },
+
+        changeUserName({ commit }, username) {
+            return apiClient()
+                .post('/changeUserName', username)
+                .then(({ data }) => {
+                    commit('SET_USER_DATA', data)
+                })
+        },
+
         register({ commit }, credentials) {
             return apiClient()
                 .post('/register', credentials)
                 .then(({ data }) => {
-                    // const data = response.data
                     commit('SET_USER_DATA', data)
                 })
         },
+
         login({ commit }, credentials) {
             return apiClient()
                 .post('/login', credentials)

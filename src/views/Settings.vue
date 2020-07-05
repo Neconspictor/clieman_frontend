@@ -96,7 +96,7 @@
                             :label="$i18n.t('username')"
                             prepend-icon="mdi-account-circle"
                             :tooltipText="$i18n.t('editData.username')"
-                            :value="account.username"
+                            :value="user.username"
                             required
                         />
 
@@ -106,7 +106,7 @@
                             :label="$i18n.t('email')"
                             prepend-icon="alternate_email"
                             :tooltipText="$i18n.t('editData.email')"
-                            :value="account.email"
+                            :value="user.email"
                             type="email"
                             :rules="emailRules"
                             required
@@ -117,14 +117,11 @@
                             :tooltipText="$i18n.t('editData.password')"
                             @save="saveEditedPassword"
                             required
-                        >
-                            <template v-slot:after-edit-text-field>
-                                <LoadingSpinner :value="showSpinner" />
-                            </template>
-                        </EditablePassword>
+                        />
                     </SettingEntry>
                 </v-container>
             </div>
+            <LoadingSpinner :value="showSpinner" />
         </div>
 
         <LoadingSpinner :value="showSpinner" />
@@ -164,13 +161,6 @@ export default {
             calendarWorkingHourStart: moment('08:00', 'HH:mm').toDate(),
             calendarWorkingHourEnd: moment('18:00', 'HH:mm').toDate(),
 
-            account: {
-                username: 'Schlomo',
-                usernameEdit: '',
-                email: 'testimonial.schlomo@googlemail.com',
-                password: 'testPassword1234',
-            },
-
             showSpinner: false,
         }
     },
@@ -181,6 +171,8 @@ export default {
             languages: state => state.languages,
         }),
 
+        ...mapState('authentication', ['user']),
+
         ...mapGetters('settings', ['getLanguage']),
 
         currentLanguage() {
@@ -190,6 +182,7 @@ export default {
 
     methods: {
         ...mapActions('settings', ['setCalendarOptions']),
+        ...mapActions('authentication', ['changeUserName', 'changeEmail']),
 
         goToInRightSide(ref) {
             console.log('ref: ', ref)
@@ -213,14 +206,34 @@ export default {
             this.$i18n.locale = this.$vuetify.lang.current
         },
 
-        saveEditedUserName({ setEditState, value }) {
-            this.account.username = value
-            setEditState(false)
+        saveEditedUserName({ setEditState, setErrors, value }) {
+            setErrors([])
+            this.showSpinner = true
+            this.changeUserName({ username: value })
+                .then(() => {
+                    setEditState(false)
+                })
+                .catch(error => {
+                    setErrors(getErrorArray(error))
+                })
+                .finally(() => {
+                    this.showSpinner = false
+                })
         },
 
-        saveEditedEmail({ setEditState, value }) {
-            this.account.email = value
-            setEditState(false)
+        saveEditedEmail({ setEditState, setErrors, value }) {
+            setErrors([])
+            this.showSpinner = true
+            this.changeEmail({ email: value })
+                .then(() => {
+                    setEditState(false)
+                })
+                .catch(error => {
+                    setErrors(getErrorArray(error))
+                })
+                .finally(() => {
+                    this.showSpinner = false
+                })
         },
         saveEditedPassword(state) {
             state.setErrors([])
@@ -237,9 +250,6 @@ export default {
                 .finally(() => {
                     this.showSpinner = false
                 })
-
-            //this.account.password = value
-            //state.setEditState(false)
         },
     },
 }

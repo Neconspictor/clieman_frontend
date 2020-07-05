@@ -81,7 +81,14 @@ const EventModule = {
         },
 
         async fetchEvents({ commit, state }, getClientByID) {
-            const response = await apiClient().get('events')
+            var response
+            try {
+                response = await apiClient().get('events')
+            } catch (e) {
+                commit('SET_EVENTS', [])
+                throw e
+            }
+
             const events = response.data.events
 
             for (let event of events) {
