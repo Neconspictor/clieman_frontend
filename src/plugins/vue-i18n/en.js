@@ -140,6 +140,25 @@ export default {
             oldPassword: 'Old Password',
             newPassword: 'New Password',
             confirmNewPassword: 'Confirm new password',
+
+            passwordDesc:
+                "You should use a secure password that you don't use anywhere else",
+        },
+
+        errors: {
+            invalidLogin: 'Invalid login. Please try again.',
+            noEmail: 'E-mail is not specified.',
+            emailAlreadyExists: 'An account with this email already exists.',
+            userNameAlreadyExists:
+                'An account with this user name already exists.',
+            passwordTooShort: 'Password too short.',
+            changePasswordInvalidOldPassword: 'Old password is invalid.',
+            changePasswordNewPasswordTooShort: 'New password is too short',
+            changePasswordInvalidConfirmationPassword:
+                'Confirmation password does not match with new password.',
+            'Error: Network Error': 'Network error.',
+            noEventsFetched: "Couldn't fetch events.",
+            noClientsFetched: "Couldn't fetch clients.",
         },
     },
 

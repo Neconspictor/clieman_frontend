@@ -11,8 +11,6 @@ const app = express()
 
 const TOKEN_NAME = 'authentication_key'
 
-var dbUser = require('./db/user.json')
-
 app.use(cors())
 app.use(bodyParser.json())
 
@@ -60,6 +58,71 @@ app.get('/events', verifyToken, (req, res) => {
     })
 })
 
+app.post('/changePassword', verifyToken, (req, res) => {
+    jwt.verify(req.token, TOKEN_NAME, err => {
+        if (err) {
+            res.sendStatus(401)
+        } else {
+            handleChangePassword(req, res)
+        }
+    })
+})
+
+function handleChangePassword(req, res) {
+    var errorsToSend = []
+    const userDB = JSON.parse(fs.readFileSync('./db/user.json'))
+    const newUser = JSON.parse(JSON.stringify(userDB))
+
+    if (req.body) {
+        const data = {
+            oldPassword: req.body.oldPassword,
+            newPassword: req.body.newPassword,
+            confirmationPassword: req.body.confirmationPassword,
+        }
+
+        console.log('data = ', data)
+
+        if (data === null || data === undefined) {
+            errorsToSend.push('changePasswordNoPasswordData')
+        }
+
+        if (!data.newPassword || data.newPassword.length < 8) {
+            errorsToSend.push('changePasswordNewPasswordTooShort')
+        }
+
+        if (data.newPassword !== data.confirmationPassword) {
+            errorsToSend.push('changePasswordInvalidConfirmationPassword')
+        }
+
+        if (userDB.password !== data.oldPassword) {
+            errorsToSend.push('changePasswordInvalidOldPassword')
+        }
+
+        newUser.password = data.newPassword
+        const newUserData = JSON.stringify(newUser, null, 2)
+
+        if (errorsToSend.length > 0) {
+            res.status(400).json({ errors: errorsToSend })
+        } else {
+            fs.writeFile('./db/user.json', newUserData, err => {
+                if (err) {
+                    console.log(err + newUserData)
+                } else {
+                    const token = jwt.sign({ newUser }, 'the_secret_key')
+                    // In a production app, you'll want the secret key to be an environment variable
+                    res.json({
+                        token,
+                        email: newUser.email,
+                        username: newUser.username,
+                    })
+                }
+            })
+        }
+    } else {
+        res.sendStatus(400)
+    }
+}
+
 app.post('/register', (req, res) => {
     if (req.body) {
         const user = {
@@ -71,12 +134,14 @@ app.post('/register', (req, res) => {
 
         preprocess(user)
 
+        const userDB = JSON.parse(fs.readFileSync('./db/user.json'))
+
         const data = JSON.stringify(user, null, 2)
 
         var errorsToSend = []
 
         if (user === null || user === undefined) {
-            errorsToSend.push('No credentials provided.')
+            errorsToSend.push('noCredentials')
         }
 
         //if (user.name === null || user.name === undefined || user.name === '') {
@@ -88,28 +153,26 @@ app.post('/register', (req, res) => {
             user.email === undefined ||
             user.email === ''
         ) {
-            errorsToSend.push('E-mail is not specified')
+            errorsToSend.push('noEmail')
         }
 
-        if (dbUser.email === user.email) {
-            errorsToSend.push('An account with this email already exists.')
+        if (userDB.email === user.email) {
+            errorsToSend.push('emailAlreadyExists')
         }
-        if (dbUser.username === user.username) {
-            errorsToSend.push('An account with this user name already exists.')
+        if (userDB.username === user.username) {
+            errorsToSend.push('userNameAlreadyExists')
         }
         if (user.password.length < 5) {
-            errorsToSend.push('Password too short.')
+            errorsToSend.push('passwordTooShort')
         }
 
         console.log('user: ', user)
-        console.log('dbUser: ', dbUser)
+        console.log('userDB: ', userDB)
         console.log('errorsToSend: ', errorsToSend)
 
         if (errorsToSend.length > 0) {
             res.status(400).json({ errors: errorsToSend })
         } else {
-            dbUser = user
-
             fs.writeFile('./db/user.json', data, err => {
                 if (err) {
                     console.log(err + data)
@@ -157,7 +220,9 @@ app.post('/login', (req, res) => {
             username: userInfo.username,
         })
     } else {
-        res.status(401).json({ errors: ['Invalid login. Please try again.'] })
+        res.status(401).json({
+            errors: ['invalidLogin'],
+        })
     }
 })
 

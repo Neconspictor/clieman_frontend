@@ -22,20 +22,15 @@
                     $i18n.t('login')
                 }}</v-btn>
             </v-card-actions>
-
-            <div
-                v-for="(error, $errorIndex) in errors"
-                :key="$errorIndex"
-                class="error"
-            >
-                {{ error }}
-            </div>
         </v-card>
         <p class="mt-4">
             {{ $i18n.t('notHavingAnAccount') }}
             <v-btn small color="success" :to="{ name: 'register' }">{{
                 $i18n.t('register')
             }}</v-btn>
+        </p>
+        <p class="mt-4">
+            <ErrorView :errors="errors" />
         </p>
 
         <LoadingSpinner :value="showSpinner" />
@@ -45,11 +40,14 @@
 <script>
 import PasswordField from '@/components/util/PasswordField'
 import LoadingSpinner from '@/components/util/LoadingSpinner'
+import ErrorView from '@/components/util/ErrorView'
+import { getErrorArray } from '@/services/server'
 
 export default {
     components: {
         PasswordField,
         LoadingSpinner,
+        ErrorView,
     },
     data: () => ({
         showPassword: false,
@@ -68,18 +66,11 @@ export default {
                     authName: this.authName,
                     password: this.password,
                 })
-                .then(response => {
-                    console.log('response: ', response)
+                .then(() => {
                     this.$router.push({ name: 'calendar' })
                 })
                 .catch(error => {
-                    if (error.response) {
-                        if (error.response.data.errors) {
-                            this.errors = error.response.data.errors
-                        }
-                    } else {
-                        this.errors = [error]
-                    }
+                    this.errors = getErrorArray(error)
                 })
                 .finally(() => {
                     this.showSpinner = false

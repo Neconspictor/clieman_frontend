@@ -141,6 +141,29 @@ export default {
             oldPassword: 'Altes Passwort',
             newPassword: 'Neues Passwort',
             confirmNewPassword: 'Neues Passwort bestätigen',
+
+            passwordDesc:
+                'Du solltest ein sicheres Passwort verwenden, das du nirgendwo sonst verwendest.',
+        },
+
+        errors: {
+            invalidLogin:
+                'Anmeldung ist fehlgeschlagen. Bitte versuche es noch einmal.',
+            noEmail: 'Keine E-mail Adresse angegeben.',
+            emailAlreadyExists:
+                'Ein Konto mit dieser E-mail Adresse existiert bereits.',
+            userNameAlreadyExists:
+                'Ein Konto mit diesem Benutzernamen existiert bereits.',
+            passwordTooShort: 'Passwort ist zu kurz.',
+
+            changePasswordInvalidOldPassword: 'Altes Passwort ist inkorrekt.',
+            changePasswordNewPasswordTooShort: 'Neues Passwort ist zu kurz.',
+            changePasswordInvalidConfirmationPassword:
+                'Bestätigungspasswort stimmt nicht mit dem neuen Passwort überein.',
+            'Error: Network Error': 'Netzwerkfehler',
+            noEventsFetched: 'Termine konnten nicht heruntergeladen werden.',
+            noClientsFetched:
+                'Informationen zu den Klienten konnten nicht heruntergeladen werden.',
         },
     },
 

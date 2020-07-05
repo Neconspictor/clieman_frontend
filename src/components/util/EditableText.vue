@@ -18,13 +18,7 @@
                     </v-text-field>
                 </slot>
 
-                <div
-                    v-for="(error, $errorIndex) in errors"
-                    :key="$errorIndex"
-                    class="error"
-                >
-                    {{ error }}
-                </div>
+                <ErrorView :errors="errors" />
             </v-card-text>
         </template>
         <template v-slot:default="{ setEditState }">
@@ -55,11 +49,13 @@
 import EditableField from '@/components/util/EditableField'
 import EditButton from '@/components/util/EditButton'
 import rfdc from 'rfdc'
+import ErrorView from '@/components/util/ErrorView'
 
 export default {
     components: {
         EditableField,
         EditButton,
+        ErrorView,
     },
 
     props: {
@@ -129,9 +125,9 @@ export default {
             this.errors = errors
         },
 
-        saveEdited(setEditState) {
+        saveEdited({ setEditState }) {
             this.$emit('save', {
-                setEditState: setEditState,
+                setEditState,
                 setErrors: this.setErrors,
                 value: rfdc()(this.context.editableText),
             })

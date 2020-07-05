@@ -117,11 +117,17 @@
                             :tooltipText="$i18n.t('editData.password')"
                             @save="saveEditedPassword"
                             required
-                        />
+                        >
+                            <template v-slot:after-edit-text-field>
+                                <LoadingSpinner :value="showSpinner" />
+                            </template>
+                        </EditablePassword>
                     </SettingEntry>
                 </v-container>
             </div>
         </div>
+
+        <LoadingSpinner :value="showSpinner" />
     </div>
 </template>
 
@@ -135,6 +141,8 @@ import SettingEntry from '@/components/SettingEntry'
 import EditableText from '@/components/util/EditableText'
 import EditablePassword from '@/components/util/EditablePassword'
 import Rules from '@/mixins/rules'
+import LoadingSpinner from '@/components/util/LoadingSpinner'
+import { apiClient, getErrorArray } from '@/services/server.js'
 
 export default {
     components: {
@@ -142,6 +150,7 @@ export default {
         SettingEntry,
         EditableText,
         EditablePassword,
+        LoadingSpinner,
     },
     mixins: [Rules],
     data() {
@@ -161,6 +170,8 @@ export default {
                 email: 'testimonial.schlomo@googlemail.com',
                 password: 'testPassword1234',
             },
+
+            showSpinner: false,
         }
     },
 
@@ -212,8 +223,21 @@ export default {
             setEditState(false)
         },
         saveEditedPassword(state) {
-            console.log('save edit state: ', state)
-            state.setErrors(['Old password is not valid'])
+            state.setErrors([])
+            this.showSpinner = true
+
+            apiClient()
+                .post('/changePassword', state.data)
+                .then(() => {
+                    state.setEditState(false)
+                })
+                .catch(error => {
+                    state.setErrors(getErrorArray(error))
+                })
+                .finally(() => {
+                    this.showSpinner = false
+                })
+
             //this.account.password = value
             //state.setEditState(false)
         },

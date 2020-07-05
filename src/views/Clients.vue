@@ -1,19 +1,10 @@
 <template>
-    <!--<div style="min-width: 440px;">
-        <v-container fluid style="min-width: 440px;">
-        <v-row>
-            <v-col cols="12">
-                <ClientList :clients="clients" clientCardWidth="400px" />
-            </v-col>
-        </v-row>
-    </v-container>
-
-        <ClientList :clients="clients" clientCardWidth="400px" />
-    </div>-->
-
     <div>
         <v-container fluid class="listContainer">
             <ClientList :clients="clients" clientCardWidth="500px" />
+            <p style="max-width: 400px; margin: auto">
+                <ErrorView :errors="errors" />
+            </p>
         </v-container>
         <LoadingSpinner :value="showSpinner" />
     </div>
@@ -23,15 +14,20 @@
 import { mapState } from 'vuex'
 import ClientList from '@/components/client/ClientList'
 import LoadingSpinner from '@/components/util/LoadingSpinner'
+import ErrorView from '@/components/util/ErrorView'
+import { getErrorArray } from '@/services/server'
+
 export default {
     components: {
         ClientList,
         LoadingSpinner,
+        ErrorView,
     },
 
     data() {
         return {
             showSpinner: false,
+            errors: [],
         }
     },
 
@@ -59,11 +55,13 @@ export default {
                         this.$store.getters['client/getClientByID']
                     )
                     .catch(e => {
-                        console.log("Couldn't fetch events: ", e)
+                        this.errors = getErrorArray(e)
+                        this.errors.push('noEventsFetched')
                     })
             })
             .catch(e => {
-                console.log("Couldn't fetch clients: ", e)
+                this.errors = getErrorArray(e)
+                this.errors.push('noClientsFetched')
             })
             .finally(() => {
                 this.showSpinner = false

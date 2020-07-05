@@ -29,13 +29,14 @@
                 :showPassword="computedShowPassword"
                 @visible="val => (computedShowPassword = val)"
             />
+
+            <slot name="after-edit-text-field"></slot>
         </template>
         <template v-slot:non-edit-text-field>
             <div>
-                <div>Password</div>
+                <div>{{ $i18n.t('password') }}</div>
                 <div style="color: grey;">
-                    You should use a secure password that you don't use anywhere
-                    else
+                    {{ $i18n.t('settingsData.passwordDesc') }}
                 </div>
             </div>
         </template>
@@ -102,11 +103,13 @@ export default {
     methods: {
         emitSave({ setEditState, setErrors }) {
             this.$emit('save', {
-                setEditState: setEditState,
-                setErrors: setErrors,
-                oldPassword: this.oldPassword,
-                newPassword: this.newPassword,
-                confirmationPassword: this.confirmationPassword,
+                setEditState,
+                setErrors,
+                data: {
+                    oldPassword: this.oldPassword,
+                    newPassword: this.newPassword,
+                    confirmationPassword: this.confirmationPassword,
+                },
             })
         },
 

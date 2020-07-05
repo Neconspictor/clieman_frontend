@@ -74,20 +74,16 @@
                     </v-card-text>
                 </v-window-item>
             </v-window>
-
-            <div
-                v-for="(error, $errorIndex) in errors"
-                :key="$errorIndex"
-                class="error"
-            >
-                {{ error }}
-            </div>
         </v-card>
         <p class="mt-4">
             {{ $i18n.t('havingAnAccount') }}
             <v-btn small color="success" :to="{ name: 'login' }">{{
                 $i18n.t('login')
             }}</v-btn>
+        </p>
+
+        <p class="mt-4">
+            <ErrorView :errors="errors" />
         </p>
 
         <LoadingSpinner :value="showSpinner" />
@@ -99,10 +95,14 @@
 import PasswordField from '@/components/util/PasswordField'
 import LoadingSpinner from '@/components/util/LoadingSpinner'
 import Rules from '@/mixins/rules'
+import ErrorView from '@/components/util/ErrorView'
+import { getErrorArray } from '@/services/server'
+
 export default {
     components: {
         PasswordField,
         LoadingSpinner,
+        ErrorView,
     },
 
     mixins: [Rules],
@@ -166,17 +166,11 @@ export default {
                         email: this.email,
                         password: this.password,
                     })
-                    .then(response => {
-                        console.log('response: ', response)
+                    .then(() => {
                         ++this.step
                     })
                     .catch(error => {
-                        console.log('error: ', error)
-                        if (error.response) {
-                            this.errors = error.response.data.errors
-                        } else {
-                            this.errors = [error]
-                        }
+                        this.errors = getErrorArray(error)
                     })
                     .finally(() => {
                         this.showSpinner = false
