@@ -137,6 +137,9 @@ export default {
 
         settingsData: {
             selectLanguage: 'Select language',
+            oldPassword: 'Old Password',
+            newPassword: 'New Password',
+            confirmNewPassword: 'Confirm new password',
         },
     },
 

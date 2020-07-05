@@ -6,7 +6,7 @@
                 <v-form ref="form" v-model="formValidity">
                     <slot name="edit"> </slot>
                     <v-card-actions>
-                        <v-btn text color="error" @click="edit = false">{{
+                        <v-btn text color="error" @click="discard">{{
                             $i18n.t('discard')
                         }}</v-btn>
                         <v-btn
@@ -40,14 +40,22 @@ export default {
     },
 
     methods: {
+        discard() {
+            this.edit = false
+            this.$emit('edit', this.edit)
+        },
         setEditState(state) {
             this.edit = state
+            this.$emit('edit', this.edit)
+            if (this.edit && this.$refs.form) {
+                this.$refs.form.resetValidation()
+            }
         },
 
         trySave() {
             this.validateForm()
             if (this.formValidity) {
-                this.$emit('save', this.setEditState)
+                this.$emit('save', { setEditState: this.setEditState })
             }
         },
 

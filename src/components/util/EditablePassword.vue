@@ -1,26 +1,43 @@
 <template>
     <EditableText
         :maxWidth="maxWidth"
-        :value="value"
         @save="emitSave"
         :tooltipText="tooltipText"
+        @edit="handleEditChange"
     >
-        <template v-slot:edit-text-field="{ context }">
+        <template v-slot:edit-text-field="">
             <PasswordField
-                :label="label"
-                v-model="context.editableText"
-                :rules="rules"
+                :label="$i18n.t('settingsData.oldPassword')"
+                v-model="oldPassword"
                 :required="required"
-                :showPassword="showPassword"
+                :showPassword="computedShowPassword"
+                @visible="val => (computedShowPassword = val)"
+            />
+            <PasswordField
+                :label="$i18n.t('settingsData.newPassword')"
+                v-model="newPassword"
+                :rules="passwordRules"
+                :required="required"
+                :showPassword="computedShowPassword"
+                @visible="val => (computedShowPassword = val)"
+            />
+            <PasswordField
+                :label="$i18n.t('settingsData.confirmNewPassword')"
+                v-model="confirmationPassword"
+                :rules="confirmationPasswordRules(newPassword)"
+                :required="required"
+                :showPassword="computedShowPassword"
+                @visible="val => (computedShowPassword = val)"
             />
         </template>
         <template v-slot:non-edit-text-field>
-            <PasswordField
-                v-model="value"
-                :label="label"
-                :showPassword="showPassword"
-                readonly
-            />
+            <div>
+                <div>Password</div>
+                <div style="color: grey;">
+                    You should use a secure password that you don't use anywhere
+                    else
+                </div>
+            </div>
         </template>
     </EditableText>
 </template>
@@ -28,6 +45,7 @@
 <script>
 import EditableText from '@/components/util/EditableText'
 import PasswordField from '@/components/util/PasswordField'
+import Rules from '@/mixins/rules'
 
 export default {
     components: {
@@ -35,11 +53,9 @@ export default {
         PasswordField,
     },
 
+    mixins: [Rules],
+
     props: {
-        label: {
-            type: String,
-            default: undefined,
-        },
         maxWidth: {
             type: String,
             default: 'inherit',
@@ -59,21 +75,48 @@ export default {
             type: String,
             default: '',
         },
+    },
 
-        rules: {
-            type: Array,
-            default: () => [],
-        },
+    data() {
+        return {
+            oldPassword: '',
+            newPassword: '',
+            confirmationPassword: '',
+            privateShowPassword: false,
+        }
+    },
 
-        value: {
-            type: String,
-            default: '',
+    computed: {
+        computedShowPassword: {
+            get: function() {
+                if (this.showPassword !== undefined) return this.showPassword
+                return this.privateShowPassword
+            },
+            set: function(val) {
+                this.privateShowPassword = val
+                this.$emit('visible', val)
+            },
         },
     },
 
     methods: {
-        emitSave(e) {
-            this.$emit('save', e)
+        emitSave({ setEditState, setErrors }) {
+            this.$emit('save', {
+                setEditState: setEditState,
+                setErrors: setErrors,
+                oldPassword: this.oldPassword,
+                newPassword: this.newPassword,
+                confirmationPassword: this.confirmationPassword,
+            })
+        },
+
+        handleEditChange(edit) {
+            if (!edit) {
+                this.oldPassword = ''
+                this.newPassword = ''
+                this.confirmationPassword = ''
+            }
+            this.$emit('edit', edit)
         },
     },
 }

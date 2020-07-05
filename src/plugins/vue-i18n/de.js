@@ -138,6 +138,9 @@ export default {
 
         settingsData: {
             selectLanguage: 'Sprache auswählen',
+            oldPassword: 'Altes Passwort',
+            newPassword: 'Neues Passwort',
+            confirmNewPassword: 'Neues Passwort bestätigen',
         },
     },
 

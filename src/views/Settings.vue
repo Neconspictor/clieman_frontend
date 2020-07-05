@@ -91,7 +91,7 @@
                     </SettingEntry>
                     <SettingEntry ref="account" :title="$i18n.t('account')">
                         <EditableText
-                            max-width="500px"
+                            max-width="530px"
                             @save="saveEditedUserName"
                             :label="$i18n.t('username')"
                             prepend-icon="mdi-account-circle"
@@ -101,7 +101,7 @@
                         />
 
                         <EditableText
-                            max-width="500px"
+                            max-width="530px"
                             @save="saveEditedEmail"
                             :label="$i18n.t('email')"
                             prepend-icon="alternate_email"
@@ -113,11 +113,9 @@
                         />
 
                         <EditablePassword
-                            max-width="500px"
-                            :value="account.password"
+                            max-width="530px"
                             :tooltipText="$i18n.t('editData.password')"
                             @save="saveEditedPassword"
-                            :rules="passwordRules"
                             required
                         />
                     </SettingEntry>
@@ -136,6 +134,7 @@ import rfdc from 'rfdc'
 import SettingEntry from '@/components/SettingEntry'
 import EditableText from '@/components/util/EditableText'
 import EditablePassword from '@/components/util/EditablePassword'
+import Rules from '@/mixins/rules'
 
 export default {
     components: {
@@ -144,6 +143,7 @@ export default {
         EditableText,
         EditablePassword,
     },
+    mixins: [Rules],
     data() {
         return {
             items: [
@@ -174,37 +174,6 @@ export default {
 
         currentLanguage() {
             return this.getLanguage(this.$vuetify.lang.current)
-        },
-
-        emailRules() {
-            return [
-                email => !!email || this.$i18n.t('registerData.emailRequired'),
-                email =>
-                    email.indexOf('@') !== 0 ||
-                    this.$i18n.t('registerData.emailRequiredUserName'),
-                email =>
-                    email.includes('@') > 0 ||
-                    this.$i18n.t('registerData.emailRequiresAt'),
-                email => {
-                    return (
-                        email.lastIndexOf('.') - email.indexOf('@') > 1 ||
-                        this.$i18n.t('registerData.emailValidDomain')
-                    )
-                },
-                email =>
-                    email.lastIndexOf('.') <= email.length - 3 ||
-                    this.$i18n.t('registerData.emailDomainExtension'),
-            ]
-        },
-
-        passwordRules() {
-            return [
-                password =>
-                    !!password || this.$i18n.t('registerData.passwordRequired'),
-                password =>
-                    password.length >= 8 ||
-                    this.$i18n.t('registerData.passwordTooShort'),
-            ]
         },
     },
 
@@ -242,9 +211,11 @@ export default {
             this.account.email = value
             setEditState(false)
         },
-        saveEditedPassword({ setEditState, value }) {
-            this.account.password = value
-            setEditState(false)
+        saveEditedPassword(state) {
+            console.log('save edit state: ', state)
+            state.setErrors(['Old password is not valid'])
+            //this.account.password = value
+            //state.setEditState(false)
         },
     },
 }
