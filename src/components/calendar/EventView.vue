@@ -60,6 +60,9 @@
                         }}</v-chip
                     >
                 </v-card-text>
+
+                <ErrorView :errors="errors" />
+
                 <v-card-actions>
                     <v-btn text @click="isOpen = false">
                         {{ $i18n.t('close') }}
@@ -109,13 +112,16 @@ import ConfirmDialog from '@/components/ConfirmDialog'
 import EventEditor from '@/components/calendar/EventEditor'
 import moment from 'moment-timezone'
 import Activator from '@/components//Activator'
+import ErrorView from '@/components/util/ErrorView'
 
 export default {
     components: {
         ConfirmDialog,
         EventEditor,
         Activator,
+        ErrorView,
     },
+
     props: {
         DOMElement: {
             type: Object,
@@ -195,15 +201,21 @@ export default {
 
         startEditingView() {
             this.currentlyEditing = true
+            this.$emit('start-edit')
         },
 
         cancel() {
             this.currentlyEditing = this.editing
+            this.$emit('cancel')
         },
 
         save(changedEvent) {
-            this.currentlyEditing = this.editing
+            //this.currentlyEditing = this.editing
             this.$emit('event-update', changedEvent)
+        },
+
+        resetEditing() {
+            this.currentlyEditing = this.editing
         },
     },
 }

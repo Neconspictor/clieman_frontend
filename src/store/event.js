@@ -81,7 +81,8 @@ const EventModule = {
             commit('ADD_EVENT', event)
         },
 
-        deleteEvent({ commit }, event) {
+        async deleteEvent({ commit }, event) {
+            await apiClient().post('deleteEvent', { id: event.id })
             commit('DELETE_EVENT', event.id)
         },
 

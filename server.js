@@ -372,6 +372,63 @@ function handleCreateEvent(req, res) {
     }
 }
 
+app.post('/deleteEvent', verifyToken, (req, res) => {
+    jwt.verify(req.token, TOKEN_NAME, err => {
+        if (err) {
+            res.sendStatus(401)
+        } else {
+            if (req.body) {
+                handleDeleteEvent(req, res)
+            } else {
+                console.log('no body')
+                res.sendStatus(400)
+            }
+        }
+    })
+})
+
+function handleDeleteEvent(req, res) {
+    const event = {
+        id: req.body.id,
+    }
+
+    var errorsToSend = []
+
+    const events = JSON.parse(fs.readFileSync('./db/events.json'))
+
+    if (!event.id) {
+        errorsToSend.push('noId')
+    }
+
+    // check that id exists
+    if (
+        events.filter(e => {
+            return e.id === event.id
+        }).length == 0
+    ) {
+        errorsToSend.push('noMatchingIdFound')
+    }
+
+    if (errorsToSend.length > 0) {
+        res.status(400).json({ errors: errorsToSend })
+    } else {
+        const index = events.findIndex(e => e.id === event.id)
+        if (index != -1) {
+            events.splice(index, 1)
+        }
+
+        fs.writeFile('./db/events.json', JSON.stringify(events), err => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json({
+                    events: events,
+                })
+            }
+        })
+    }
+}
+
 app.post('/register', (req, res) => {
     if (req.body) {
         const user = {

@@ -182,6 +182,7 @@ export default {
             noId: 'Keine ID gefunden.',
 
             idAlreadyExists: 'ID schon vergeben.',
+            noMatchingIdFound: 'Keine übereinstimmende ID gefunden.',
         },
     },
 

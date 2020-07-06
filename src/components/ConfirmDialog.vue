@@ -8,7 +8,7 @@
         </v-btn>
 -->
 
-    <v-dialog v-model="open" :max-width="maxWidth" width="unset">
+    <v-dialog v-model="open" :max-width="maxWidth" width="unset" persistent>
         <v-card class="word-breaker">
             <v-card-title class="headline word-breaker">
                 <slot name="title"></slot>

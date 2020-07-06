@@ -4,7 +4,7 @@
         <p style="max-width: 400px; margin: auto">
             <ErrorView :errors="errors" />
         </p>
-        <LoadingSpinner :value="showSpinner" />
+        <LoadingSpinner :value="showSpinner" z-index="10000" />
     </div>
 </template>
 

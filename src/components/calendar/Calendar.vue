@@ -41,6 +41,7 @@
                         :interval-height="intervals.height"
                         :show-interval-label="() => true"
                         class="calendar-daily"
+                        :event-timed="checkTimed"
                     >
                         <!-- <template
                             v-slot:event="{ event, eventParsed, formatTime }"
@@ -54,11 +55,15 @@
                         </template>-->
                     </v-calendar>
                     <EventView
+                        ref="eventView"
                         :DOMElement="DOMElement"
                         :event="selectedEvent"
                         v-model="selectedOpen"
+                        @input="evaluateHideEventView"
                         @event-update="updateSelectedEvent"
                         @delete-event="deleteSelectedEvent"
+                        @start-edit="errors = []"
+                        @cancel="errors = []"
                         :errors="errors"
                     />
 
@@ -67,6 +72,8 @@
                         :dialogPersistent="false"
                         :editing="true"
                         @input="handleEventCreatorStateChange"
+                        @start-edit="errors = []"
+                        @cancel="errors = []"
                         :errors="errors"
                     >
                         <template v-slot:editor>
@@ -186,6 +193,7 @@ export default {
             this.$refs.calendar.next()
         },
         showEvent({ nativeEvent, event }) {
+            this.errors = []
             const open = () => {
                 this.selectedEvent = event
                 this.DOMElement = nativeEvent.target
@@ -226,18 +234,42 @@ export default {
         },
 
         updateSelectedEvent(newEvent) {
-            this.$store.dispatch('event/updateEvent', newEvent).then(() => {
-                this.selectedEvent = newEvent
-            })
+            this.showSpinner = true
+            this.errors = []
+            this.$store
+                .dispatch('event/updateEvent', newEvent)
+                .then(() => {
+                    this.selectedEvent = newEvent
+                    this.$refs.eventView.resetEditing()
+                })
+                .catch(e => {
+                    this.errors = getErrorArray(e)
+                })
+                .finally(() => {
+                    this.showSpinner = false
+                })
         },
 
         deleteSelectedEvent(event) {
-            this.selectedOpen = false
-            this.selectedEvent = {}
-            this.$store.dispatch('event/deleteEvent', event).then(() => {})
+            this.showSpinner = true
+            this.errors = []
+            this.$store
+                .dispatch('event/deleteEvent', event)
+                .then(() => {
+                    this.selectedOpen = false
+                    this.selectedEvent = {}
+                })
+                .catch(e => {
+                    this.errors = getErrorArray(e)
+                    console.log('this.errors', this.errors)
+                })
+                .finally(() => {
+                    this.showSpinner = false
+                })
         },
 
         startCreateEventDialog() {
+            this.errors = []
             this.eventCreateDialogIsOpen = true
         },
 
@@ -257,6 +289,7 @@ export default {
         createEvent(eventData) {
             const id = idUtil.defaultCreateUniqueID(this.events)
             this.showSpinner = true
+            this.errors = []
             this.$store
                 .dispatch('event/addEvent', { ...eventData, id: id })
                 .then(() => {
@@ -272,9 +305,32 @@ export default {
         },
 
         handleEventCreatorStateChange(value) {
+            this.errors = []
             if (!value) {
                 this.$refs.eventCreatorEditor.reset()
             }
+        },
+
+        evaluateHideEventView(newValue) {
+            console.log('test')
+            if (!newValue && this.showSpinner) {
+                setTimeout(() => {
+                    this.selectedOpen = true
+                })
+            }
+            this.errors = []
+        },
+
+        checkTimed(event) {
+            const startHour = event.start.getHours()
+            const endHour = event.end.getHours()
+            const visibleStartHour = this.calendarOptions.workingRange.start.getHours()
+            const visibleEndHour = this.calendarOptions.workingRange.end.getHours()
+
+            return (
+                (startHour > visibleStartHour && startHour < visibleEndHour) ||
+                (endHour > visibleStartHour && endHour < visibleEndHour)
+            )
         },
     },
 }
