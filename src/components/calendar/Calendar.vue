@@ -59,6 +59,7 @@
                         v-model="selectedOpen"
                         @event-update="updateSelectedEvent"
                         @delete-event="deleteSelectedEvent"
+                        :errors="errors"
                     />
 
                     <EventView
@@ -66,6 +67,7 @@
                         :dialogPersistent="false"
                         :editing="true"
                         @input="handleEventCreatorStateChange"
+                        :errors="errors"
                     >
                         <template v-slot:editor>
                             <EventEditor
@@ -74,6 +76,7 @@
                                 :event="defaultEvent"
                                 @cancel="eventCreateDialogIsOpen = false"
                                 @accept="createEvent"
+                                :errors="errors"
                             >
                                 <template v-slot:accept>
                                     {{ $i18n.t('create') }}
@@ -85,6 +88,7 @@
                 </v-sheet>
             </v-col>
         </v-row>
+        <LoadingSpinner :value="showSpinner" />
     </v-container>
 </template>
 
@@ -96,6 +100,8 @@ import DateUtil from '@/util/date.js'
 import idUtil from '@/util/id.js'
 import EventEditor from '@/components/calendar/EventEditor'
 import moment from 'moment-timezone'
+import LoadingSpinner from '@/components/util/LoadingSpinner'
+import { getErrorArray } from '@/services/server'
 //import rfdc from 'rfdc'
 
 export default {
@@ -103,6 +109,7 @@ export default {
         EventView,
         Toolbar,
         EventEditor,
+        LoadingSpinner,
     },
 
     computed: {
@@ -112,13 +119,12 @@ export default {
         ...mapState('settings', ['calendarOptions']),
 
         defaultEvent() {
-            const startDate = this.createDefaultStartDate()
-            const endDate = this.createDefaultEndDate()
+            console.log('test')
+            const start = this.createDefaultStartDate()
+            const end = this.createDefaultEndDate()
             return {
-                startDate: startDate,
-                start: DateUtil.formatDefault(startDate),
-                endDate: endDate,
-                end: DateUtil.formatDefault(endDate),
+                start: start,
+                end: end,
                 color: this.$vuetify.theme.themes.light.primary,
                 details: '',
                 name: '',
@@ -156,6 +162,8 @@ export default {
         selectedOpen: false,
         dialog: false,
         eventCreateDialogIsOpen: false,
+        showSpinner: false,
+        errors: [],
     }),
 
     methods: {
@@ -248,8 +256,19 @@ export default {
 
         createEvent(eventData) {
             const id = idUtil.defaultCreateUniqueID(this.events)
-            this.$store.dispatch('event/addEvent', { ...eventData, id: id })
-            this.eventCreateDialogIsOpen = false
+            this.showSpinner = true
+            this.$store
+                .dispatch('event/addEvent', { ...eventData, id: id })
+                .then(() => {
+                    this.eventCreateDialogIsOpen = false
+                    this.$refs.eventCreatorEditor.reset()
+                })
+                .catch(e => {
+                    this.errors = getErrorArray(e)
+                })
+                .finally(() => {
+                    this.showSpinner = false
+                })
         },
 
         handleEventCreatorStateChange(value) {

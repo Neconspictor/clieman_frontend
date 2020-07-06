@@ -83,6 +83,7 @@
                     :width="width"
                     @cancel="cancel"
                     @accept="save"
+                    :errors="errors"
                 >
                     <template v-slot:accept>
                         {{ $i18n.t('save') }}
@@ -120,10 +121,17 @@ export default {
             type: Object,
             required: true,
         },
+
+        errors: {
+            type: Array,
+            default: () => [],
+        },
+
         event: {
             type: Object,
             required: true,
         },
+
         value: {
             type: Boolean,
             required: true,
@@ -168,13 +176,11 @@ export default {
         },
 
         startTime() {
-            return moment(this.event.startDate).format('HH:mm')
+            return moment(this.event.start).format('HH:mm')
         },
 
         duration() {
-            const diff = moment(this.event.endDate).diff(
-                moment(this.event.startDate)
-            )
+            const diff = moment(this.event.end).diff(moment(this.event.start))
 
             const duration = moment.duration(diff)
 

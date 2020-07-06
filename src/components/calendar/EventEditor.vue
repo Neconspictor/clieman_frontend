@@ -40,7 +40,7 @@
             >
                 <template v-slot:activator="{ on, attrs }">
                     <v-text-field
-                        :value="$i18n.d(clonedEvent.startDate, 'event')"
+                        :value="$i18n.d(clonedEvent.start, 'event')"
                         :label="$i18n.t('date')"
                         prepend-icon="event"
                         readonly
@@ -175,6 +175,8 @@
             ></v-autocomplete>
         </v-card-text>
 
+        <ErrorView :errors="errors" />
+
         <v-card-actions>
             <v-btn color="error" text @click="cancel"
                 >{{ $i18n.t('discard') }}
@@ -187,6 +189,8 @@
                 >
             </v-btn>
         </v-card-actions>
+
+        <slot name="errors"></slot>
     </wrapper>
 </template>
 
@@ -196,14 +200,20 @@ import DateUtil from '@/util/date.js'
 import moment from 'moment-timezone'
 import { mapState } from 'vuex'
 import TextareaAutosize from '@/components/extern/TextareaAutosize'
-//import colors from 'vuetify/lib/util/colors'
+import ErrorView from '@/components/util/ErrorView'
 
 export default {
     components: {
         TextareaAutosize,
+        ErrorView,
     },
 
     props: {
+        errors: {
+            type: Array,
+            default: () => [],
+        },
+
         event: {
             type: Object,
             required: true,
@@ -252,7 +262,7 @@ export default {
         dateWithoutTime: {
             get: function() {
                 return DateUtil.formatDate(
-                    this.clonedEvent.startDate,
+                    this.clonedEvent.start,
                     DateUtil.getDefaultTimeZone(),
                     DateUtil.getYearToDayFormat()
                 )
@@ -263,12 +273,11 @@ export default {
                 const duration = this.dateDuration
 
                 const date = moment(newValue)
-                const startDate = moment(this.clonedEvent.startDate)
-                startDate.year(date.year())
-                startDate.month(date.month())
-                startDate.date(date.date())
-                this.clonedEvent.startDate = startDate.toDate()
-                this.clonedEvent.start = DateUtil.formatDefault(startDate)
+                const start = moment(this.clonedEvent.start)
+                start.year(date.year())
+                start.month(date.month())
+                start.date(date.date())
+                this.clonedEvent.start = start.toDate()
 
                 //restore duration
                 this.dateDuration = duration
@@ -278,7 +287,7 @@ export default {
         dateOnlyTime: {
             get: function() {
                 return DateUtil.formatDate(
-                    this.clonedEvent.startDate,
+                    this.clonedEvent.start,
                     DateUtil.getDefaultTimeZone(),
                     DateUtil.getHourToMinutesFormat()
                 )
@@ -288,11 +297,10 @@ export default {
                 // before updating the starting time we backup duration since we have to restore it later
                 const duration = this.dateDuration
                 const date = moment(newValue, 'HH:mm')
-                const startDate = moment(new Date(this.clonedEvent.startDate))
-                startDate.hours(date.hours())
-                startDate.minutes(date.minutes())
-                this.clonedEvent.startDate = startDate.toDate()
-                this.clonedEvent.start = DateUtil.formatDefault(startDate)
+                const start = moment(new Date(this.clonedEvent.start))
+                start.hours(date.hours())
+                start.minutes(date.minutes())
+                this.clonedEvent.start = start.toDate()
 
                 //restore duration
                 this.dateDuration = duration
@@ -301,9 +309,9 @@ export default {
 
         dateDuration: {
             get: function() {
-                const endDate = moment(new Date(this.clonedEvent.endDate))
+                const end = moment(this.clonedEvent.end)
                 const diff = moment.duration(
-                    endDate.diff(moment(new Date(this.clonedEvent.startDate)))
+                    end.diff(moment(this.clonedEvent.start))
                 )
 
                 const result = moment.utc(diff.asMilliseconds()).format('HH:mm')
@@ -312,12 +320,9 @@ export default {
 
             set: function(newValue) {
                 const hours = parseInt(newValue.toString().split(':')[0])
-                const endDate = moment(new Date(this.clonedEvent.startDate))
-                endDate.hours(endDate.hours() + hours)
-                this.clonedEvent.endDate = endDate.toDate()
-                this.clonedEvent.end = DateUtil.formatDefault(
-                    new Date(this.clonedEvent.endDate)
-                )
+                const end = moment(this.clonedEvent.start)
+                end.hours(end.hours() + hours)
+                this.clonedEvent.end = end.toDate()
             },
         },
 
@@ -374,7 +379,7 @@ export default {
 
         accept() {
             this.$emit('accept', rfdc()(this.clonedEvent))
-            this.reset()
+            //this.reset()
         },
 
         createDesc(client) {

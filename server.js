@@ -4,9 +4,6 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const fs = require('fs')
 
-const events = require('./db/events.json')
-const clients = require('./db/clients.json')
-
 const app = express()
 
 const TOKEN_NAME = 'authentication_key'
@@ -39,6 +36,7 @@ app.get('/clients', verifyToken, (req, res) => {
         if (err) {
             res.sendStatus(401)
         } else {
+            const clients = JSON.parse(fs.readFileSync('./db/clients.json'))
             res.json({
                 clients: clients,
             })
@@ -51,6 +49,7 @@ app.get('/events', verifyToken, (req, res) => {
         if (err) {
             res.sendStatus(401)
         } else {
+            const events = JSON.parse(fs.readFileSync('./db/events.json'))
             res.json({
                 events: events,
             })
@@ -83,19 +82,19 @@ function handleChangePassword(req, res) {
         console.log('data = ', data)
 
         if (data === null || data === undefined) {
-            errorsToSend.push('changePasswordNoPasswordData')
+            errorsToSend.push('noPasswordData')
         }
 
         if (!data.newPassword || data.newPassword.length < 8) {
-            errorsToSend.push('changePasswordNewPasswordTooShort')
+            errorsToSend.push('newPasswordTooShort')
         }
 
         if (data.newPassword !== data.confirmationPassword) {
-            errorsToSend.push('changePasswordInvalidConfirmationPassword')
+            errorsToSend.push('invalidConfirmationPassword')
         }
 
         if (userDB.password !== data.oldPassword) {
-            errorsToSend.push('changePasswordInvalidOldPassword')
+            errorsToSend.push('invalidOldPassword')
         }
 
         newUser.password = data.newPassword
@@ -109,7 +108,6 @@ function handleChangePassword(req, res) {
                     console.log(err + newUserData)
                 } else {
                     const token = jwt.sign({ newUser }, TOKEN_NAME)
-                    // In a production app, you'll want the secret key to be an environment variable
                     res.json({
                         token,
                         email: newUser.email,
@@ -146,11 +144,11 @@ function handleChangeEmail(req, res) {
         console.log('data = ', data)
 
         if (!data.email) {
-            errorsToSend.push('changeEmailNoValidEmail')
+            errorsToSend.push('noValidEmail')
         }
 
         if (data.email === userDB.email) {
-            errorsToSend.push('changeEmailAnotherEmailAlreadyExists')
+            errorsToSend.push('emailAlreadyExists')
         }
 
         if (errorsToSend.length > 0) {
@@ -163,7 +161,7 @@ function handleChangeEmail(req, res) {
                     console.log(err + newUserData)
                 } else {
                     const token = jwt.sign({ newUser }, TOKEN_NAME)
-                    // In a production app, you'll want the secret key to be an environment variable
+
                     res.json({
                         token,
                         email: newUser.email,
@@ -203,11 +201,11 @@ function handleChangeUserName(req, res) {
         console.log('data = ', data)
 
         if (data === null || data === undefined) {
-            errorsToSend.push('changeUserNameNoUserName')
+            errorsToSend.push('noUserName')
         }
 
         if (data.username === userDB.username) {
-            errorsToSend.push('changeUserNameUserNameAlreadyExists')
+            errorsToSend.push('userNameAlreadyExists')
         }
 
         if (errorsToSend.length > 0) {
@@ -220,7 +218,6 @@ function handleChangeUserName(req, res) {
                     console.log(err + newUserData)
                 } else {
                     const token = jwt.sign({ newUser }, TOKEN_NAME)
-                    // In a production app, you'll want the secret key to be an environment variable
                     res.json({
                         token,
                         email: newUser.email,
@@ -234,13 +231,153 @@ function handleChangeUserName(req, res) {
     }
 }
 
+app.post('/createClient', verifyToken, (req, res) => {
+    jwt.verify(req.token, TOKEN_NAME, err => {
+        if (err) {
+            res.sendStatus(401)
+        } else {
+            if (req.body) {
+                handleCreateClient(req, res)
+            } else {
+                res.sendStatus(400)
+            }
+        }
+    })
+})
+
+function handleCreateClient(req, res) {
+    const client = {
+        email: req.body.email,
+        sex: req.body.sex,
+        name: req.body.name,
+        forename: req.body.forename,
+        birthday: req.body.birthday,
+        address: req.body.address,
+        id: req.body.id,
+    }
+
+    var errorsToSend = []
+
+    const clients = JSON.parse(fs.readFileSync('./db/clients.json'))
+
+    //id mustn't be undefined/null or empty
+
+    if (!client.id) {
+        errorsToSend.push('noId')
+    }
+
+    // check that id is unique
+    if (
+        clients.filter(c => {
+            return c.id === client.id
+        }).length != 0
+    ) {
+        errorsToSend.push('idAlreadyExists')
+    }
+
+    if (errorsToSend.length > 0) {
+        res.status(400).json({ errors: errorsToSend })
+    } else {
+        clients.push(client)
+
+        fs.writeFile('./db/clients.json', JSON.stringify(clients), err => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json({
+                    clients: clients,
+                })
+            }
+        })
+    }
+}
+
+app.post('/createEvent', verifyToken, (req, res) => {
+    jwt.verify(req.token, TOKEN_NAME, err => {
+        if (err) {
+            res.sendStatus(401)
+        } else {
+            if (req.body) {
+                handleCreateEvent(req, res)
+            } else {
+                console.log('no body')
+                res.sendStatus(400)
+            }
+        }
+    })
+})
+
+function handleCreateEvent(req, res) {
+    const event = {
+        end: req.body.end,
+        start: req.body.start,
+        sex: req.body.sex,
+        name: req.body.name,
+        clients: req.body.clients,
+        color: req.body.color,
+        details: req.body.details,
+        id: req.body.id,
+    }
+
+    var errorsToSend = []
+
+    const events = JSON.parse(fs.readFileSync('./db/events.json'))
+    const clients = JSON.parse(fs.readFileSync('./db/clients.json'))
+
+    //id mustn't be undefined/null or empty
+
+    if (!event.id) {
+        errorsToSend.push('noId')
+    }
+
+    // check that id is unique
+    if (
+        events.filter(e => {
+            return e.id === event.id
+        }).length != 0
+    ) {
+        errorsToSend.push('idAlreadyExists')
+    }
+
+    //clients array elements should refer to valid clients
+    if (Array.isArray(event.clients)) {
+        for (let clientID of event.clients) {
+            const filtered = clients.filter(c => {
+                return c.id === clientID
+            })
+
+            if (filtered.length === 0) {
+                errorsToSend.push('clientsNotValid')
+                break
+            }
+        }
+    } else {
+        errorsToSend.push('clientsNotValid')
+    }
+
+    if (errorsToSend.length > 0) {
+        res.status(400).json({ errors: errorsToSend })
+    } else {
+        events.push(event)
+
+        fs.writeFile('./db/events.json', JSON.stringify(events), err => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json({
+                    events: events,
+                })
+            }
+        })
+    }
+}
+
 app.post('/register', (req, res) => {
     if (req.body) {
         const user = {
             username: req.body.username,
             email: req.body.email,
             password: req.body.password,
-            // In a production app, you'll want to encrypt the password
         }
 
         const data = JSON.stringify(user, null, 2)
@@ -249,10 +386,6 @@ app.post('/register', (req, res) => {
         preprocess(userDB)
 
         var errorsToSend = []
-
-        if (user === null || user === undefined) {
-            errorsToSend.push('noCredentials')
-        }
 
         if (
             user.email === null ||
@@ -268,7 +401,7 @@ app.post('/register', (req, res) => {
         if (userDB.username === user.username) {
             errorsToSend.push('userNameAlreadyExists')
         }
-        if (user.password.length < 5) {
+        if (user.password.length < 8) {
             errorsToSend.push('passwordTooShort')
         }
 
@@ -298,6 +431,93 @@ app.post('/register', (req, res) => {
     }
 })
 
+app.post('/updateEvent', verifyToken, (req, res) => {
+    jwt.verify(req.token, TOKEN_NAME, err => {
+        if (err) {
+            res.sendStatus(401)
+        } else {
+            if (req.body) {
+                handleUpdateEvent(req, res)
+            } else {
+                console.log('no body')
+                res.sendStatus(400)
+            }
+        }
+    })
+})
+
+function handleUpdateEvent(req, res) {
+    const event = {
+        end: req.body.end,
+        start: req.body.start,
+        sex: req.body.sex,
+        name: req.body.name,
+        clients: req.body.clients,
+        color: req.body.color,
+        details: req.body.details,
+        id: req.body.id,
+    }
+
+    console.log('event: ', event)
+
+    var errorsToSend = []
+
+    const events = JSON.parse(fs.readFileSync('./db/events.json'))
+    const clients = JSON.parse(fs.readFileSync('./db/clients.json'))
+
+    //id mustn't be undefined/null or empty
+
+    if (!event.id) {
+        errorsToSend.push('noId')
+    }
+
+    // check that id matches an existing event
+    if (
+        events.filter(e => {
+            return e.id === event.id
+        }).length == 0
+    ) {
+        errorsToSend.push('noExistingEventFound')
+    }
+
+    //clients array elements should refer to valid clients
+    if (Array.isArray(event.clients)) {
+        for (let clientID of event.clients) {
+            const filtered = clients.filter(c => {
+                return c.id === clientID
+            })
+
+            if (filtered.length === 0) {
+                errorsToSend.push('clientsNotValid')
+                break
+            }
+        }
+    } else {
+        errorsToSend.push('clientsNotValid')
+    }
+
+    if (errorsToSend.length > 0) {
+        console.log('errorsToSend: ', errorsToSend)
+        res.status(400).json({ errors: errorsToSend })
+    } else {
+        events.forEach((e, i) => {
+            if (e.id == event.id) {
+                events[i] = event
+            }
+        })
+
+        fs.writeFile('./db/events.json', JSON.stringify(events), err => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json({
+                    events: events,
+                })
+            }
+        })
+    }
+}
+
 app.post('/login', (req, res) => {
     const userDB = fs.readFileSync('./db/user.json')
     const userInfo = JSON.parse(userDB)
@@ -321,7 +541,6 @@ app.post('/login', (req, res) => {
         data.password === userInfo.password
     ) {
         const token = jwt.sign({ userInfo }, TOKEN_NAME)
-        // In a production app, you'll want the secret key to be an environment variable
         res.json({
             token,
             email: userInfo.email,
@@ -334,7 +553,6 @@ app.post('/login', (req, res) => {
     }
 })
 
-// MIDDLEWARE
 // eslint-disable-next-line no-unused-vars
 function verifyToken(req, res, next) {
     const bearerHeader = req.headers['authorization']

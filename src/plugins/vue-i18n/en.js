@@ -152,9 +152,9 @@ export default {
             userNameAlreadyExists:
                 'An account with this user name already exists.',
             passwordTooShort: 'Password too short.',
-            changePasswordInvalidOldPassword: 'Old password is invalid.',
-            changePasswordNewPasswordTooShort: 'New password is too short',
-            changePasswordInvalidConfirmationPassword:
+            invalidOldPassword: 'Old password is invalid.',
+            newPasswordTooShort: 'New password is too short',
+            invalidConfirmationPassword:
                 'Confirmation password does not match with new password.',
             'Error: Network Error': 'Network error.',
             noEventsFetched: "Couldn't fetch events.",
@@ -162,15 +162,20 @@ export default {
             'Error: Request failed with status code 400': 'Bad request',
             'Error: Request failed with status code 401':
                 'Unauthorized request',
+            'Error: Request failed with status code 500':
+                'Internal server error',
 
-            changeUserNameUserNameAlreadyExists:
-                'Another account with this user name already exists',
-            changeUserNameNoUserName: 'No user name specified.',
+            noUserName: 'No user name specified.',
 
-            changeEmailNoValidEmail:
-                'Specified Email address is not a valid email',
-            changeEmailAnotherEmailAlreadyExists:
-                'Another account with this email already exists.',
+            noValidEmail: 'Specified Email address is not a valid email.',
+
+            clientsNotValid: 'Client list consists of invalid entries.',
+
+            noExistingEventFound: 'No valid event found.',
+
+            noId: 'No ID found.',
+
+            idAlreadyExists: 'ID already exists.',
         },
     },
 

@@ -1,5 +1,6 @@
 //import DateUtil from '@/util/date.js'
 import { apiClient } from '@/services/server.js'
+import rfdc from 'rfdc'
 
 // eslint-disable-next-line no-unused-vars
 function resolveClientReferences(events, getClientByID) {
@@ -72,7 +73,11 @@ const EventModule = {
         },
     },
     actions: {
-        addEvent({ commit }, event) {
+        async addEvent({ commit }, event) {
+            const sendEvent = rfdc()(event)
+            sendEvent.clients = event.clients.map(client => client.id)
+
+            await apiClient().post('createEvent', sendEvent)
             commit('ADD_EVENT', event)
         },
 
@@ -92,8 +97,10 @@ const EventModule = {
             const events = response.data.events
 
             for (let event of events) {
-                event.startDate = new Date(event.startDate)
-                event.endDate = new Date(event.endDate)
+                event.start = new Date(event.start)
+                event.end = new Date(event.end)
+                //event.startDate = new Date(event.startDate)
+                //event.endDate = new Date(event.endDate)
             }
 
             resolveClientReferences(events, getClientByID)
@@ -102,7 +109,12 @@ const EventModule = {
             return state.events
         },
 
-        updateEvent({ commit }, event) {
+        async updateEvent({ commit }, event) {
+            const sendEvent = rfdc()(event)
+            sendEvent.clients = event.clients.map(client => client.id)
+
+            await apiClient().post('updateEvent', sendEvent)
+
             commit('UPDATE_EVENT', event)
         },
     },

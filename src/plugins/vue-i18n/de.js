@@ -156,9 +156,9 @@ export default {
                 'Ein Konto mit diesem Benutzernamen existiert bereits.',
             passwordTooShort: 'Passwort ist zu kurz.',
 
-            changePasswordInvalidOldPassword: 'Altes Passwort ist inkorrekt.',
-            changePasswordNewPasswordTooShort: 'Neues Passwort ist zu kurz.',
-            changePasswordInvalidConfirmationPassword:
+            invalidOldPassword: 'Altes Passwort ist inkorrekt.',
+            newPasswordTooShort: 'Neues Passwort ist zu kurz.',
+            invalidConfirmationPassword:
                 'Bestätigungspasswort stimmt nicht mit dem neuen Passwort überein.',
             'Error: Network Error': 'Netzwerkfehler',
             noEventsFetched: 'Termine konnten nicht heruntergeladen werden.',
@@ -167,15 +167,21 @@ export default {
             'Error: Request failed with status code 400': 'Ungültige Anfrage',
             'Error: Request failed with status code 401':
                 'Nicht authorisierte Anfrage',
+            'Error: Request failed with status code 500':
+                'Interner Server-Fehler',
 
-            changeUserNameUserNameAlreadyExists:
-                'Ein Konto mit diesem Benutzernamen existiert bereits.',
-            changeUserNameNoUserName: 'Kein Benutzername angegeben.',
+            noUserName: 'Kein Benutzername angegeben.',
 
-            changeEmailNoValidEmail:
+            noValidEmail:
                 'Die angegebene E-mail-Adresse ist keine gültige E-mail-Adresse',
-            changeEmailAnotherEmailAlreadyExists:
-                'Ein Konto mit dieser E-mail-Adresse existiert bereits.',
+
+            clientsNotValid: 'Klientenliste enthält ungültige Einträge',
+
+            noExistingEventFound: 'Kein gültiger Termin gefunden.',
+
+            noId: 'Keine ID gefunden.',
+
+            idAlreadyExists: 'ID schon vergeben.',
         },
     },
 
