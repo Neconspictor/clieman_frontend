@@ -9,6 +9,7 @@
             :persistent="dialogPersistent"
             ref="comp"
             :width="width"
+            class="scrollable"
         >
             <slot></slot>
         </component>
@@ -74,4 +75,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.v-menu__content {
+    overflow: auto;
+}
+</style>
