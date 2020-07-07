@@ -199,18 +199,23 @@
             :width="clientCardWidth"
             :DOMElement="clientDOMElement"
             @delete-client="deleteSelectedClient"
-            :accept-promise="commitClientChanges"
+            @edit="errors = []"
+            @accept="commitClientChanges"
+            :errors="errors"
         />
 
         <ClientDetails
+            ref="createClientDetails"
             v-model="createClientDialogIsOpen"
             :editing="true"
             :client="defaultClient"
             :width="clientCardWidth"
             :DOMElement="null"
-            :accept-promise="createNewClient"
+            @accept="createNewClient"
             :dialogPersistent="false"
             @cancel="createClientDialogIsOpen = false"
+            @edit="errors = []"
+            :errors="errors"
         >
             <template v-slot:editor-accept-button-content>
                 {{ $i18n.t('create') }}
@@ -218,6 +223,8 @@
                 <v-icon>add</v-icon>
             </template>
         </ClientDetails>
+
+        <LoadingSpinner :value="showSpinner" />
     </div>
 </template>
 
@@ -228,11 +235,15 @@ import { mapGetters } from 'vuex'
 import Formatter from '@/util/formatter'
 import { mapActions } from 'vuex'
 import ID from '@/util/id'
+import { getErrorArray } from '@/services/server'
+import LoadingSpinner from '@/components/util/LoadingSpinner'
+//mport { busySleep } from '@/util/time'
 
 export default {
     components: {
         ClientCard,
         ClientDetails,
+        LoadingSpinner,
     },
 
     props: {
@@ -261,6 +272,8 @@ export default {
             formatter: new Formatter(this.$i18n, ''),
             createClientDialogIsOpen: false,
             defaultClient: this.createDefaultClient(),
+            showSpinner: false,
+            errors: [],
         }
     },
 
@@ -274,9 +287,14 @@ export default {
 
     watch: {
         createClientDialogIsOpen: function(value) {
+            this.errors = []
             if (value) {
                 this.defaultClient = this.createDefaultClient()
             }
+        },
+
+        selectedOpen: function() {
+            this.errors = []
         },
     },
 
@@ -284,7 +302,24 @@ export default {
         ...mapActions('client', ['addClient', 'deleteClient', 'updateClient']),
 
         commitClientChanges(newClient) {
-            return this.updateClient(newClient)
+            this.showSpinner = true
+            this.errors = []
+            this.updateClient(newClient)
+                .then(() => {
+                    this.$refs.clientDetails.endEdit()
+                })
+                .catch(e => {
+                    this.errors = getErrorArray(e)
+                    console.log('this.errors: ', this.errors)
+                })
+                .finally(() => {
+                    this.showSpinner = false
+                })
+        },
+
+        closeCreateClientDialog() {
+            this.createClientDialogIsOpen = false
+            this.errors = []
         },
 
         createDefaultClient() {
@@ -294,15 +329,38 @@ export default {
         },
 
         createNewClient(newClient) {
-            return this.addClient(newClient).then(() => {
-                this.createClientDialogIsOpen = false
-            })
+            this.showSpinner = true
+            this.errors = []
+
+            this.addClient(newClient)
+                .then(() => {
+                    this.$refs.createClientDetails.endEdit()
+                    this.createClientDialogIsOpen = false
+                })
+                .catch(e => {
+                    this.errors = getErrorArray(e)
+                    console.log('this.errors: ', this.errors)
+                })
+                .finally(() => {
+                    this.showSpinner = false
+                })
         },
 
         deleteSelectedClient() {
+            this.showSpinner = true
+            this.errors = []
             this.deleteClient(this.selectedClient())
-            this.selectedClientID = null
-            this.selectedOpen = false
+                .then(() => {
+                    this.selectedClientID = null
+                    this.selectedOpen = false
+                })
+                .catch(e => {
+                    this.errors = getErrorArray(e)
+                    console.log('this.errors: ', this.errors)
+                })
+                .finally(() => {
+                    this.showSpinner = false
+                })
         },
 
         selectedClient() {

@@ -177,12 +177,15 @@ export default {
 
             clientsNotValid: 'Klientenliste enthält ungültige Einträge',
 
-            noExistingEventFound: 'Kein gültiger Termin gefunden.',
+            noExistingEventFound: 'Kein gültiger Termin wurde gefunden.',
+            noExistingClientFound: 'Kein gültiger Klient wurde gefunden.',
 
             noId: 'Keine ID gefunden.',
 
             idAlreadyExists: 'ID schon vergeben.',
             noMatchingIdFound: 'Keine übereinstimmende ID gefunden.',
+            clientIsReferencedByEvents:
+                'Es existieren Termine, die diesen Klienten referenzieren.',
         },
     },
 

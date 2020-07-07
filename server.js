@@ -372,6 +372,73 @@ function handleCreateEvent(req, res) {
     }
 }
 
+app.post('/deleteClient', verifyToken, (req, res) => {
+    jwt.verify(req.token, TOKEN_NAME, err => {
+        if (err) {
+            res.sendStatus(401)
+        } else {
+            if (req.body) {
+                handleDeleteClient(req, res)
+            } else {
+                console.log('no body')
+                res.sendStatus(400)
+            }
+        }
+    })
+})
+
+function handleDeleteClient(req, res) {
+    const client = {
+        id: req.body.id,
+    }
+
+    var errorsToSend = []
+
+    const clients = JSON.parse(fs.readFileSync('./db/clients.json'))
+    const events = JSON.parse(fs.readFileSync('./db/events.json'))
+
+    if (!client.id) {
+        errorsToSend.push('noId')
+    }
+
+    // check that id exists
+    if (
+        clients.filter(e => {
+            return e.id === client.id
+        }).length == 0
+    ) {
+        errorsToSend.push('noMatchingIdFound')
+    }
+
+    // we shouldn't delete the client if events are referencing it
+    if (
+        events.filter(event => {
+            return event.clients.includes(client.id)
+        }).length != 0
+    ) {
+        errorsToSend.push('clientIsReferencedByEvents')
+    }
+
+    if (errorsToSend.length > 0) {
+        res.status(400).json({ errors: errorsToSend })
+    } else {
+        const index = clients.findIndex(e => e.id === client.id)
+        if (index != -1) {
+            clients.splice(index, 1)
+        }
+
+        fs.writeFile('./db/clients.json', JSON.stringify(clients), err => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json({
+                    clients: clients,
+                })
+            }
+        })
+    }
+}
+
 app.post('/deleteEvent', verifyToken, (req, res) => {
     jwt.verify(req.token, TOKEN_NAME, err => {
         if (err) {
@@ -487,6 +554,80 @@ app.post('/register', (req, res) => {
         res.sendStatus(400)
     }
 })
+
+app.post('/updateClient', verifyToken, (req, res) => {
+    jwt.verify(req.token, TOKEN_NAME, err => {
+        if (err) {
+            res.sendStatus(401)
+        } else {
+            if (req.body) {
+                handleUpdateClient(req, res)
+            } else {
+                console.log('no body')
+                res.sendStatus(400)
+            }
+        }
+    })
+})
+
+function handleUpdateClient(req, res) {
+    const client = {
+        email: req.body.email,
+        sex: req.body.sex,
+        name: req.body.name,
+        forename: req.body.forename,
+        birthday: req.body.birthday,
+        address: req.body.address,
+        title: req.body.title,
+        mobile: req.body.mobile,
+        id: req.body.id,
+    }
+
+    if (client.birthday === null) {
+        client.birthday = undefined
+    }
+
+    console.log('client: ', client)
+
+    var errorsToSend = []
+
+    const clients = JSON.parse(fs.readFileSync('./db/clients.json'))
+
+    //id mustn't be undefined/null or empty
+    if (!client.id) {
+        errorsToSend.push('noId')
+    }
+
+    // check that id matches an existing client
+    if (
+        clients.filter(e => {
+            return e.id === client.id
+        }).length == 0
+    ) {
+        errorsToSend.push('noExistingClientFound')
+    }
+
+    if (errorsToSend.length > 0) {
+        console.log('errorsToSend: ', errorsToSend)
+        res.status(400).json({ errors: errorsToSend })
+    } else {
+        clients.forEach((e, i) => {
+            if (e.id == client.id) {
+                clients[i] = client
+            }
+        })
+
+        fs.writeFile('./db/clients.json', JSON.stringify(clients), err => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.json({
+                    clients: clients,
+                })
+            }
+        })
+    }
+}
 
 app.post('/updateEvent', verifyToken, (req, res) => {
     jwt.verify(req.token, TOKEN_NAME, err => {

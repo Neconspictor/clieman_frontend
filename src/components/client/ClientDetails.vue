@@ -53,6 +53,8 @@
                 />
             </v-card-text>
 
+            <ErrorView :errors="errors" />
+
             <v-card-actions>
                 <div v-if="doEditing" class="ml-4 mb-4 mt-4">
                     <v-btn color="error" text @click="cancel"
@@ -113,27 +115,30 @@ import ConfirmDialog from '@/components/ConfirmDialog'
 import Formatter from '@/util/formatter'
 import copy from '@/util/copy'
 import Dependent from 'vuetify/lib/mixins/dependent'
+import ErrorView from '@/components/util/ErrorView'
 
 export default {
     components: {
         ClientCardForm,
         Activator,
         ConfirmDialog,
+        ErrorView,
     },
 
     mixins: [Dependent],
 
     props: {
-        acceptPromise: {
-            type: Function,
-            default: () => {},
-        },
-        value: {
-            type: Boolean,
+        client: {
+            type: Object,
             required: true,
         },
 
-        client: {
+        dialogPersistent: {
+            type: Boolean,
+            default: true,
+        },
+
+        DOMElement: {
             type: Object,
             required: true,
         },
@@ -143,18 +148,19 @@ export default {
             default: false,
         },
 
+        errors: {
+            type: Array,
+            default: () => [],
+        },
+
+        value: {
+            type: Boolean,
+            required: true,
+        },
+
         width: {
             type: String,
             default: '100%',
-        },
-
-        DOMElement: {
-            type: Object,
-            required: true,
-        },
-        dialogPersistent: {
-            type: Boolean,
-            default: true,
         },
     },
 
@@ -206,6 +212,10 @@ export default {
                 this.clientEdit = copy.deepCopy(val)
             },
         },
+
+        doEditing: function(value) {
+            this.$emit('edit', value)
+        },
     },
 
     methods: {
@@ -215,9 +225,12 @@ export default {
         },
         evaluateAccept() {
             if (this.$refs.clientCardForm.validate()) {
-                this.acceptPromise(this.clientEdit).finally(() => {
-                    this.$refs.clientCardForm.emitEndEditingEvent()
-                })
+                this.$emit('accept', this.clientEdit)
+                //this.acceptPromise(this.clientEdit).then(() => {
+                //    console.log('testtest')
+                //    //this.$refs.clientCardForm.emitEndEditingEvent()
+                //    this.endEdit()
+                //})
             }
         },
         startEdit() {

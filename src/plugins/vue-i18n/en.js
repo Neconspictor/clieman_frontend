@@ -172,11 +172,14 @@ export default {
             clientsNotValid: 'Client list consists of invalid entries.',
 
             noExistingEventFound: 'No valid event found.',
+            noExistingClientFound: 'No valid client found.',
 
             noId: 'No ID found.',
 
             idAlreadyExists: 'ID already exists.',
             noMatchingIdFound: 'No matching ID was found.',
+            clientIsReferencedByEvents:
+                'There exist still events that reference this client.',
         },
     },
 

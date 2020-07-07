@@ -61,11 +61,13 @@ const ClientModule = {
         },
     },
     actions: {
-        addClient({ commit }, client) {
+        async addClient({ commit }, client) {
+            await apiClient().post('createClient', client)
             commit('ADD_CLIENT', client)
         },
 
-        deleteClient({ commit }, client) {
+        async deleteClient({ commit }, client) {
+            await apiClient().post('deleteClient', { id: client.id })
             commit('DELETE_CLIENT', client.id)
         },
 
@@ -91,7 +93,8 @@ const ClientModule = {
             return state.clients
         },
 
-        updateClient({ commit }, client) {
+        async updateClient({ commit }, client) {
+            await apiClient().post('updateClient', client)
             commit('UPDATE_CLIENT', client)
         },
     },
