@@ -1,14 +1,29 @@
 import axios from 'axios'
 
-export const apiClient = () =>
-    axios.create({
-        baseURL: 'https://localhost:8443',
+/*async function loadHttpsAgent() {
+    var data = await jbinary.loadData(
+        '../assets/dateman_backend_certificate.crt'
+    )
+    console.log('data: ', data)
+
+    return new https.Agent({
+        ca: data,
+    })
+}*/
+
+//https.globalAgent.options.rejectUnauthorized = false
+
+export const apiClient = () => {
+    return axios.create({
+        baseURL: 'http://localhost:8443',
         withCredentials: false,
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
+        //httpsAgent: httpsAgent,
     })
+}
 
 export function getErrorArray(error) {
     if (

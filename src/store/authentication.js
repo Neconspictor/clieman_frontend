@@ -24,7 +24,7 @@ const AuthenticationModule = {
     actions: {
         changeEmail({ commit }, email) {
             return apiClient()
-                .post('/user/changeEmail', email)
+                .post('user/changeEmail', email)
                 .then(({ data }) => {
                     commit('SET_USER_DATA', data)
                 })
@@ -32,7 +32,7 @@ const AuthenticationModule = {
 
         changeUserName({ commit }, username) {
             return apiClient()
-                .post('/user/changeUserName', username)
+                .post('user/changeUserName', username)
                 .then(({ data }) => {
                     commit('SET_USER_DATA', data)
                 })
@@ -40,7 +40,7 @@ const AuthenticationModule = {
 
         register({ commit }, credentials) {
             return apiClient()
-                .post('/public/register', credentials)
+                .post('public/register', credentials)
                 .then(({ data }) => {
                     commit('SET_USER_DATA', data)
                 })
@@ -48,9 +48,8 @@ const AuthenticationModule = {
 
         login({ commit }, credentials) {
             return apiClient()
-                .post('/public/login', credentials)
+                .post('public/login', credentials)
                 .then(({ data, headers }) => {
-                    console.log('Authorization header: ', headers)
                     data.authorizationHeader = headers['authorization']
                     commit('SET_USER_DATA', data)
                 })
@@ -65,7 +64,8 @@ const AuthenticationModule = {
 
         async testAuthentincationed() {
             try {
-                await apiClient().get('/test')
+                // eslint-disable-next-line no-unused-vars
+                let response = await apiClient().get('test')
             } catch (e) {
                 return false
             }

@@ -163,10 +163,9 @@ export default {
         },
 
         logout(redirect) {
-            this.$store.dispatch('authentication/logout').then(() => {
-                if (redirect && this.$route.name !== 'login')
-                    this.$router.push({ name: 'login' })
-            })
+            if (redirect && this.$route.name !== 'login')
+                this.$router.push({ name: 'login' })
+            this.$store.dispatch('authentication/logout').then(() => {})
         },
 
         isAuthenticated() {
@@ -182,8 +181,6 @@ export default {
 
                 result = this.loggedIn
             }
-
-            console.log('result: ', result)
 
             return result
         },
