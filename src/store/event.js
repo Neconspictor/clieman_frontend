@@ -77,25 +77,25 @@ const EventModule = {
             const sendEvent = rfdc()(event)
             sendEvent.clients = event.clients.map(client => client.id)
 
-            await apiClient().post('createEvent', sendEvent)
+            await apiClient().post('events/add', sendEvent)
             commit('ADD_EVENT', event)
         },
 
         async deleteEvent({ commit }, event) {
-            await apiClient().post('deleteEvent', { id: event.id })
+            await apiClient().post('events/remove', { id: event.id })
             commit('DELETE_EVENT', event.id)
         },
 
         async fetchEvents({ commit, state }, getClientByID) {
             var response
             try {
-                response = await apiClient().get('events')
+                response = await apiClient().get('events/getAll')
             } catch (e) {
                 commit('SET_EVENTS', [])
                 throw e
             }
 
-            const events = response.data.events
+            const events = response.data
 
             for (let event of events) {
                 event.start = new Date(event.start)
@@ -114,7 +114,7 @@ const EventModule = {
             const sendEvent = rfdc()(event)
             sendEvent.clients = event.clients.map(client => client.id)
 
-            await apiClient().post('updateEvent', sendEvent)
+            await apiClient().post('events/update', sendEvent)
 
             commit('UPDATE_EVENT', event)
         },

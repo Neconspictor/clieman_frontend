@@ -13,7 +13,7 @@ const AuthenticationModule = {
             localStorage.setItem('user', JSON.stringify(userData))
             axios.defaults.headers.common[
                 'Authorization'
-            ] = `Bearer ${state.user.token}`
+            ] = `${state.user.authorizationHeader}`
         },
         CLEAR_USER_DATA(state) {
             state.user = null
@@ -24,7 +24,7 @@ const AuthenticationModule = {
     actions: {
         changeEmail({ commit }, email) {
             return apiClient()
-                .post('/changeEmail', email)
+                .post('/user/changeEmail', email)
                 .then(({ data }) => {
                     commit('SET_USER_DATA', data)
                 })
@@ -32,7 +32,7 @@ const AuthenticationModule = {
 
         changeUserName({ commit }, username) {
             return apiClient()
-                .post('/changeUserName', username)
+                .post('/user/changeUserName', username)
                 .then(({ data }) => {
                     commit('SET_USER_DATA', data)
                 })
@@ -40,7 +40,7 @@ const AuthenticationModule = {
 
         register({ commit }, credentials) {
             return apiClient()
-                .post('/register', credentials)
+                .post('/public/register', credentials)
                 .then(({ data }) => {
                     commit('SET_USER_DATA', data)
                 })
@@ -48,8 +48,10 @@ const AuthenticationModule = {
 
         login({ commit }, credentials) {
             return apiClient()
-                .post('/login', credentials)
-                .then(({ data }) => {
+                .post('/public/login', credentials)
+                .then(({ data, headers }) => {
+                    console.log('Authorization header: ', headers)
+                    data.authorizationHeader = headers['authorization']
                     commit('SET_USER_DATA', data)
                 })
         },

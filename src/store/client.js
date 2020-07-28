@@ -62,25 +62,25 @@ const ClientModule = {
     },
     actions: {
         async addClient({ commit }, client) {
-            await apiClient().post('createClient', client)
+            await apiClient().post('clients/add', client)
             commit('ADD_CLIENT', client)
         },
 
         async deleteClient({ commit }, client) {
-            await apiClient().post('deleteClient', { id: client.id })
+            await apiClient().post('clients/remove', { id: client.id })
             commit('DELETE_CLIENT', client.id)
         },
 
         async fetchClients({ commit, state }) {
             var response
             try {
-                response = await apiClient().get('clients')
+                response = await apiClient().get('clients/getAll')
             } catch (e) {
                 commit('SET_CLIENTS', [])
                 throw e
             }
 
-            const clients = response.data.clients
+            const clients = response.data
 
             for (let client of clients) {
                 client.birthday = new Date(client.birthday)
@@ -94,7 +94,7 @@ const ClientModule = {
         },
 
         async updateClient({ commit }, client) {
-            await apiClient().post('updateClient', client)
+            await apiClient().post('clients/update', client)
             commit('UPDATE_CLIENT', client)
         },
     },

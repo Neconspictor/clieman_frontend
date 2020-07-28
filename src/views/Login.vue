@@ -63,7 +63,7 @@ export default {
             this.showSpinner = true
             this.$store
                 .dispatch('authentication/login', {
-                    authName: this.authName,
+                    principal: this.authName,
                     password: this.password,
                 })
                 .then(() => {
