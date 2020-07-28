@@ -1,11 +1,10 @@
 <template>
     <v-app class="my-app">
-        -
         <v-app-bar app :src="require('./assets/vbanner.jpg')" dark>
             <v-toolbar-title>Dateman</v-toolbar-title>
             <v-spacer></v-spacer>
 
-            <template v-if="loggedIn">
+            <div v-if="this.isAuthenticated()">
                 <v-btn
                     v-for="link in links"
                     :key="`${link.label} - header-link`"
@@ -65,7 +64,7 @@
                         </v-list-item>
                     </v-list>
                 </v-menu>
-            </template>
+            </div>
         </v-app-bar>
 
         <!--<router-view />-->
@@ -158,10 +157,35 @@ export default {
             //this.$router.go()
         },
 
-        logout() {
+        isPublicRoute() {
+            let publicRoutes = ['login', 'register']
+            return publicRoutes.includes(this.$route.name)
+        },
+
+        logout(redirect) {
             this.$store.dispatch('authentication/logout').then(() => {
-                this.$router.push({ name: 'login' })
+                if (redirect && this.$route.name !== 'login')
+                    this.$router.push({ name: 'login' })
             })
+        },
+
+        isAuthenticated() {
+            var result = false
+            if (!this.isPublicRoute()) {
+                this.$store
+                    .dispatch('authentication/testAuthentincationed')
+                    .then(loggedIn => {
+                        if (!loggedIn) {
+                            this.logout(true)
+                        }
+                    })
+
+                result = this.loggedIn
+            }
+
+            console.log('result: ', result)
+
+            return result
         },
     },
 }

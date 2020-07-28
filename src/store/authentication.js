@@ -62,6 +62,16 @@ const AuthenticationModule = {
       }) */
             commit('CLEAR_USER_DATA')
         },
+
+        async testAuthentincationed() {
+            try {
+                await apiClient().get('/test')
+            } catch (e) {
+                return false
+            }
+
+            return true
+        },
     },
     getters: {
         loggedIn(state) {
