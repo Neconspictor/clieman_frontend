@@ -38,12 +38,19 @@ const AuthenticationModule = {
                 })
         },
 
+        // eslint-disable-next-line no-unused-vars
         register({ commit }, credentials) {
-            return apiClient()
-                .post('public/register', credentials)
-                .then(({ data }) => {
-                    commit('SET_USER_DATA', data)
-                })
+            return apiClient().post('public/register', credentials)
+        },
+
+        // eslint-disable-next-line no-unused-vars
+        sendToken({ commit }, email) {
+            return apiClient().post('public/sendToken', email)
+        },
+
+        // eslint-disable-next-line no-unused-vars
+        verify({ commit }, token) {
+            return apiClient().post('public/confirmUser', token)
         },
 
         login({ commit }, credentials) {

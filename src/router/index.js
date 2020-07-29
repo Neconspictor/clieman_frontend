@@ -5,6 +5,7 @@ import Clients from '@/views/Clients'
 import Settings from '@/views/Settings'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
+import Verify from '@/views/Verify'
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,12 @@ const routes = [
         name: 'settings',
         component: Settings,
         meta: { requiresAuth: true },
+    },
+
+    {
+        path: '/verify',
+        name: 'verify',
+        component: Verify,
     },
 ]
 

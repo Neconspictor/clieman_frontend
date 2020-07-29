@@ -100,7 +100,7 @@ export default {
             accountCreated: 'Konto erstellt!',
             sendEmailTo: 'Eine E-mail wurde geschickt an: ',
             verifyAccount:
-                'Bitte aktiviere dein Konto indem du auf den Aktivierungslink in der gesendeten E-mail klickst.',
+                'Bitte aktiviere dein Konto indem du die E-mail öffnest und den Verifizierungscode in das folgende Feld eingibst.',
             emailRequired: 'E-mail wird benötigt.',
             emailRequiredUserName: 'E-mail braucht einen Benutzernamen.',
             emailRequiresAt: 'E-mail muss ein @ Symbol beinhalten',
@@ -112,6 +112,15 @@ export default {
             confirmPassword: 'Passwort bestätigen',
             passwordsDontMatch: 'Passwörter stimmen nicht überein.',
             confirmationRequired: 'Bestätigung wird benötigt.',
+
+            submitVerification: 'Konto verifizieren',
+            verificationCode: 'Verifizierungscode',
+            accountVerified: 'Konto ist verifiziert!',
+            ableToLogin:
+                'Dein Konto wurde erfolgreich verifiziert. Du kannst dich nun mit deinen Anmeldedaten bei deinem Konto anmelden.',
+            toLogin: 'Zur Anmeldung',
+            verifyHeader: 'Konto verifizieren',
+            sendEmail: 'Verifizierungscode senden',
         },
 
         language: 'Sprache',
@@ -147,22 +156,22 @@ export default {
         },
 
         errors: {
-            invalidLogin:
+            InvalidLogin:
                 'Anmeldung ist fehlgeschlagen. Bitte versuche es noch einmal.',
-            noEmail: 'Keine E-mail Adresse angegeben.',
-            emailAlreadyExists:
+            NoEmail: 'Keine E-mail Adresse angegeben.',
+            EmailAlreadyExists:
                 'Ein Konto mit dieser E-mail Adresse existiert bereits.',
-            userNameAlreadyExists:
+            UserNameAlreadyExists:
                 'Ein Konto mit diesem Benutzernamen existiert bereits.',
-            passwordTooShort: 'Passwort ist zu kurz.',
+            PasswordTooShort: 'Passwort ist zu kurz.',
 
-            invalidOldPassword: 'Altes Passwort ist inkorrekt.',
-            newPasswordTooShort: 'Neues Passwort ist zu kurz.',
-            invalidConfirmationPassword:
+            InvalidOldPassword: 'Altes Passwort ist inkorrekt.',
+            NewPasswordTooShort: 'Neues Passwort ist zu kurz.',
+            InvalidConfirmationPassword:
                 'Bestätigungspasswort stimmt nicht mit dem neuen Passwort überein.',
             'Error: Network Error': 'Netzwerkfehler',
-            noEventsFetched: 'Termine konnten nicht heruntergeladen werden.',
-            noClientsFetched:
+            NoEventsFetched: 'Termine konnten nicht heruntergeladen werden.',
+            NoClientsFetched:
                 'Informationen zu den Klienten konnten nicht heruntergeladen werden.',
             'Error: Request failed with status code 400': 'Ungültige Anfrage',
             'Error: Request failed with status code 401':
@@ -170,22 +179,28 @@ export default {
             'Error: Request failed with status code 500':
                 'Interner Server-Fehler',
 
-            noUserName: 'Kein Benutzername angegeben.',
+            NoUserName: 'Kein Benutzername angegeben.',
 
-            noValidEmail:
+            NoValidEmail:
                 'Die angegebene E-mail-Adresse ist keine gültige E-mail-Adresse',
 
-            clientsNotValid: 'Klientenliste enthält ungültige Einträge',
+            ClientsNotValid: 'Klientenliste enthält ungültige Einträge',
 
-            noExistingEventFound: 'Kein gültiger Termin wurde gefunden.',
-            noExistingClientFound: 'Kein gültiger Klient wurde gefunden.',
+            NoExistingEventFound: 'Kein gültiger Termin wurde gefunden.',
+            NoExistingClientFound: 'Kein gültiger Klient wurde gefunden.',
 
-            noId: 'Keine ID gefunden.',
+            NoId: 'Keine ID gefunden.',
 
-            idAlreadyExists: 'ID schon vergeben.',
-            noMatchingIdFound: 'Keine übereinstimmende ID gefunden.',
-            clientIsReferencedByEvents:
+            IdAlreadyExists: 'ID schon vergeben.',
+            NoMatchingIdFound: 'Keine übereinstimmende ID gefunden.',
+            ClientIsReferencedByEvents:
                 'Es existieren Termine, die diesen Klienten referenzieren.',
+            TokenIsNotValid: 'Ungültiger Verifizierungscode.',
+
+            BadCredentials: 'Anmeldedaten stimmen mit keinem Konto überein.',
+            UserIsDisabled: 'Benutzer ist nicht verifiziert.',
+            'Error: Request failed with status code 404':
+                'Anfrage konnte nicht bearbeitet werden (Statuscode 404).',
         },
     },
 

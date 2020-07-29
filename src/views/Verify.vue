@@ -11,7 +11,7 @@
                         <v-form
                             ref="signupForm"
                             v-model="formValidity"
-                            @submit.prevent="submitRegister"
+                            @submit.prevent="submitSendToken"
                         >
                             <v-text-field
                                 :label="$i18n.t('email')"
@@ -22,35 +22,6 @@
                                 prepend-icon="alternate_email"
                             >
                             </v-text-field>
-
-                            <v-text-field
-                                :label="
-                                    `${$i18n.t('username')} (${$i18n.t(
-                                        'optional'
-                                    )})`
-                                "
-                                v-model="username"
-                                :rules="usernameRules"
-                                prepend-icon="mdi-account-circle"
-                            >
-                            </v-text-field>
-
-                            <PasswordField
-                                v-model="password"
-                                required
-                                :rules="passwordRules"
-                                :show-password="showPassword"
-                                @visible="setShowPassword"
-                            />
-
-                            <PasswordField
-                                v-model="confirmationPassword"
-                                required
-                                :rules="confirmationPasswordRules(password)"
-                                :label="$i18n.t('registerData.confirmPassword')"
-                                :show-password="showPassword"
-                                @visible="setShowPassword"
-                            />
                         </v-form>
                     </v-card-text>
 
@@ -60,8 +31,8 @@
                         <v-btn
                             color="primary"
                             :disabled="!formValidity || showSpinner"
-                            @click="submitRegister"
-                            >{{ $i18n.t('createAccount') }}
+                            @click="submitSendToken"
+                            >{{ $i18n.t('registerData.sendEmail') }}
                         </v-btn>
                     </v-card-actions>
                 </v-window-item>
@@ -113,7 +84,6 @@
 
 <script>
 //mdi-account-circle
-import PasswordField from '@/components/util/PasswordField'
 import LoadingSpinner from '@/components/util/LoadingSpinner'
 import Rules from '@/mixins/rules'
 import ErrorView from '@/components/util/ErrorView'
@@ -121,7 +91,6 @@ import { getErrorArray } from '@/services/server'
 
 export default {
     components: {
-        PasswordField,
         LoadingSpinner,
         ErrorView,
     },
@@ -147,13 +116,13 @@ export default {
         title() {
             switch (this.step) {
                 case 0:
-                    return 'registerHeader'
+                    return 'registerData.verifyHeader'
                 case 1:
                     return 'registerData.accountCreated'
                 case 2:
                     return 'registerData.accountVerified'
                 default:
-                    return 'registerHeader'
+                    return 'registerData.verifyHeader'
             }
         },
 
@@ -179,16 +148,14 @@ export default {
             this.$refs.signupForm.validate()
         },
 
-        submitRegister() {
+        submitSendToken() {
             this.errors = []
             this.validateForm()
             if (this.formValidity) {
                 this.showSpinner = true
                 this.$store
-                    .dispatch('authentication/register', {
-                        username: this.username,
+                    .dispatch('authentication/sendToken', {
                         email: this.email,
-                        password: this.password,
                     })
                     .then(() => {
                         ++this.step

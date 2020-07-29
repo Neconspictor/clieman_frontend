@@ -98,7 +98,7 @@ export default {
             accountCreated: 'Account created!',
             sendEmailTo: 'We send an e-mail to: ',
             verifyAccount:
-                'Please activate your account by opening the e-mail and clicking on the verification link',
+                'Please activate your account by opening the e-mail and entering the verification in the following input field.',
             emailRequired: 'E-mail is required.',
             emailRequiredUserName: 'E-mail should have a user name',
             emailRequiresAt: 'E-mail should include an @ symbol',
@@ -110,6 +110,15 @@ export default {
             confirmPassword: 'Confirm password',
             passwordsDontMatch: "Passwords don't match.",
             confirmationRequired: 'Confirmation is required',
+
+            submitVerification: 'Verify account',
+            verificationCode: 'verification code',
+            accountVerified: 'Account verified!',
+            ableToLogin:
+                "Your account has been successfully verified. You're now able to login with your credentials.",
+            toLogin: 'to login page',
+            verifyHeader: 'Account verification',
+            sendEmail: 'Send verification code',
         },
 
         language: 'Language',
@@ -146,40 +155,46 @@ export default {
         },
 
         errors: {
-            invalidLogin: 'Invalid login. Please try again.',
-            noEmail: 'E-mail is not specified.',
-            emailAlreadyExists: 'An account with this email already exists.',
-            userNameAlreadyExists:
+            InvalidLogin: 'Invalid login. Please try again.',
+            NoEmail: 'E-mail is not specified.',
+            EmailAlreadyExists: 'An account with this email already exists.',
+            UserNameAlreadyExists:
                 'An account with this user name already exists.',
-            passwordTooShort: 'Password too short.',
-            invalidOldPassword: 'Old password is invalid.',
-            newPasswordTooShort: 'New password is too short',
-            invalidConfirmationPassword:
+            PasswordTooShort: 'Password too short.',
+            InvalidOldPassword: 'Old password is invalid.',
+            NewPasswordTooShort: 'New password is too short',
+            InvalidConfirmationPassword:
                 'Confirmation password does not match with new password.',
             'Error: Network Error': 'Network error.',
-            noEventsFetched: "Couldn't fetch events.",
-            noClientsFetched: "Couldn't fetch clients.",
+            NoEventsFetched: "Couldn't fetch events.",
+            NoClientsFetched: "Couldn't fetch clients.",
             'Error: Request failed with status code 400': 'Bad request',
             'Error: Request failed with status code 401':
                 'Unauthorized request',
             'Error: Request failed with status code 500':
                 'Internal server error',
 
-            noUserName: 'No user name specified.',
+            NoUserName: 'No user name specified.',
 
-            noValidEmail: 'Specified Email address is not a valid email.',
+            NoValidEmail: 'Specified Email address is not a valid email.',
 
-            clientsNotValid: 'Client list consists of invalid entries.',
+            ClientsNotValid: 'Client list consists of invalid entries.',
 
-            noExistingEventFound: 'No valid event found.',
-            noExistingClientFound: 'No valid client found.',
+            NoExistingEventFound: 'No valid event found.',
+            NoExistingClientFound: 'No valid client found.',
 
-            noId: 'No ID found.',
+            NoId: 'No ID found.',
 
-            idAlreadyExists: 'ID already exists.',
-            noMatchingIdFound: 'No matching ID was found.',
-            clientIsReferencedByEvents:
+            IdAlreadyExists: 'ID already exists.',
+            NoMatchingIdFound: 'No matching ID was found.',
+            ClientIsReferencedByEvents:
                 'There exist still events that reference this client.',
+            TokenIsNotValid: 'Verification code is not valid.',
+
+            BadCredentials: 'No account found matching the given credentials.',
+            UserIsDisabled: 'User is not verified.',
+            'Error: Request failed with status code 404':
+                "Request couldn't be processed (status code: 404)",
         },
     },
 

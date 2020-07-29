@@ -158,7 +158,7 @@ export default {
         },
 
         isPublicRoute() {
-            let publicRoutes = ['login', 'register']
+            let publicRoutes = ['login', 'register', 'verify']
             return publicRoutes.includes(this.$route.name)
         },
 
