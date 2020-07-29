@@ -75,7 +75,7 @@ export default {
             this.errors = []
             this.showSpinner = true
             this.$store
-                .dispatch('authentication/login', {
+                .dispatch('user/login', {
                     principal: this.authName,
                     password: this.password,
                 })

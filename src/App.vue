@@ -106,7 +106,7 @@
 <script>
 import accountIcon from '@iconify/icons-mdi/account'
 import baselineBedtime from '@iconify/icons-ic/baseline-bedtime'
-import { authComputed } from '@/store/authentication'
+import { userComputed } from '@/store/user'
 
 export default {
     name: 'App',
@@ -129,7 +129,7 @@ export default {
     },
 
     computed: {
-        ...authComputed,
+        ...userComputed,
 
         isDark() {
             return this.$vuetify.theme.dark
@@ -169,14 +169,14 @@ export default {
         logout(redirect) {
             if (redirect && this.$route.name !== 'login')
                 this.$router.push({ name: 'login' })
-            this.$store.dispatch('authentication/logout').then(() => {})
+            this.$store.dispatch('user/logout').then(() => {})
         },
 
         isAuthenticated() {
             var result = false
             if (!this.isPublicRoute()) {
                 this.$store
-                    .dispatch('authentication/testAuthentincationed')
+                    .dispatch('user/testAuthentincationed')
                     .then(loggedIn => {
                         if (!loggedIn) {
                             this.logout(true)

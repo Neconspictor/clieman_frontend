@@ -2,7 +2,7 @@ import axios from 'axios'
 import { mapGetters } from 'vuex'
 import { apiClient } from '@/services/server.js'
 
-const AuthenticationModule = {
+const UserModule = {
     namespaced: true,
     state: {
         user: null,
@@ -87,8 +87,8 @@ const AuthenticationModule = {
     },
 }
 
-export default AuthenticationModule
+export default UserModule
 
-export const authComputed = {
-    ...mapGetters('authentication', ['loggedIn']),
+export const userComputed = {
+    ...mapGetters('user', ['loggedIn']),
 }

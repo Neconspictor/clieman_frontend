@@ -45,7 +45,7 @@ var vm = new Vue({
         const userString = localStorage.getItem('user')
         try {
             const user = JSON.parse(userString)
-            this.$store.commit('authentication/SET_USER_DATA', user)
+            this.$store.commit('user/SET_USER_DATA', user)
             // eslint-disable-next-line no-empty
         } catch (error) {}
 
@@ -53,7 +53,7 @@ var vm = new Vue({
             response => response,
             error => {
                 if (error.response.status === 401) {
-                    this.$store.dispatch('authentication/logout').then(() => {
+                    this.$store.dispatch('user/logout').then(() => {
                         console.log('location: ', location)
 
                         if (

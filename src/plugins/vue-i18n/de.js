@@ -205,6 +205,9 @@ export default {
             UserIsNotDisabled: 'Benutzerkonto ist bereits aktiviert.',
             'Error: Request failed with status code 404':
                 'Anfrage konnte nicht bearbeitet werden (Statuscode 404).',
+            OldPasswordNotMatching: 'Altes Passwort stimmt nicht.',
+            NewPasswordConfirmationNotMatching:
+                'Neues Password und das Bestätigungspassword stimmen nicht überein.',
         },
 
         verify: 'verifizieren',

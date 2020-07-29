@@ -197,7 +197,7 @@ export default {
             if (this.formValidity) {
                 this.showSpinner = true
                 this.$store
-                    .dispatch('authentication/register', {
+                    .dispatch('user/register', {
                         username: this.username,
                         email: this.email,
                         password: this.password,
@@ -218,7 +218,7 @@ export default {
             this.errors = []
             this.showSpinner = true
             this.$store
-                .dispatch('authentication/verify', {
+                .dispatch('user/verify', {
                     token: this.verificationCode,
                 })
                 .then(() => {

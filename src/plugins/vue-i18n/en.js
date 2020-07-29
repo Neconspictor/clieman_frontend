@@ -200,6 +200,9 @@ export default {
             UserIsNotDisabled: 'User account is already verified.',
             'Error: Request failed with status code 404':
                 "Request couldn't be processed (status code: 404)",
+            OldPasswordNotMatching: 'Old password is not right.',
+            NewPasswordConfirmationNotMatching:
+                "New password and confirmation password don't match",
         },
 
         verify: 'verify',

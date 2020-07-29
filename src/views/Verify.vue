@@ -166,7 +166,7 @@ export default {
             if (this.formValidity) {
                 this.showSpinner = true
                 this.$store
-                    .dispatch('authentication/sendToken', {
+                    .dispatch('user/sendToken', {
                         email: this.email,
                     })
                     .then(() => {
@@ -185,7 +185,7 @@ export default {
             this.errors = []
             this.showSpinner = true
             this.$store
-                .dispatch('authentication/verify', {
+                .dispatch('user/verify', {
                     token: this.verificationCode,
                 })
                 .then(() => {

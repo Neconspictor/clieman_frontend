@@ -177,7 +177,7 @@ export default {
             languages: state => state.languages,
         }),
 
-        ...mapState('authentication', ['user']),
+        ...mapState('user', ['user']),
 
         ...mapGetters('settings', ['getLanguage']),
 
@@ -188,7 +188,7 @@ export default {
 
     methods: {
         ...mapActions('settings', ['setCalendarOptions']),
-        ...mapActions('authentication', ['changeUserName', 'changeEmail']),
+        ...mapActions('user', ['changeUserName', 'changeEmail']),
 
         goToInRightSide(ref) {
             console.log('ref: ', ref)
@@ -246,7 +246,7 @@ export default {
             this.showSpinner = true
 
             apiClient()
-                .post('/changePassword', state.data)
+                .post('user/changePassword', state.data)
                 .then(() => {
                     state.setEditState(false)
                 })
