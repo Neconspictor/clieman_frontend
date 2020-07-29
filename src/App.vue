@@ -78,6 +78,10 @@
             :style="{
                 'background-image':
                     'url(' + require('./assets/vbanner.jpg') + ')',
+                'background-size': '200% auto',
+                'background-repeat': 'repeat',
+                'background-color': 'red',
+                width: '100%',
             }"
         >
             <v-row justify="center" no-gutters>
