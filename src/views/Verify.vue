@@ -68,35 +68,21 @@
             </v-window>
         </v-card>
 
-        <v-simple-table>
-            <template v-slot:default>
-                <tbody>
-                    <tr>
-                        <td>{{ $i18n.t('havingAnAccount') }}</td>
-                        <td>
-                            <v-btn
-                                small
-                                color="success"
-                                :to="{ name: 'login' }"
-                                >{{ $i18n.t('login') }}</v-btn
-                            >
-                        </td>
-                    </tr>
-                    <v-spacer></v-spacer>
-                    <tr>
-                        <td>{{ $i18n.t('notHavingAnAccount') }}</td>
-                        <td>
-                            <v-btn
-                                small
-                                color="success"
-                                :to="{ name: 'register' }"
-                                >{{ $i18n.t('register') }}</v-btn
-                            >
-                        </td>
-                    </tr>
-                </tbody>
-            </template>
-        </v-simple-table>
+        <LinkTable
+            :content="[
+                {
+                    desc: 'havingAnAccount',
+                    route: 'login',
+                    linkName: 'login',
+                },
+                {
+                    desc: 'notHavingAnAccount',
+                    route: 'register',
+                    linkName: 'register',
+                },
+            ]"
+        >
+        </LinkTable>
 
         <p class="mt-4">
             <ErrorView :errors="errors" />
@@ -112,11 +98,13 @@ import LoadingSpinner from '@/components/util/LoadingSpinner'
 import Rules from '@/mixins/rules'
 import ErrorView from '@/components/util/ErrorView'
 import { getErrorArray } from '@/services/server'
+import LinkTable from '@/components/util/LinkTable'
 
 export default {
     components: {
         LoadingSpinner,
         ErrorView,
+        LinkTable,
     },
 
     mixins: [Rules],
@@ -218,10 +206,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-tbody {
-    tr:hover {
-        background-color: transparent !important;
-    }
-}
-</style>
+<style lang="scss" scoped></style>

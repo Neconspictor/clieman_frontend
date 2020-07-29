@@ -23,18 +23,23 @@
                 }}</v-btn>
             </v-card-actions>
         </v-card>
-        <p class="mt-4">
-            {{ $i18n.t('notHavingAnAccount') }}
-            <v-btn small color="success" :to="{ name: 'register' }">{{
-                $i18n.t('register')
-            }}</v-btn>
-        </p>
-        <p class="mt-4">
-            {{ $i18n.t('registerData.wantToVerify') }}
-            <v-btn small color="success" :to="{ name: 'verify' }">{{
-                $i18n.t('verify')
-            }}</v-btn>
-        </p>
+
+        <LinkTable
+            :content="[
+                {
+                    desc: 'notHavingAnAccount',
+                    route: 'register',
+                    linkName: 'register',
+                },
+                {
+                    desc: 'registerData.wantToVerify',
+                    route: 'verify',
+                    linkName: 'verify',
+                },
+            ]"
+        >
+        </LinkTable>
+
         <p class="mt-4">
             <ErrorView :errors="errors" />
         </p>
@@ -48,12 +53,14 @@ import PasswordField from '@/components/util/PasswordField'
 import LoadingSpinner from '@/components/util/LoadingSpinner'
 import ErrorView from '@/components/util/ErrorView'
 import { getErrorArray } from '@/services/server'
+import LinkTable from '@/components/util/LinkTable'
 
 export default {
     components: {
         PasswordField,
         LoadingSpinner,
         ErrorView,
+        LinkTable,
     },
     data: () => ({
         showPassword: false,

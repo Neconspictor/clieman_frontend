@@ -96,18 +96,22 @@
                 </v-window-item>
             </v-window>
         </v-card>
-        <p class="mt-4">
-            {{ $i18n.t('havingAnAccount') }}
-            <v-btn small color="success" :to="{ name: 'login' }">{{
-                $i18n.t('login')
-            }}</v-btn>
-        </p>
-        <p class="mt-4">
-            {{ $i18n.t('registerData.wantToVerify') }}
-            <v-btn small color="success" :to="{ name: 'verify' }">{{
-                $i18n.t('verify')
-            }}</v-btn>
-        </p>
+
+        <LinkTable
+            :content="[
+                {
+                    desc: 'havingAnAccount',
+                    route: 'login',
+                    linkName: 'login',
+                },
+                {
+                    desc: 'registerData.wantToVerify',
+                    route: 'verify',
+                    linkName: 'verify',
+                },
+            ]"
+        >
+        </LinkTable>
 
         <p class="mt-4">
             <ErrorView :errors="errors" />
@@ -124,12 +128,14 @@ import LoadingSpinner from '@/components/util/LoadingSpinner'
 import Rules from '@/mixins/rules'
 import ErrorView from '@/components/util/ErrorView'
 import { getErrorArray } from '@/services/server'
+import LinkTable from '@/components/util/LinkTable'
 
 export default {
     components: {
         PasswordField,
         LoadingSpinner,
         ErrorView,
+        LinkTable,
     },
 
     mixins: [Rules],
