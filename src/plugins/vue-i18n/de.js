@@ -121,6 +121,7 @@ export default {
             toLogin: 'Zur Anmeldung',
             verifyHeader: 'Konto verifizieren',
             sendEmail: 'Verifizierungscode senden',
+            wantToVerify: 'Benutzerkonto noch nicht verifiziert?',
         },
 
         language: 'Sprache',
@@ -199,9 +200,13 @@ export default {
 
             BadCredentials: 'Anmeldedaten stimmen mit keinem Konto überein.',
             UserIsDisabled: 'Benutzer ist nicht verifiziert.',
+            UserNotFound: 'Benutzerkonto wurde nicht gefunden.',
+            UserIsNotDisabled: 'Benutzerkonto ist bereits aktiviert.',
             'Error: Request failed with status code 404':
                 'Anfrage konnte nicht bearbeitet werden (Statuscode 404).',
         },
+
+        verify: 'verifizieren',
     },
 
     dateTimeFormats: {

@@ -119,6 +119,7 @@ export default {
             toLogin: 'to login page',
             verifyHeader: 'Account verification',
             sendEmail: 'Send verification code',
+            wantToVerify: 'Want to verify your account?',
         },
 
         language: 'Language',
@@ -193,9 +194,13 @@ export default {
 
             BadCredentials: 'No account found matching the given credentials.',
             UserIsDisabled: 'User is not verified.',
+            UserNotFound: 'User account was not found.',
+            UserIsNotDisabled: 'User account is already verified.',
             'Error: Request failed with status code 404':
                 "Request couldn't be processed (status code: 404)",
         },
+
+        verify: 'verify',
     },
 
     dateTimeFormats: {

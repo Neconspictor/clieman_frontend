@@ -67,12 +67,36 @@
                 </v-window-item>
             </v-window>
         </v-card>
-        <p class="mt-4">
-            {{ $i18n.t('havingAnAccount') }}
-            <v-btn small color="success" :to="{ name: 'login' }">{{
-                $i18n.t('login')
-            }}</v-btn>
-        </p>
+
+        <v-simple-table>
+            <template v-slot:default>
+                <tbody>
+                    <tr>
+                        <td>{{ $i18n.t('havingAnAccount') }}</td>
+                        <td>
+                            <v-btn
+                                small
+                                color="success"
+                                :to="{ name: 'login' }"
+                                >{{ $i18n.t('login') }}</v-btn
+                            >
+                        </td>
+                    </tr>
+                    <v-spacer></v-spacer>
+                    <tr>
+                        <td>{{ $i18n.t('notHavingAnAccount') }}</td>
+                        <td>
+                            <v-btn
+                                small
+                                color="success"
+                                :to="{ name: 'register' }"
+                                >{{ $i18n.t('register') }}</v-btn
+                            >
+                        </td>
+                    </tr>
+                </tbody>
+            </template>
+        </v-simple-table>
 
         <p class="mt-4">
             <ErrorView :errors="errors" />
@@ -194,4 +218,10 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+tbody {
+    tr:hover {
+        background-color: transparent !important;
+    }
+}
+</style>

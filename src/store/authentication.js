@@ -45,7 +45,7 @@ const AuthenticationModule = {
 
         // eslint-disable-next-line no-unused-vars
         sendToken({ commit }, email) {
-            return apiClient().post('public/sendToken', email)
+            return apiClient().post('public/sendVerificationCode', email)
         },
 
         // eslint-disable-next-line no-unused-vars

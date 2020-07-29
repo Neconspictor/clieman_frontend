@@ -30,6 +30,12 @@
             }}</v-btn>
         </p>
         <p class="mt-4">
+            {{ $i18n.t('registerData.wantToVerify') }}
+            <v-btn small color="success" :to="{ name: 'verify' }">{{
+                $i18n.t('verify')
+            }}</v-btn>
+        </p>
+        <p class="mt-4">
             <ErrorView :errors="errors" />
         </p>
 
