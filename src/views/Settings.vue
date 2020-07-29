@@ -40,10 +40,16 @@
         <div id="right" class="column" ref="rightside">
             <div class="right-bottom" ref="rightbottom">
                 <v-container class="right-content" ref="rightcontent">
-                    <SettingEntry ref="calendar" :title="$i18n.t('calendar')">
+                    <SettingEntry
+                        ref="calendar"
+                        :title="$i18n.t('calendar')"
+                        style="margin-top: 20px;"
+                    >
                         <v-row class="ml-4" align="center">
                             <span class="mr-4 ">
-                                Active working hours:
+                                {{
+                                    $i18n.t('settingsData.activeWorkingHours')
+                                }}:
                             </span>
                             <v-row style="margin-bottom: -10px;">
                                 <div>

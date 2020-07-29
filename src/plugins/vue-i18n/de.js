@@ -154,6 +154,7 @@ export default {
 
             passwordDesc:
                 'Du solltest ein sicheres Passwort verwenden, das du nirgendwo sonst verwendest.',
+            activeWorkingHours: 'Arbeitszeit',
         },
 
         errors: {
