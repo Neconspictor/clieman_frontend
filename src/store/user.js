@@ -33,7 +33,7 @@ const UserModule = {
 
         changeUserName({ commit }, username) {
             return apiClient()
-                .post('user/changeUserName', username)
+                .post('user/changeUsername', username)
                 .then(({ data, headers }) => {
                     data.authorizationHeader = headers['authorization']
                     commit('SET_USER_DATA', data)
