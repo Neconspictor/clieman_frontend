@@ -25,7 +25,8 @@ const UserModule = {
         changeEmail({ commit }, email) {
             return apiClient()
                 .post('user/changeEmail', email)
-                .then(({ data }) => {
+                .then(({ data, headers }) => {
+                    data.authorizationHeader = headers['authorization']
                     commit('SET_USER_DATA', data)
                 })
         },
@@ -33,7 +34,8 @@ const UserModule = {
         changeUserName({ commit }, username) {
             return apiClient()
                 .post('user/changeUserName', username)
-                .then(({ data }) => {
+                .then(({ data, headers }) => {
+                    data.authorizationHeader = headers['authorization']
                     commit('SET_USER_DATA', data)
                 })
         },
