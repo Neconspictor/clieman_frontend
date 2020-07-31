@@ -94,8 +94,8 @@ const ClientModule = {
         },
 
         async updateClient({ commit }, client) {
-            await apiClient().post('clients/update', client)
-            commit('UPDATE_CLIENT', client)
+            let response = await apiClient().post('clients/update', client)
+            commit('UPDATE_CLIENT', response.data)
         },
     },
     getters: {
