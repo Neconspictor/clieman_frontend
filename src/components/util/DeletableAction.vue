@@ -3,6 +3,7 @@
         :maxWidth="maxWidth"
         @submit="submit"
         @edit="state => $emit('edit', state)"
+        submitText="delete"
     >
         <template v-slot:edit>
             <v-card-text>
@@ -35,7 +36,7 @@
                     </span>
                 </slot>
                 <v-spacer></v-spacer>
-                <ButtonEdit
+                <ButtonDelete
                     btnClass="mt-4"
                     :tooltipText="tooltipText"
                     @click="startEdit(setEditState)"
@@ -47,14 +48,14 @@
 
 <script>
 import EditableField from '@/components/util/EditableField'
-import ButtonEdit from '@/components/util/ButtonEdit'
+import ButtonDelete from '@/components/util/ButtonDelete'
 import rfdc from 'rfdc'
 import ErrorView from '@/components/util/ErrorView'
 
 export default {
     components: {
         EditableField,
-        ButtonEdit,
+        ButtonDelete,
         ErrorView,
     },
 

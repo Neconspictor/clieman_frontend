@@ -30,6 +30,13 @@ export default {
                     this.$i18n.t('registerData.passwordTooShort'),
             ]
         },
+
+        permissivePasswordRules() {
+            return [
+                password =>
+                    !!password || this.$i18n.t('registerData.passwordRequired'),
+            ]
+        },
     },
 
     methods: {

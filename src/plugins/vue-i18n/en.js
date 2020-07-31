@@ -203,6 +203,7 @@ export default {
             OldPasswordNotMatching: 'Old password is not right.',
             NewPasswordConfirmationNotMatching:
                 "New password and confirmation password don't match",
+            PasswordWrong: 'Password is wrong',
         },
 
         verify: 'verify',

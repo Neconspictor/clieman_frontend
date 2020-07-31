@@ -1,16 +1,21 @@
 <template>
-    <v-tooltip bottom>
-        <template v-slot:activator="{ on }">
-            <v-btn icon v-on="on" :class="btnClass" @click="emitClick">
-                <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-        </template>
-        <span>{{ this.tooltipText }} </span>
-    </v-tooltip>
+    <ButtonTooltip
+        icon="mdi-pencil"
+        :btnClass="btnClass"
+        :tooltipText="tooltipText"
+        @click="emitClick"
+    >
+    </ButtonTooltip>
 </template>
 
 <script>
+import ButtonTooltip from '@/components/util/ButtonTooltip'
+
 export default {
+    components: {
+        ButtonTooltip,
+    },
+
     props: {
         btnClass: {
             type: String,

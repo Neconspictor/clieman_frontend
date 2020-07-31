@@ -3,18 +3,22 @@
         <slot name="default" v-bind:setEditState="setEditState"> </slot>
         <v-dialog v-model="edit" :width="maxWidth" persistent>
             <v-card>
-                <v-form ref="form" v-model="formValidity">
+                <v-form
+                    ref="form"
+                    v-model="formValidity"
+                    @submit.prevent="trySubmit"
+                >
                     <slot name="edit"> </slot>
                     <v-card-actions>
                         <v-btn text color="error" @click="discard">{{
-                            $i18n.t('discard')
+                            $i18n.t(discardText)
                         }}</v-btn>
                         <v-btn
                             text
                             color="success"
-                            @click="trySave"
+                            @click="trySubmit"
                             :disabled="!formValidity"
-                            >{{ $i18n.t('save') }}</v-btn
+                            >{{ $i18n.t(submitText) }}</v-btn
                         >
                     </v-card-actions>
                 </v-form>
@@ -29,6 +33,16 @@ export default {
         maxWidth: {
             type: String,
             default: 'inherit',
+        },
+
+        discardText: {
+            type: String,
+            default: 'discard',
+        },
+
+        submitText: {
+            type: String,
+            default: 'save',
         },
     },
 
@@ -52,10 +66,10 @@ export default {
             }
         },
 
-        trySave() {
+        trySubmit() {
             this.validateForm()
             if (this.formValidity) {
-                this.$emit('save', { setEditState: this.setEditState })
+                this.$emit('submit', { setEditState: this.setEditState })
             }
         },
 

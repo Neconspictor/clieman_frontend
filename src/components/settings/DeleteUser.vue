@@ -1,5 +1,5 @@
 <template>
-    <EditableText
+    <DeletableAction
         :maxWidth="maxWidth"
         @submit="submit"
         :tooltipText="tooltipText"
@@ -7,26 +7,11 @@
     >
         <template v-slot:edit-text-field="">
             <PasswordField
-                :label="$i18n.t('settingsData.oldPassword')"
-                v-model="oldPassword"
+                :label="$i18n.t('settingsData.password')"
+                v-model="password"
                 :required="required"
                 :showPassword="computedShowPassword"
-                @visible="val => (computedShowPassword = val)"
-            />
-            <PasswordField
-                :label="$i18n.t('settingsData.newPassword')"
-                v-model="newPassword"
-                :rules="passwordRules"
-                :required="required"
-                :showPassword="computedShowPassword"
-                @visible="val => (computedShowPassword = val)"
-            />
-            <PasswordField
-                :label="$i18n.t('settingsData.confirmNewPassword')"
-                v-model="confirmationPassword"
-                :rules="confirmationPasswordRules(newPassword)"
-                :required="required"
-                :showPassword="computedShowPassword"
+                :rules="permissivePasswordRules"
                 @visible="val => (computedShowPassword = val)"
             />
 
@@ -34,23 +19,23 @@
         </template>
         <template v-slot:non-edit-text-field>
             <div>
-                <div>{{ $i18n.t('password') }}</div>
+                <div>{{ $i18n.t('settingsData.deleteAccount') }}</div>
                 <div style="color: grey;">
-                    {{ $i18n.t('settingsData.passwordDesc') }}
+                    {{ $i18n.t('settingsData.deleteAccountDescription') }}
                 </div>
             </div>
         </template>
-    </EditableText>
+    </DeletableAction>
 </template>
 
 <script>
-import EditableText from '@/components/util/EditableText'
+import DeletableAction from '@/components/util/DeletableAction'
 import PasswordField from '@/components/util/PasswordField'
 import Rules from '@/mixins/rules'
 
 export default {
     components: {
-        EditableText,
+        DeletableAction,
         PasswordField,
     },
 
@@ -80,9 +65,7 @@ export default {
 
     data() {
         return {
-            oldPassword: '',
-            newPassword: '',
-            confirmationPassword: '',
+            password: '',
             privateShowPassword: false,
         }
     },
@@ -106,18 +89,14 @@ export default {
                 setEditState,
                 setErrors,
                 data: {
-                    oldPassword: this.oldPassword,
-                    newPassword: this.newPassword,
-                    confirmationPassword: this.confirmationPassword,
+                    password: this.password,
                 },
             })
         },
 
         handleEditChange(edit) {
             if (!edit) {
-                this.oldPassword = ''
-                this.newPassword = ''
-                this.confirmationPassword = ''
+                this.password = ''
             }
             this.$emit('edit', edit)
         },

@@ -208,6 +208,7 @@ export default {
             OldPasswordNotMatching: 'Altes Passwort stimmt nicht.',
             NewPasswordConfirmationNotMatching:
                 'Neues Password und das Bestätigungspassword stimmen nicht überein.',
+            PasswordWrong: 'Passwort ist falsch.',
         },
 
         verify: 'verifizieren',

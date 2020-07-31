@@ -98,7 +98,7 @@
                     <SettingEntry ref="account" :title="$i18n.t('account')">
                         <EditableText
                             max-width="530px"
-                            @save="saveEditedUserName"
+                            @submit="saveEditedUserName"
                             :label="$i18n.t('username')"
                             prepend-icon="mdi-account-circle"
                             :tooltipText="$i18n.t('editData.username')"
@@ -108,7 +108,7 @@
 
                         <EditableText
                             max-width="530px"
-                            @save="saveEditedEmail"
+                            @submit="saveEditedEmail"
                             :label="$i18n.t('email')"
                             prepend-icon="alternate_email"
                             :tooltipText="$i18n.t('editData.email')"
@@ -121,7 +121,14 @@
                         <EditablePassword
                             max-width="530px"
                             :tooltipText="$i18n.t('editData.password')"
-                            @save="saveEditedPassword"
+                            @submit="saveEditedPassword"
+                            required
+                        />
+
+                        <DeleteUser
+                            max-width="530px"
+                            :tooltipText="$i18n.t('editData.password')"
+                            @submit="deleteUser"
                             required
                         />
                     </SettingEntry>
@@ -143,6 +150,7 @@ import rfdc from 'rfdc'
 import SettingEntry from '@/components/SettingEntry'
 import EditableText from '@/components/util/EditableText'
 import EditablePassword from '@/components/util/EditablePassword'
+import DeleteUser from '@/components/settings/DeleteUser'
 import Rules from '@/mixins/rules'
 import LoadingSpinner from '@/components/util/LoadingSpinner'
 import { apiClient, getErrorArray } from '@/services/server.js'
@@ -154,6 +162,7 @@ export default {
         EditableText,
         EditablePassword,
         LoadingSpinner,
+        DeleteUser,
     },
     mixins: [Rules],
     data() {
@@ -249,6 +258,24 @@ export default {
                 .post('user/changePassword', state.data)
                 .then(() => {
                     state.setEditState(false)
+                })
+                .catch(error => {
+                    state.setErrors(getErrorArray(error))
+                })
+                .finally(() => {
+                    this.showSpinner = false
+                })
+        },
+
+        deleteUser(state) {
+            state.setErrors([])
+            this.showSpinner = true
+
+            apiClient()
+                .post('user/deleteUser', state.data)
+                .then(() => {
+                    state.setEditState(false)
+                    this.$router.push({ name: 'login' })
                 })
                 .catch(error => {
                     state.setErrors(getErrorArray(error))

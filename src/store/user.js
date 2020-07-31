@@ -40,6 +40,14 @@ const UserModule = {
                 })
         },
 
+        deleteUser({ commit }, password) {
+            return apiClient()
+                .post('user/deleteUser', password)
+                .then(() => {
+                    commit('CLEAR_USER_DATA')
+                })
+        },
+
         // eslint-disable-next-line no-unused-vars
         register({ commit }, credentials) {
             return apiClient().post('public/register', credentials)
@@ -64,10 +72,6 @@ const UserModule = {
                 })
         },
         logout({ commit }) {
-            /* return new Promise(function (resolve, reject) {
-        commit('CLEAR_USER_DATA')
-        resolve()
-      }) */
             commit('CLEAR_USER_DATA')
         },
 
