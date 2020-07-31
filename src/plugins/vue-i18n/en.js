@@ -204,6 +204,8 @@ export default {
             NewPasswordConfirmationNotMatching:
                 "New password and confirmation password don't match",
             PasswordWrong: 'Password is wrong',
+            ClientCannotBeDeleted:
+                'Client cannot be deleted. Properly there are some events referencing the client.',
         },
 
         verify: 'verify',

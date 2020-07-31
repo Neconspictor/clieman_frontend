@@ -209,6 +209,8 @@ export default {
             NewPasswordConfirmationNotMatching:
                 'Neues Password und das Bestätigungspassword stimmen nicht überein.',
             PasswordWrong: 'Passwort ist falsch.',
+            ClientCannotBeDeleted:
+                'Klient kann nicht gelöscht werden. Vermutlich gibt es Termine, die diesen Klienten referenzieren.',
         },
 
         verify: 'verifizieren',
