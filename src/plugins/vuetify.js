@@ -31,7 +31,7 @@ export default new Vuetify({
                 iconColor: 'white',
             },
             light: {
-                iconColor: 'rgba(0,0,0,0.54)',
+                iconColor: 'rgba(0, 0, 0, 0.54)',
             },
         },
     },

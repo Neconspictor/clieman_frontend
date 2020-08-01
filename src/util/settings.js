@@ -8,9 +8,7 @@ class SettingsUtil {
     }
 
     static setUseDarkTheme(vuetify, useDark) {
-        console.log('before: ' + vuetify.theme.dark)
         vuetify.theme.dark = useDark
-        console.log('after: ' + vuetify.theme.dark)
     }
 
     static persist(name, data) {

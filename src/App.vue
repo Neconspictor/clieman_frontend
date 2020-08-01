@@ -149,11 +149,9 @@ export default {
         },
 
         iconStyle() {
-            console.log(this.$vuetify.theme)
-
             var color = this.$vuetify.theme.themes.light.iconColor
             if (this.isDark) color = this.$vuetify.theme.themes.dark.iconColor
-            return `color: ${color}`
+            return `color: ${color};`
         },
 
         links() {

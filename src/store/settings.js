@@ -66,7 +66,6 @@ const SettingsModule = {
 
         setUseDarkTheme({ commit }, { vuetify, useDarkTheme }) {
             SettingsUtil.setUseDarkTheme(vuetify, useDarkTheme)
-            console.log('store setUseDarkTheme: ' + useDarkTheme)
             commit('SET_USE_DARK_THEME', useDarkTheme)
             persist('settings.useDarkTheme', useDarkTheme)
         },
@@ -81,7 +80,7 @@ const SettingsModule = {
                 calendarOptions.workingRange.end = new Date(
                     calendarOptions.workingRange.end
                 )
-                console.log('calendarOptions: ' + calendarOptions)
+
                 await dispatch('setCalendarOptions', calendarOptions)
             }
 

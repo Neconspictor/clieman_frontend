@@ -45,7 +45,6 @@ var vm = new Vue({
     vuetify,
     i18n,
     created() {
-        console.log('test')
         const userString = localStorage.getItem('user')
         try {
             const user = JSON.parse(userString)
@@ -64,8 +63,6 @@ var vm = new Vue({
             error => {
                 if (error.response.status === 401) {
                     this.$store.dispatch('user/logout').then(() => {
-                        console.log('location: ', location)
-
                         if (
                             location.pathname !== '/login' &&
                             location.pathname !== '/register'
