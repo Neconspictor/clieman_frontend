@@ -7,6 +7,12 @@ class SettingsUtil {
         SettingsUtil.i18n.locale = SettingsUtil.vuetify.lang.current
     }
 
+    static setUseDarkTheme(vuetify, useDark) {
+        console.log('before: ' + vuetify.theme.dark)
+        vuetify.theme.dark = useDark
+        console.log('after: ' + vuetify.theme.dark)
+    }
+
     static persist(name, data) {
         const parsed = JSON.stringify(data)
         localStorage.setItem(name, parsed)

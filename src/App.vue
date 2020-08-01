@@ -172,7 +172,17 @@ export default {
 
     methods: {
         toggleTheme() {
-            this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+            //console.log('toggle: ' + !this.$vuetify.theme.dark)
+
+            //this.$vuetify.theme.dark = !this.$vuetify.theme.dark
+            var test = {
+                vuetify: this.$vuetify,
+                useDarkTheme: !this.$vuetify.theme.dark,
+            }
+
+            this.$store.dispatch('settings/setUseDarkTheme', test).then(() => {
+                this.$forceUpdate()
+            })
         },
 
         setLanguage(lang) {

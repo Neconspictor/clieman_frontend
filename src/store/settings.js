@@ -36,6 +36,8 @@ const SettingsModule = {
         ],
 
         activeLanguage: 'en',
+
+        useDarkTheme: false,
     },
     mutations: {
         SET_CALENDER_OPTIONS(state, options) {
@@ -45,6 +47,10 @@ const SettingsModule = {
         SET_ACTIVE_LANGUAGE(state, language) {
             state.activeLanguage = language
         },
+
+        SET_USE_DARK_THEME(state, useDarkTheme) {
+            state.useDarkTheme = useDarkTheme
+        },
     },
     actions: {
         setCalendarOptions({ commit }, options) {
@@ -53,13 +59,19 @@ const SettingsModule = {
         },
 
         setActiveLanguage({ commit }, lang) {
-            console.log('setActiveLanguage: ' + lang)
             SettingsUtil.setActiveLanguage(lang)
             commit('SET_ACTIVE_LANGUAGE', lang)
             persist('settings.activeLanguage', lang)
         },
 
-        async loadStoredSettings({ dispatch }, defaultLanguage) {
+        setUseDarkTheme({ commit }, { vuetify, useDarkTheme }) {
+            SettingsUtil.setUseDarkTheme(vuetify, useDarkTheme)
+            console.log('store setUseDarkTheme: ' + useDarkTheme)
+            commit('SET_USE_DARK_THEME', useDarkTheme)
+            persist('settings.useDarkTheme', useDarkTheme)
+        },
+
+        async loadStoredSettings({ dispatch }, { vuetify, defaultLanguage }) {
             var calendarOptions = SettingsUtil.load('settings.calendarOptions')
             if (calendarOptions) {
                 await dispatch('setCalendarOptions', calendarOptions)
@@ -70,6 +82,11 @@ const SettingsModule = {
                 await dispatch('setActiveLanguage', activeLanguage)
             } else {
                 await dispatch('setActiveLanguage', defaultLanguage)
+            }
+
+            var useDarkTheme = SettingsUtil.load('settings.useDarkTheme')
+            if (useDarkTheme) {
+                await dispatch('setUseDarkTheme', { vuetify, useDarkTheme })
             }
         },
     },

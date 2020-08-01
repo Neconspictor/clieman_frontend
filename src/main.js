@@ -54,10 +54,10 @@ var vm = new Vue({
             // eslint-disable-next-line no-empty
         } catch (error) {}
 
-        store.dispatch(
-            'settings/loadStoredSettings',
-            this.$vuetify.lang.current
-        )
+        store.dispatch('settings/loadStoredSettings', {
+            vuetify: this.$vuetify,
+            defaultLanguage: this.$vuetify.lang.current,
+        })
 
         Axios.interceptors.response.use(
             response => response,
