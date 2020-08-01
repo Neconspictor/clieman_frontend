@@ -44,11 +44,17 @@
                         {{ $i18n.t('registerData.verifyAccount') }}
                     </v-card-text>
 
-                    <v-text-field
-                        :label="`${$i18n.t('registerData.verificationCode')}`"
-                        v-model="verificationCode"
-                    >
-                    </v-text-field>
+                    <v-card-text>
+                        <v-text-field
+                            filled
+                            :label="
+                                `${$i18n.t('registerData.verificationCode')}`
+                            "
+                            v-model="verificationCode"
+                        >
+                        </v-text-field>
+                    </v-card-text>
+
                     <v-divider></v-divider>
                     <v-card-actions>
                         <v-spacer />
@@ -69,6 +75,7 @@
         </v-card>
 
         <LinkTable
+            class="mt-4"
             :content="[
                 {
                     desc: 'havingAnAccount',

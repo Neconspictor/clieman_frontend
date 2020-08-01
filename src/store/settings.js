@@ -74,6 +74,14 @@ const SettingsModule = {
         async loadStoredSettings({ dispatch }, { vuetify, defaultLanguage }) {
             var calendarOptions = SettingsUtil.load('settings.calendarOptions')
             if (calendarOptions) {
+                calendarOptions.workingRange.start = new Date(
+                    calendarOptions.workingRange.start
+                )
+
+                calendarOptions.workingRange.end = new Date(
+                    calendarOptions.workingRange.end
+                )
+                console.log('calendarOptions: ' + calendarOptions)
                 await dispatch('setCalendarOptions', calendarOptions)
             }
 

@@ -25,6 +25,7 @@
         </v-card>
 
         <LinkTable
+            class="mt-4"
             :content="[
                 {
                     desc: 'notHavingAnAccount',

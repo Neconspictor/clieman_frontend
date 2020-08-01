@@ -34,7 +34,7 @@
                         @click:more="viewDay"
                         @click:date="viewDay"
                         @change="updateRange"
-                        :locale="$vuetify.lang.current"
+                        :locale="activeLanguage"
                         :first-interval="intervals.first"
                         :interval-minutes="intervals.minutes"
                         :interval-count="intervals.count"
@@ -123,7 +123,7 @@ export default {
         ...mapGetters('client', ['getClientByID']),
         ...mapState('client', ['clients']),
         ...mapState('event', ['events']),
-        ...mapState('settings', ['calendarOptions']),
+        ...mapState('settings', ['calendarOptions', 'activeLanguage']),
 
         defaultEvent() {
             console.log('test')
