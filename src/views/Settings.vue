@@ -184,6 +184,7 @@ export default {
         ...mapState('settings', {
             calendarOptions: state => state.calendarOptions,
             languages: state => state.languages,
+            activeLanguage: state => state.activeLanguage,
         }),
 
         ...mapState('user', ['user']),
@@ -191,12 +192,13 @@ export default {
         ...mapGetters('settings', ['getLanguage']),
 
         currentLanguage() {
-            return this.getLanguage(this.$vuetify.lang.current)
+            console.log(this.getLanguage(this.activeLanguage))
+            return this.getLanguage(this.activeLanguage)
         },
     },
 
     methods: {
-        ...mapActions('settings', ['setCalendarOptions']),
+        ...mapActions('settings', ['setCalendarOptions', 'setActiveLanguage']),
         ...mapActions('user', ['changeUserName', 'changeEmail']),
 
         goToInRightSide(ref) {
@@ -217,8 +219,8 @@ export default {
         },
 
         setLanguage(language) {
-            this.$vuetify.lang.current = language.lang
-            this.$i18n.locale = this.$vuetify.lang.current
+            console.log(language.lang)
+            this.setActiveLanguage(language.lang)
         },
 
         saveEditedUserName({ setEditState, setErrors, value }) {
