@@ -6,7 +6,7 @@
             </v-card-title>
 
             <v-window v-model="step">
-                <v-window-item :value="0">
+                <v-window-item :value="0" @keypress.enter="submitRegister">
                     <v-card-text>
                         <v-form
                             ref="signupForm"
@@ -65,7 +65,7 @@
                         </v-btn>
                     </v-card-actions>
                 </v-window-item>
-                <v-window-item :value="1">
+                <v-window-item :value="1" @keypress.enter="submitVerification">
                     <v-card-text>
                         {{ $i18n.t('registerData.sendEmailTo') }} {{ email }}
                     </v-card-text>
@@ -192,6 +192,7 @@ export default {
         },
 
         submitRegister() {
+            console.log('register')
             this.errors = []
             this.validateForm()
             if (this.formValidity) {

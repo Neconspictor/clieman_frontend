@@ -1,11 +1,11 @@
 <template>
-    <div class="mx-auto mt-5 " style="width: 400px;">
+    <div class="mx-auto mt-5 " style="width: 400px;" @keypress.enter="tryLogin">
         <v-card>
             <v-card-title>
                 <h1 class="display-1">{{ $i18n.t('loginNoun') }}</h1>
             </v-card-title>
             <v-card-text>
-                <v-form>
+                <v-form @submit.prevent="tryLogin">
                     <v-text-field
                         v-model="authName"
                         :label="`${$i18n.t('username')} / ${$i18n.t('email')}`"
