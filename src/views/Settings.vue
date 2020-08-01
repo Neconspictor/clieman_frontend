@@ -127,7 +127,7 @@
 
                         <DeleteUser
                             max-width="530px"
-                            :tooltipText="$i18n.t('editData.password')"
+                            :tooltipText="$i18n.t('settingsData.deleteAccount')"
                             @submit="deleteUser"
                             required
                         />

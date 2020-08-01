@@ -155,6 +155,8 @@ export default {
             passwordDesc:
                 'Du solltest ein sicheres Passwort verwenden, das du nirgendwo sonst verwendest.',
             activeWorkingHours: 'Arbeitszeit',
+            deleteAccount: 'Konto löschen',
+            deleteAccountDescription: 'Löscht dein Konto und all deine Daten dauerhaft.',
         },
 
         errors: {

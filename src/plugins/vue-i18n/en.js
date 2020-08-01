@@ -155,6 +155,9 @@ export default {
                 "You should use a secure password that you don't use anywhere else",
 
             activeWorkingHours: 'Active working hours',
+            deleteAccount: 'Delete account',
+            deleteAccountDescription:
+                'Deletes your account and all of your data permanently.',
         },
 
         errors: {
