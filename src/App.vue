@@ -25,16 +25,18 @@
                     <v-list>
                         <v-list-item @click="toggleTheme">
                             <v-avatar color="grey" size="36" class="mr-2">
-                                <iconify-icon
-                                    :class="
-                                        `v-icon ${
-                                            isDark
-                                                ? 'theme--dark'
-                                                : 'theme--light'
-                                        }`
-                                    "
-                                    :icon="icons.baselineBedtime"
-                                />
+                                <v-avatar color="grey" size="24" class="">
+                                    <iconify-icon
+                                        :class="
+                                            `v-icon ${
+                                                isDark
+                                                    ? 'theme--dark'
+                                                    : 'theme--light'
+                                            }`
+                                        "
+                                        :icon="icons.baselineBedtime"
+                                    />
+                                </v-avatar>
                             </v-avatar>
                             {{ this.$i18n.t('nightmode') }}
 
@@ -64,6 +66,17 @@
                         </v-list-item>
                     </v-list>
                 </v-menu>
+            </div>
+            <div v-else>
+                <v-btn icon @click="toggleTheme" class="mr-2">
+                    <v-avatar color="grey" size="36">
+                        <iconify-icon
+                            :style="`${iconStyle}`"
+                            class="v-icon"
+                            :icon="icons.baselineBedtime"
+                        />
+                    </v-avatar>
+                </v-btn>
             </div>
         </v-app-bar>
 
@@ -133,6 +146,14 @@ export default {
 
         isDark() {
             return this.$vuetify.theme.dark
+        },
+
+        iconStyle() {
+            console.log(this.$vuetify.theme)
+
+            var color = this.$vuetify.theme.themes.light.iconColor
+            if (this.isDark) color = this.$vuetify.theme.themes.dark.iconColor
+            return `color: ${color}`
         },
 
         links() {
@@ -211,5 +232,13 @@ export default {
 .my-app {
     width: 100%;
     //height: 100vh;
+}
+
+.darkMoon {
+    color: black;
+}
+
+.lightMoon {
+    color: white;
 }
 </style>

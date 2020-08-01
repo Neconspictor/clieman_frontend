@@ -26,5 +26,13 @@ export default new Vuetify({
 
     theme: {
         dark: false,
+        themes: {
+            dark: {
+                iconColor: 'white',
+            },
+            light: {
+                iconColor: 'rgba(0,0,0,0.54)',
+            },
+        },
     },
 })
