@@ -1,7 +1,7 @@
 <template>
     <v-app class="my-app">
         <v-app-bar app :src="require('./assets/vbanner.jpg')" dark>
-            <v-toolbar-title>Dateman</v-toolbar-title>
+            <v-toolbar-title>Clieman</v-toolbar-title>
             <v-spacer></v-spacer>
 
             <div v-if="this.isAuthenticated()">
@@ -109,7 +109,7 @@
                     {{ language.label }}
                 </v-btn>
                 <v-col class="py-4 text-center white--text" cols="12" dark>
-                    <small>Dateman &copy; {{ new Date().getFullYear() }}</small>
+                    <small>Clieman &copy; {{ new Date().getFullYear() }}</small>
                 </v-col>
             </v-row>
         </v-footer>

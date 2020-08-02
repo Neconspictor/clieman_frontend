@@ -1,21 +1,8 @@
 import axios from 'axios'
 
-/*async function loadHttpsAgent() {
-    var data = await jbinary.loadData(
-        '../assets/dateman_backend_certificate.crt'
-    )
-    console.log('data: ', data)
-
-    return new https.Agent({
-        ca: data,
-    })
-}*/
-
-//https.globalAgent.options.rejectUnauthorized = false
-
 export const apiClient = () => {
     return axios.create({
-        baseURL: process.env.VUE_APP_DATEMAN_BACKEND_BASE_URL,
+        baseURL: process.env.VUE_APP_BACKEND_BASE_URL,
         withCredentials: false,
         headers: {
             Accept: 'application/json',
