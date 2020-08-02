@@ -176,8 +176,8 @@ export default {
             InvalidConfirmationPassword:
                 'Bestätigungspasswort stimmt nicht mit dem neuen Passwort überein.',
             'Error: Network Error': 'Netzwerkfehler',
-            NoEventsFetched: 'Termine konnten nicht heruntergeladen werden.',
-            NoClientsFetched:
+            noEventsFetched: 'Termine konnten nicht heruntergeladen werden.',
+            noClientsFetched:
                 'Informationen zu den Klienten konnten nicht heruntergeladen werden.',
             'Error: Request failed with status code 400': 'Ungültige Anfrage',
             'Error: Request failed with status code 401':
@@ -218,6 +218,8 @@ export default {
         },
 
         verify: 'verifizieren',
+        PageNotFoundErrorMessage:
+            'Ups! Die angeforderte Ressource existiert wohl nicht.',
     },
 
     dateTimeFormats: {

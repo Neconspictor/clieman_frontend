@@ -120,6 +120,7 @@
 import accountIcon from '@iconify/icons-mdi/account'
 import baselineBedtime from '@iconify/icons-ic/baseline-bedtime'
 import { userComputed } from '@/store/user'
+import axios from 'axios'
 
 export default {
     name: 'App',
@@ -170,9 +171,6 @@ export default {
 
     methods: {
         toggleTheme() {
-            //console.log('toggle: ' + !this.$vuetify.theme.dark)
-
-            //this.$vuetify.theme.dark = !this.$vuetify.theme.dark
             var test = {
                 vuetify: this.$vuetify,
                 useDarkTheme: !this.$vuetify.theme.dark,
@@ -189,13 +187,6 @@ export default {
                 .then(() => {
                     this.$forceUpdate()
                 })
-
-            //this.$router.go()
-        },
-
-        isPublicRoute() {
-            let publicRoutes = ['login', 'register', 'verify']
-            return publicRoutes.includes(this.$route.name)
         },
 
         logout(redirect) {
@@ -204,21 +195,24 @@ export default {
             this.$store.dispatch('user/logout').then(() => {})
         },
 
+        isPublicRoute() {
+            return !this.$route.meta.requiresAuth
+        },
+
         isAuthenticated() {
-            var result = false
-            if (!this.isPublicRoute()) {
-                this.$store
-                    .dispatch('user/testAuthentincationed')
-                    .then(loggedIn => {
-                        if (!loggedIn) {
-                            this.logout(true)
-                        }
-                    })
+            var authorizationHeader =
+                axios.defaults.headers.common['Authorization']
+            if (!authorizationHeader) return false
 
-                result = this.loggedIn
-            }
+            this.$store
+                .dispatch('user/testAuthentincationed')
+                .then(loggedIn => {
+                    if (!loggedIn) {
+                        this.logout(true)
+                    }
+                })
 
-            return result
+            return this.loggedIn
         },
     },
 }

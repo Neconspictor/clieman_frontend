@@ -6,6 +6,7 @@ import Settings from '@/views/Settings'
 import Login from '@/views/Login'
 import Register from '@/views/Register'
 import Verify from '@/views/Verify'
+import NotFound from '@/views/NotFound'
 
 Vue.use(VueRouter)
 
@@ -28,12 +29,14 @@ const routes = [
         path: '/login',
         name: 'login',
         component: Login,
+        meta: { requiresAuth: false },
     },
 
     {
         path: '/register',
         name: 'register',
         component: Register,
+        meta: { requiresAuth: false },
     },
 
     {
@@ -47,6 +50,13 @@ const routes = [
         path: '/verify',
         name: 'verify',
         component: Verify,
+        meta: { requiresAuth: false },
+    },
+
+    {
+        path: '*',
+        component: NotFound,
+        meta: { requiresAuth: false },
     },
 ]
 

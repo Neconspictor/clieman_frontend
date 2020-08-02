@@ -173,8 +173,8 @@ export default {
             InvalidConfirmationPassword:
                 'Confirmation password does not match with new password.',
             'Error: Network Error': 'Network error.',
-            NoEventsFetched: "Couldn't fetch events.",
-            NoClientsFetched: "Couldn't fetch clients.",
+            noEventsFetched: "Couldn't fetch events.",
+            noClientsFetched: "Couldn't fetch clients.",
             'Error: Request failed with status code 400': 'Bad request',
             'Error: Request failed with status code 401':
                 'Unauthorized request',
@@ -213,6 +213,7 @@ export default {
         },
 
         verify: 'verify',
+        PageNotFoundErrorMessage: "Oops! Didn't found what you're looking for.",
     },
 
     dateTimeFormats: {
