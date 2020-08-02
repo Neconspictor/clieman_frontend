@@ -182,8 +182,7 @@ export default {
             'Error: Request failed with status code 400': 'Ungültige Anfrage',
             'Error: Request failed with status code 401':
                 'Nicht authorisierte Anfrage',
-            'Error: Request failed with status code 500':
-                'Interner Server-Fehler',
+            InternalServerError: 'Interner Server-Fehler',
 
             NoUserName: 'Kein Benutzername angegeben.',
 

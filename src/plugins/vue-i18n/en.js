@@ -178,8 +178,7 @@ export default {
             'Error: Request failed with status code 400': 'Bad request',
             'Error: Request failed with status code 401':
                 'Unauthorized request',
-            'Error: Request failed with status code 500':
-                'Internal server error',
+            InternalServerError: 'Internal server error',
 
             NoUserName: 'No user name specified.',
 
