@@ -158,6 +158,7 @@ export default {
             deleteAccount: 'Delete account',
             deleteAccountDescription:
                 'Deletes your account and all of your data permanently.',
+            password: 'Password',
         },
 
         errors: {
