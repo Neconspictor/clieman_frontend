@@ -15,7 +15,7 @@ import axios from 'axios'
 
 export const apiClient = () => {
     return axios.create({
-        baseURL: 'http://localhost:8443',
+        baseURL: process.env.VUE_APP_DATEMAN_BACKEND_BASE_URL,
         withCredentials: false,
         headers: {
             Accept: 'application/json',
