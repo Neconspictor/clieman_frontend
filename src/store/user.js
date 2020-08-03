@@ -85,6 +85,10 @@ const UserModule = {
 
             return true
         },
+
+        test() {
+            return apiClient().get('public/test')
+        },
     },
     getters: {
         loggedIn(state) {

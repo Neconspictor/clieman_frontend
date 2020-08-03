@@ -211,6 +211,7 @@ export default {
             PasswordWrong: 'Password is wrong',
             ClientCannotBeDeleted:
                 'Client cannot be deleted. Properly there are some events referencing the client.',
+            UsernameInvalid: 'Username is not valid (spaces are not allowed).',
         },
 
         verify: 'verify',

@@ -20,6 +20,13 @@ Vue.use(LoadScript)
 
 Vue.config.productionTip = false
 
+//make a test request to the backend
+//We do this for causing heroku to start the backend when it is in a sleeping mode
+// thus we shorten initial loading time if the backend wasn't used for some time.
+store.dispatch('user/test').then(response => {
+    console.log(response)
+})
+
 const ignoreWarnMessage =
     'The .native modifier for v-on is only valid on components but it was used on <div>.'
 // eslint-disable-next-line no-unused-vars

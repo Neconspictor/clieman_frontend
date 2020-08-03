@@ -216,6 +216,8 @@ export default {
             PasswordWrong: 'Passwort ist falsch.',
             ClientCannotBeDeleted:
                 'Klient kann nicht gelöscht werden. Vermutlich gibt es Termine, die diesen Klienten referenzieren.',
+            UsernameInvalid:
+                'Benutzername enthält ungültige Zeichen (Leerzeichen sind nicht erlaubt).',
         },
 
         verify: 'verifizieren',
