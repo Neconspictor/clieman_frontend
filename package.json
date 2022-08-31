@@ -19,7 +19,7 @@
         "jquery": "^3.5.1",
         "jsonwebtoken": "^8.5.1",
         "moment": "^2.26.0",
-        "moment-timezone": "^0.5.31",
+        "moment-timezone": "^0.5.35",
         "rfdc": "^1.1.4",
         "vue": "^2.6.11",
         "vue-i18n": "^8.18.2",
