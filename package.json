@@ -13,7 +13,7 @@
         "start": "serve -s dist"
     },
     "dependencies": {
-        "axios": "^0.19.2",
+        "axios": "^0.31.1",
         "core-js": "^3.6.5",
         "cors": "^2.8.5",
         "eslint-plugin-jest": "^23.13.2",
